@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply text-black-100 font-inter;
+    }
+
+    h1 {
+        @apply text-h1 font-noto;
+    }
+
+    h2 {
+        @apply text-h2 font-noto;
+    }
+
+    h3 {
+        @apply text-h3 font-noto;
+    }
+
+    h4 {
+        @apply text-h4 font-noto;
+    }
+
+    h5 {
+        @apply text-h5 font-noto;
+    }
+
+    h6 {
+        @apply text-h6 font-noto;
+    }
+
+    .text-body-1,
+    .text-body-2,
+    .text-body-3,
+    .text-body-4 {
+        @apply font-inter;
+    }
+
+    p {
+        @apply text-body-1;
+    }
+
+    .text-superscript-1 {
+        @apply font-noto;
+    }
+
+    .text-superscript-2 {
+        @apply font-inter;
+    }
+}
+
+@layer components {
+    .container {
+        @apply mx-auto px-3;
+    }
+
+    .page {
+        @apply pt-6 pb-7;
+    }
+
+    .link {
+        @apply text-primary underline;
+    }
+
+    .card {
+        @apply py-4 px-3 bg-white rounded-[0.5rem] gray-border;
+    }
+
+    form {
+        @apply w-full;
+    }
+}
+
+@layer utilities {
+    .gray-border {
+        @apply border border-gray-200 focus-within:border-gray-300 hover:border-gray-300;
+    }
+
+    .click-scale {
+        @apply active:transition-[transform] active:scale-click;
+    }
+
+    .hover-scale {
+        @apply hover:transition-[transform] hover:scale-click;
+    }
+
+    .hide-scrollbar {
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
