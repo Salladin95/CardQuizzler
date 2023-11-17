@@ -1,3 +1,5 @@
+import { Slider } from "@/components/Slider"
+
 export default function Home() {
-	return <main>HOME</main>
+	return <Slider />
 }
