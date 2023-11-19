@@ -1,0 +1,82 @@
+@tailwind base;
+@layer base {
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+        @apply flex flex-col min-h-[100svh] text-16px;
+    }
+
+    body {
+        @apply flex-1 flex flex-col scroll-smooth text-white;
+    }
+
+    main {
+        @apply flex-1 flex flex-col;
+
+        & > div {
+            @apply flex-1;
+        }
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"] {
+        appearance: none;
+    }
+}
+
+@tailwind components;
+@layer components {
+    .page {
+        @apply pt-40
+    }
+
+    .container {
+        @apply mx-auto;
+    }
+}
+
+@tailwind utilities;
+@layer utilities {
+    .full-size {
+        @apply w-full h-full;
+    }
+
+    .absolute-size {
+        @apply absolute w-full h-full inset-0;
+    }
+
+    .fixed-size {
+        @apply fixed w-full h-full inset-0;
+    }
+
+    .fixed-center {
+        @apply fixed top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2;
+    }
+
+    .absolute-center {
+        @apply absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2;
+    }
+
+    .absolute-x-center {
+        @apply absolute left-1/2 transform -translate-x-1/2;
+    }
+
+    .absolute-y-center {
+        @apply absolute top-1/2 transform -translate-y-1/2;
+    }
+
+    .flex-center {
+        @apply flex items-center justify-center;
+    }
+
+    .flex-col-center {
+        @apply flex-center flex-col;
+    }
+
+    .flex-cb {
+        @apply flex items-center justify-between;
+    }
+}

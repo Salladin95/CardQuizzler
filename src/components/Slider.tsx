@@ -8,14 +8,12 @@ export const Slider = () => {
 	const [counter, setCounter] = React.useState(0)
 	const slider = React.useRef<HTMLDivElement>(null!)
 
-	// padding || margin
-	const spaceAroundSlide = 16
-
 	const move = (newCounter: number) => {
+		if (!slider.current.children.length) return
 		// All elements have the same width
-		const elementWidth = slider.current.children[0].clientWidth
+		const firstChild = slider.current.children[0] as HTMLDivElement
 		// All elements have the same width, it means if multiply the counter to the element's width, we get its position
-		slider.current.style.transform = `translate(-${(elementWidth + spaceAroundSlide) * newCounter}px)`
+		slider.current.style.transform = `translate(-${(firstChild.clientWidth + firstChild.offsetLeft) * newCounter}px)`
 		setCounter(newCounter)
 	}
 
@@ -34,8 +32,8 @@ export const Slider = () => {
 		prevCounter >= 0 && move(prevCounter)
 	}
 
-		return (
-		<section className={"max-w-2lg mx-auto overflow-hidden"}>
+	return (
+		<section className={"max-w-2lg overflow-hidden"}>
 			<div className="flex mb-4 p-4 gap-x-4 transition-transform" ref={slider}>
 				{slides.map((slide) => (
 					<Slide slide={slide} key={slide} />

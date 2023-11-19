@@ -3,6 +3,7 @@
   "rules": {
     "block-no-empty": null,
     "no-descending-specificity": null,
-    "scss/at-rule-no-unknown": null
+    "scss/at-rule-no-unknown": null,
+    "at-rule-empty-line-before": null
   }
 }

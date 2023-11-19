@@ -1,0 +1,13 @@
+@layer components {
+    .card {
+        @apply min-w-full h-xs bg-green-300 relative;
+
+        &[draggable="true"] {
+            @apply cursor-grab absolute overflow-hidden;
+        }
+
+        &[data-dragging="true"] {
+            @apply opacity-100 cursor-grabbing;
+        }
+    }
+}

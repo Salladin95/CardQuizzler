@@ -1,3 +1,5 @@
 export * from "./DataHydration"
 export * from "./Slider"
+export * from "./Swiper"
 export * from "./Slide"
+export * from "./DraggableSlide"
