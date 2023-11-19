@@ -1,6 +1,6 @@
 @layer components {
     .card {
-        @apply min-w-full h-xs bg-green-300 relative;
+        @apply min-w-full h-[600px] bg-green-300 relative;
 
         &[draggable="true"] {
             @apply cursor-grab absolute overflow-hidden;

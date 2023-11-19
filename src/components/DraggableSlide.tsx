@@ -59,7 +59,10 @@ export const DraggableSlide = (props: SlideProps) => {
 
 	return (
 		<div
-			className={`card]`}
+			className={"draggable-card"}
+			style={{
+				transform: `translateZ(calc(-30px * ${index})) translateY(calc(-20px * ${index}`,
+			}}
 			data-dragging={dragging}
 			onDragStart={handleDragStart}
 			onDragLeave={handleDragLeft}

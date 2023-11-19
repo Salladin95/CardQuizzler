@@ -1,0 +1,9 @@
+@layer components {
+    .draggable-card {
+        @apply w-[400px] h-[600px] bg-green-300 cursor-grab absolute overflow-hidden rounded;
+
+        &[data-dragging="true"] {
+            @apply opacity-100 cursor-grabbing;
+        }
+    }
+}

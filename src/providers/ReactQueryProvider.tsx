@@ -3,7 +3,7 @@
 import React from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
-export default function ReactQueryProvider({ children }: React.PropsWithChildren) {
+export function ReactQueryProvider({ children }: React.PropsWithChildren) {
 	const [queryClient] = React.useState(
 		() =>
 			new QueryClient({

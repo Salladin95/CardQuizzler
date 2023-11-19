@@ -1,4 +1,4 @@
-import { Slider, Swiper } from "@/components/index"
+import { Slider, Swiper } from "~/components"
 
 export default function Home() {
 	return (

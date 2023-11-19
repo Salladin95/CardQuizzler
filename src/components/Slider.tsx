@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { Slide } from "@/components/Slide"
+import { Slide } from "./Slide"
 
 const slides = [1, 2, 3, 4, 5, 6]
 

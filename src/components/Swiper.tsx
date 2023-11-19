@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { DraggableSlide } from "@/components/DraggableSlide"
+import { DraggableSlide } from "./DraggableSlide"
 
 const slides = [1, 2, 3, 4, 5, 6]
 
@@ -33,8 +33,17 @@ export const Swiper = () => {
 	}
 
 	return (
-		<section className={"max-w-2lg h-[70vh] relative"}>
-			<div className="mb-4 p-4" ref={slider}>
+		<section className={"container"}>
+			<div
+				style={{
+					aspectRatio: "1 / 3",
+					perspective: "1000px",
+					perspectiveOrigin: "50%",
+					transformStyle: "preserve-3d",
+				}}
+				className="mb-4 p-4 relative h-[70vh]"
+				ref={slider}
+			>
 				{slides.map((slide, index) => (
 					<DraggableSlide slide={slide} key={slide} index={index} onDrop={() => console.log("DROPPED")} />
 				))}
