@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { DraggableSlide } from "./DraggableSlide"
+import AnimatedCard from "~/components/AnimatedCard"
 
 const slides = [1, 2, 3, 4, 5, 6]
 
@@ -33,7 +33,7 @@ export const Swiper = () => {
 	}
 
 	return (
-		<section className={"container"}>
+		<section className={"container flex-center mt-[5rem]"}>
 			<div
 				style={{
 					aspectRatio: "1 / 3",
@@ -41,11 +41,11 @@ export const Swiper = () => {
 					perspectiveOrigin: "50%",
 					transformStyle: "preserve-3d",
 				}}
-				className="mb-4 p-4 relative h-[70vh]"
+				className="mb-4 p-4 relative h-[70vh] -translate-x-[50%]"
 				ref={slider}
 			>
 				{slides.map((slide, index) => (
-					<DraggableSlide slide={slide} key={slide} index={index} onDrop={() => console.log("DROPPED")} />
+					<AnimatedCard key={slide} />
 				))}
 			</div>
 		</section>
