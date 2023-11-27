@@ -1,12 +1,14 @@
 "use client"
 import React from "react"
 import AnimatedCard from "~/components/AnimatedCard"
+import { useAnimate } from "framer-motion"
 
 const slides = [1, 2, 3, 4, 5, 6]
 
 export const Swiper = () => {
 	const [counter, setCounter] = React.useState(0)
 	const slider = React.useRef<HTMLDivElement>(null!)
+	const [scope, animate] = useAnimate()
 
 	const move = (newCounter: number) => {
 		if (!slider.current.children.length) return
@@ -27,25 +29,41 @@ export const Swiper = () => {
 		nextCounter < slides.length && move(nextCounter)
 	}
 
-	const handleBack = () => {
-		const prevCounter = counter - 1
-		prevCounter >= 0 && move(prevCounter)
+	const [statedSlides, setStatedSlides] = React.useState(slides)
+	const [swipedSlides, setSwipedSlides] = React.useState<number[]>([])
+
+	const handleSwipe = () => {
+		setSwipedSlides([...swipedSlides, statedSlides[0]])
+		setStatedSlides(statedSlides.slice(1))
 	}
 
+	const [animateBack, setAnimateBack] = React.useState(false)
+	const handleBack = () => {
+		setStatedSlides([swipedSlides[swipedSlides.length - 1], ...statedSlides])
+		setSwipedSlides(swipedSlides.slice(0, swipedSlides.length - 1))
+		setAnimateBack(true)
+	}
+
+	React.useEffect(() => {
+		console.log({
+			swipedSlides,
+			statedSlides,
+		})
+	}, [swipedSlides, statedSlides])
+
 	return (
-		<section className={"container flex-center mt-[5rem]"}>
-			<div
-				style={{
-					aspectRatio: "1 / 3",
-					perspective: "1000px",
-					perspectiveOrigin: "50%",
-					transformStyle: "preserve-3d",
-				}}
-				className="mb-4 p-4 relative h-[70vh] -translate-x-[50%]"
-				ref={slider}
-			>
-				{slides.map((slide, index) => (
-					<AnimatedCard key={slide} />
+		<section className={"w-[100vw] h-[90vh] flex-center overflow-hidden"} ref={scope}>
+			<div className="flex-center w-full h-full relative" ref={slider}>
+				{statedSlides.map((slide) => (
+					<AnimatedCard
+						key={slide}
+						index={slide}
+						zIndex={slides.length - slide}
+						onSwipe={handleSwipe}
+						onBack={handleBack}
+						animateBack={animateBack}
+						onAnimateBackEnd={() => setAnimateBack(false)}
+					/>
 				))}
 			</div>
 		</section>
