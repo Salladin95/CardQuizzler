@@ -1,8 +1,8 @@
 "use client"
 import React from "react"
 import AnimatedCard from "~/components/AnimatedCard"
-import { mockCards } from "~/components/utils"
 import { Card, SwipeDirection, SwiperCard, SwiperData } from "~/components/AnimatedSlide/types"
+import { mockCards } from "~/mock/mockCard"
 
 export const Swiper = () => {
 	const [swiperData, setSwiperData] = React.useState<SwiperData<Card>>({
@@ -14,8 +14,6 @@ export const Swiper = () => {
 
 	const handleSwipe = (direction: SwipeDirection) => {
 		const swipedSlide = { ...currentSlides[0], swipedTowards: direction }
-		console.log("swipedSlide")
-		console.log(swipedSlide)
 		switch (direction) {
 			case "left":
 				setSwiperData({
@@ -64,6 +62,13 @@ export const Swiper = () => {
 		setCurrentSlides(updateCurrentCards)
 	}
 
+	const [isAnimating, setIsAnimating] = React.useState(false)
+	const handleAnimationStart = () => setIsAnimating(true)
+	const handleAnimationComplete = () => {
+		setIsAnimating(false)
+		cleanSwipedStateOnAnimationEnd()
+	}
+
 	React.useEffect(() => {
 		setCurrentSlides(mockCards())
 	}, [])
@@ -77,11 +82,13 @@ export const Swiper = () => {
 						zIndex={currentSlides.length - index}
 						onSwipe={handleSwipe}
 						card={slide}
-						onBackAnimationEnd={cleanSwipedStateOnAnimationEnd}
+						onAnimationStart={handleAnimationStart}
+						onAnimationComplete={handleAnimationComplete}
+						isTheFirstCard={index === 0}
 					/>
 				))}
 				<button
-					disabled={!swiperData.swipedCards.length}
+					disabled={!swiperData.swipedCards.length || isAnimating}
 					className={"absolute bottom-[22%] text-black"}
 					onClick={handleBack}
 				>

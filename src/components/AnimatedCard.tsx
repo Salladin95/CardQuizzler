@@ -1,9 +1,10 @@
 "use client"
 import React from "react"
+import cls from "classnames"
 import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "framer-motion"
-import { rotateAndMoveSmoothly } from "./animations"
-import { animateOntoScreen, calculateMoveParameters } from "~/components/utils"
-import { Card, SwiperCard, SwipeDirection } from "~/components/AnimatedSlide/types"
+import { animateOntoScreen, rotateAndMoveSmoothly } from "./animations"
+import { calculateMoveParameters } from "~/components/utils"
+import { Card, SwipeDirection, SwiperCard } from "~/components/AnimatedSlide/types"
 
 type StartPoint = {
 	x: number
@@ -15,23 +16,23 @@ const maxRotateAngle = 25
 type AnimatedCardProps<T> = {
 	card: SwiperCard<T>
 	onSwipe: (direction: SwipeDirection) => void
-	onBackAnimationEnd: () => void
+	onAnimationStart: () => void
+	onAnimationComplete: () => void
+	isTheFirstCard: boolean
 	/**
 	 * Creating a queueing effect where the earlier cards are visually in front.
 	 */
-	zIndex?: number
+	zIndex: number
 }
 
 export default function AnimatedCard(props: AnimatedCardProps<Card>) {
-	const { card, zIndex, onSwipe, onBackAnimationEnd } = props
+	const { card, zIndex, onSwipe, onAnimationStart, onAnimationComplete, isTheFirstCard } = props
 	const controls = useAnimation()
 	const rotate = useMotionValue(0)
-
-	// Drag distance range for background gradient interpolation
-	const xInputRange = [-maxRotateAngle, 0, maxRotateAngle]
+	const rotateRange = [-maxRotateAngle, 0, maxRotateAngle]
 
 	// Background gradient transformation based on drag distance
-	const backgroundGradient = useTransform(rotate, xInputRange, [
+	const background = useTransform(rotate, rotateRange, [
 		"linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
 		"linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
 		"linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)",
@@ -79,11 +80,9 @@ export default function AnimatedCard(props: AnimatedCardProps<Card>) {
 			switch (card.swipedTowards) {
 				case "left":
 					await animateOntoScreen(controls, -moveDistance, -targetRotation)
-					onBackAnimationEnd()
 					break
 				case "right":
 					await animateOntoScreen(controls, moveDistance, targetRotation)
-					onBackAnimationEnd()
 					break
 			}
 		})()
@@ -91,18 +90,26 @@ export default function AnimatedCard(props: AnimatedCardProps<Card>) {
 
 	return (
 		<motion.div
-			className={"absolute w-360 h-360 absolute bg-green-300 rounded-12px"}
+			className={cls("absolute w-360 h-360 bg-green-300 rounded-12px", {
+				"pointer-events-none": !isTheFirstCard,
+			})}
 			drag={"x"}
 			dragElastic={0.8}
 			onDragStart={handleDragStart}
 			onDrag={handleDrag}
 			onDragEnd={handleDragEnd}
-			style={{ rotate, background: backgroundGradient, zIndex }}
+			style={{
+				rotate,
+				background,
+				zIndex,
+			}}
 			animate={controls}
 			dragConstraints={{ left: 0, right: 0 }}
 			transition={{ duration: 0.2 }}
+			onAnimationStart={onAnimationStart}
+			onAnimationComplete={onAnimationComplete}
 		>
-			<p className={"text-white"}>{card.title}</p>
+			<p className={cls("text-white", { "opacity-0": !isTheFirstCard })}>{card.title}</p>
 		</motion.div>
 	)
 }
