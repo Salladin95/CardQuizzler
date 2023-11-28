@@ -1,70 +1,92 @@
 "use client"
 import React from "react"
 import AnimatedCard from "~/components/AnimatedCard"
-import { useAnimate } from "framer-motion"
-
-const slides = [1, 2, 3, 4, 5, 6]
+import { mockCards } from "~/components/utils"
+import { Card, SwipeDirection, SwiperCard, SwiperData } from "~/components/AnimatedSlide/types"
 
 export const Swiper = () => {
-	const [counter, setCounter] = React.useState(0)
-	const slider = React.useRef<HTMLDivElement>(null!)
-	const [scope, animate] = useAnimate()
+	const [swiperData, setSwiperData] = React.useState<SwiperData<Card>>({
+		leftSwipesCounter: 0,
+		rightSwipesCounter: 0,
+		swipedCards: [],
+	})
+	const [currentSlides, setCurrentSlides] = React.useState<SwiperCard<Card>[]>([])
 
-	const move = (newCounter: number) => {
-		if (!slider.current.children.length) return
-		// All elements have the same width
-		const firstChild = slider.current.children[0] as HTMLDivElement
-		// All elements have the same width, it means if multiply the counter to the element's width, we get its position
-		slider.current.style.transform = `translate(-${(firstChild.clientWidth + firstChild.offsetLeft) * newCounter}px)`
-		setCounter(newCounter)
+	const handleSwipe = (direction: SwipeDirection) => {
+		const swipedSlide = { ...currentSlides[0], swipedTowards: direction }
+		console.log("swipedSlide")
+		console.log(swipedSlide)
+		switch (direction) {
+			case "left":
+				setSwiperData({
+					...swiperData,
+					leftSwipesCounter: swiperData.leftSwipesCounter + 1,
+					swipedCards: [...swiperData.swipedCards, swipedSlide],
+				})
+				setCurrentSlides(currentSlides.slice(1))
+				break
+			case "right":
+				setSwiperData({
+					...swiperData,
+					rightSwipesCounter: swiperData.leftSwipesCounter + 1,
+					swipedCards: [...swiperData.swipedCards, swipedSlide],
+				})
+				setCurrentSlides(currentSlides.slice(1))
+				break
+		}
 	}
 
-	const handlePositiveAnswer = () => {
-		const nextCounter = counter + 1
-		nextCounter < slides.length && move(nextCounter)
-	}
-
-	const handleNegativeAnswer = () => {
-		const nextCounter = counter + 1
-		nextCounter < slides.length && move(nextCounter)
-	}
-
-	const [statedSlides, setStatedSlides] = React.useState(slides)
-	const [swipedSlides, setSwipedSlides] = React.useState<number[]>([])
-
-	const handleSwipe = () => {
-		setSwipedSlides([...swipedSlides, statedSlides[0]])
-		setStatedSlides(statedSlides.slice(1))
-	}
-
-	const [animateBack, setAnimateBack] = React.useState(false)
 	const handleBack = () => {
-		setStatedSlides([swipedSlides[swipedSlides.length - 1], ...statedSlides])
-		setSwipedSlides(swipedSlides.slice(0, swipedSlides.length - 1))
-		setAnimateBack(true)
+		const previousCard = swiperData.swipedCards[swiperData.swipedCards.length - 1]
+		switch (previousCard.swipedTowards) {
+			case "left":
+				setSwiperData({
+					...swiperData,
+					leftSwipesCounter: swiperData.leftSwipesCounter - 1,
+					swipedCards: swiperData.swipedCards.slice(0, swiperData.swipedCards.length - 1),
+				})
+				setCurrentSlides([previousCard, ...currentSlides])
+				break
+			case "right":
+				setSwiperData({
+					...swiperData,
+					rightSwipesCounter: swiperData.rightSwipesCounter - 1,
+					swipedCards: swiperData.swipedCards.slice(0, swiperData.swipedCards.length - 1),
+				})
+				setCurrentSlides([previousCard, ...currentSlides])
+				break
+		}
+	}
+
+	const cleanSwipedStateOnAnimationEnd = () => {
+		const updatedCard = { ...currentSlides[currentSlides.length - 1], swipedTowards: null }
+		const updateCurrentCards = [...currentSlides.slice(0, currentSlides.length - 1), updatedCard]
+		setCurrentSlides(updateCurrentCards)
 	}
 
 	React.useEffect(() => {
-		console.log({
-			swipedSlides,
-			statedSlides,
-		})
-	}, [swipedSlides, statedSlides])
+		setCurrentSlides(mockCards())
+	}, [])
 
 	return (
-		<section className={"w-[100vw] h-[90vh] flex-center overflow-hidden"} ref={scope}>
-			<div className="flex-center w-full h-full relative" ref={slider}>
-				{statedSlides.map((slide) => (
+		<section className={"w-[100vw] h-[90vh] flex-center overflow-hidden"}>
+			<div className="flex-center w-full h-full relative">
+				{currentSlides.map((slide, index) => (
 					<AnimatedCard
-						key={slide}
-						index={slide}
-						zIndex={slides.length - slide}
+						key={slide.id}
+						zIndex={currentSlides.length - index}
 						onSwipe={handleSwipe}
-						onBack={handleBack}
-						animateBack={animateBack}
-						onAnimateBackEnd={() => setAnimateBack(false)}
+						card={slide}
+						onBackAnimationEnd={cleanSwipedStateOnAnimationEnd}
 					/>
 				))}
+				<button
+					disabled={!swiperData.swipedCards.length}
+					className={"absolute bottom-[22%] text-black"}
+					onClick={handleBack}
+				>
+					back
+				</button>
 			</div>
 		</section>
 	)
