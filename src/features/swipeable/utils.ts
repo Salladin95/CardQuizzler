@@ -1,3 +1,17 @@
+import { SwiperCard } from "~/features/swiper"
+import { SwipeDirection } from "~/features/swipeable"
+
+export function getArrLastIndex(arr: unknown[]) {
+	return arr.length - 1
+}
+
+export function getArrLastItem(arr: unknown[]) {
+	return arr[getArrLastIndex(arr)]
+}
+
+export function updateSwipedTowards<T>(card: SwiperCard<T>, swipedTowards: SwipeDirection) {
+	return { ...card, swipedTowards }
+}
 /**
  * Calculates the move distance and target rotation based on the current window width.
  * @returns {Object} An object containing moveDistance and targetRotation.

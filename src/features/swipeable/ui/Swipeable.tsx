@@ -2,9 +2,9 @@
 import React from "react"
 import cls from "classnames"
 import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "framer-motion"
-import { animateOntoScreen, rotateAndMoveSmoothly } from "./animations"
-import { calculateMoveParameters } from "~/components/utils"
-import { Card, SwipeDirection, SwiperCard } from "~/components/AnimatedSlide/types"
+import { animateOntoScreen, rotateAndMoveSmoothly } from "../animations"
+import { calculateMoveParameters } from "../utils"
+import { SwipeDirection } from "~/features/swipeable"
 
 type StartPoint = {
 	x: number
@@ -13,30 +13,57 @@ type StartPoint = {
 
 const maxRotateAngle = 25
 
-type AnimatedCardProps<T> = {
-	card: SwiperCard<T>
+export type SwipedCard = {
+	// We should add return effect, if it was swiped before
+	swipedTowards?: SwipeDirection
+}
+export type SwipeableProps = SwipedCard & {
+	children: React.ReactNode
 	onSwipe: (direction: SwipeDirection) => void
 	onAnimationStart: () => void
 	onAnimationComplete: () => void
-	isTheFirstCard: boolean
+	// We want to only show the content of the card that is on top of our pack
+	isTheTopCard?: boolean
+	// When we pack cards, by default we see the last card on top, but adjusting z-index we can adjust this effect
+	zIndex?: number
 	/**
-	 * Creating a queueing effect where the earlier cards are visually in front.
+	 * Background for the card. Should be an array of three colors.
+	 * Each element in the array corresponds to a different case:
+	 *
+	 * 1. Background when card is swiped towards the left.
+	 * 2. Background when card is swiped towards the right.
+	 * 3. Default background when the card is in its initial state.
+	 *
+	 * Example: [
+	 *   "linear-gradient(...) - Left swipe",
+	 *   "linear-gradient(...) - Right swipe",
+	 *   "linear-gradient(...) - Default"
+	 * ]
 	 */
-	zIndex: number
+	backgroundColors?: [string, string, string]
 }
 
-export default function AnimatedCard(props: AnimatedCardProps<Card>) {
-	const { card, zIndex, onSwipe, onAnimationStart, onAnimationComplete, isTheFirstCard } = props
+export function Swipeable(props: SwipeableProps) {
+	const {
+		swipedTowards,
+		children,
+		zIndex,
+		onSwipe,
+		onAnimationStart,
+		onAnimationComplete,
+		isTheTopCard,
+		backgroundColors = [
+			"linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
+			"linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
+			"linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)",
+		],
+	} = props
 	const controls = useAnimation()
 	const rotate = useMotionValue(0)
 	const rotateRange = [-maxRotateAngle, 0, maxRotateAngle]
 
 	// Background gradient transformation based on drag distance
-	const background = useTransform(rotate, rotateRange, [
-		"linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
-		"linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
-		"linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)",
-	])
+	const background = useTransform(rotate, rotateRange, backgroundColors)
 
 	/**
 	 * State to store the initial mouse coordinates on drag start.
@@ -56,6 +83,8 @@ export default function AnimatedCard(props: AnimatedCardProps<Card>) {
 
 	const handleDragEnd = async () => {
 		const { moveDistance, targetRotation } = calculateMoveParameters()
+		//The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key).
+		// if we hit left or right edge we swipe the card, otherwise we return it to its original position
 		switch (true) {
 			case rotate.get() >= maxRotateAngle:
 				await rotateAndMoveSmoothly(moveDistance, targetRotation, controls)
@@ -74,10 +103,11 @@ export default function AnimatedCard(props: AnimatedCardProps<Card>) {
 	}
 
 	React.useEffect(() => {
-		if (!card.swipedTowards) return
+		// animates return
+		if (!swipedTowards) return
 		;(async () => {
 			const { moveDistance, targetRotation } = calculateMoveParameters()
-			switch (card.swipedTowards) {
+			switch (swipedTowards) {
 				case "left":
 					await animateOntoScreen(controls, -moveDistance, -targetRotation)
 					break
@@ -86,12 +116,12 @@ export default function AnimatedCard(props: AnimatedCardProps<Card>) {
 					break
 			}
 		})()
-	}, [card.swipedTowards, controls])
+	}, [swipedTowards, controls])
 
 	return (
 		<motion.div
 			className={cls("absolute w-360 h-360 bg-green-300 rounded-12px", {
-				"pointer-events-none": !isTheFirstCard,
+				"pointer-events-none": !isTheTopCard,
 			})}
 			drag={"x"}
 			dragElastic={0.8}
@@ -109,7 +139,7 @@ export default function AnimatedCard(props: AnimatedCardProps<Card>) {
 			onAnimationStart={onAnimationStart}
 			onAnimationComplete={onAnimationComplete}
 		>
-			<p className={cls("text-white", { "opacity-0": !isTheFirstCard })}>{card.title}</p>
+			<div className={cls("text-white", { "opacity-0": !isTheTopCard })}>{children}</div>
 		</motion.div>
 	)
 }

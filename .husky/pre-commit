@@ -3,6 +3,5 @@
 
 pnpm lint
 pnpm stylelint
-pnpm format
 #pnpm test
 pnpm build

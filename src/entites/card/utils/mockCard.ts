@@ -1,7 +1,7 @@
-import { Card } from "~/components/AnimatedSlide/types"
 import { faker, fakerEN } from "@faker-js/faker"
+import { CardType } from "~/entites/card/model"
 
-export function mockCard(): Card {
+export function mockCard(): CardType {
 	return {
 		id: faker.string.uuid(),
 		title: fakerEN.word.noun(),
@@ -9,15 +9,15 @@ export function mockCard(): Card {
 	}
 }
 
-export function asyncMockCard(): Promise<Card> {
+export function asyncMockCard(): Promise<CardType> {
 	return Promise.resolve(mockCard())
 }
 
-export function mockCards(amount = 10): Card[] {
+export function mockCards(amount = 10): CardType[] {
 	return Array.from({ length: amount }, mockCard)
 }
 
-export function asyncMockCards(amount = 10): Promise<Card[]> {
+export function asyncMockCards(amount = 10): Promise<CardType[]> {
 	const promises = Array.from({ length: amount }, asyncMockCard)
 	return Promise.all(promises)
 }
