@@ -2,9 +2,11 @@
 import React from "react"
 import cls from "classnames"
 import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "framer-motion"
-import { animateOntoScreen, rotateAndMoveSmoothly } from "../animations"
+import { animateOntoScreen, moveCardToItsInitialPosition, rotateAndMoveSmoothly } from "../animations"
 import { calculateMoveParameters } from "../utils"
 import { SwipeDirection } from "~/features/swipeable"
+import { useFlippable } from "~/features/flippable/useFlippable"
+import { FlippableContent } from "~/features/flippable/FlippableContent"
 
 type StartPoint = {
 	x: number
@@ -17,15 +19,19 @@ export type SwipedCard = {
 	// We should add return effect, if it was swiped before
 	swipedTowards?: SwipeDirection
 }
+
+export const redGradient = "linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)"
+export const purpleGradient = "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)"
+export const greenGradient = "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"
+const swiperBackgroundColors: [string, string, string] = [redGradient, purpleGradient, greenGradient]
 export type SwipeableProps = SwipedCard & {
-	children: React.ReactNode
+	children?: React.ReactNode
 	onSwipe: (direction: SwipeDirection) => void
-	onAnimationStart: () => void
-	onAnimationComplete: () => void
+	isAnimating?: boolean
+	onAnimationStart?: () => void
+	onAnimationComplete?: () => void
 	// We want to only show the content of the card that is on top of our pack
 	isTheTopCard?: boolean
-	// When we pack cards, by default we see the last card on top, but adjusting z-index we can adjust this effect
-	zIndex?: number
 	/**
 	 * Background for the card. Should be an array of three colors.
 	 * Each element in the array corresponds to a different case:
@@ -41,25 +47,26 @@ export type SwipeableProps = SwipedCard & {
 	 * ]
 	 */
 	backgroundColors?: [string, string, string]
+
+	frontSideContent?: React.ReactNode
+	backSideContent?: React.ReactNode
 }
 
 export function Swipeable(props: SwipeableProps) {
 	const {
 		swipedTowards,
-		children,
-		zIndex,
 		onSwipe,
 		onAnimationStart,
 		onAnimationComplete,
 		isTheTopCard,
-		backgroundColors = [
-			"linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
-			"linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
-			"linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)",
-		],
+		backgroundColors = swiperBackgroundColors,
+		isAnimating,
+		frontSideContent,
+		backSideContent,
 	} = props
 	const controls = useAnimation()
 	const rotate = useMotionValue(0)
+	const x = useMotionValue(0)
 	const rotateRange = [-maxRotateAngle, 0, maxRotateAngle]
 
 	// Background gradient transformation based on drag distance
@@ -72,12 +79,14 @@ export function Swipeable(props: SwipeableProps) {
 	const [startPoint, setStartPoint] = React.useState<StartPoint>(null)
 
 	const handleDragStart = (_e: MouseEvent, info: PanInfo) => {
+		if (isAnimating || startPoint) return
 		setStartPoint({ x: info.point.x, y: info.point.y })
 	}
 
 	const handleDrag = (_e: MouseEvent, info: PanInfo) => {
-		if (!startPoint) return
+		if (!startPoint || isAnimating) return
 		const offsetX = info.point.x - startPoint.x
+		x.set(offsetX)
 		rotate.set(offsetX * 0.1)
 	}
 
@@ -98,7 +107,7 @@ export function Swipeable(props: SwipeableProps) {
 
 			default:
 				setStartPoint(null)
-				controls.start({ rotate: 0 })
+				moveCardToItsInitialPosition(controls)
 		}
 	}
 
@@ -118,28 +127,54 @@ export function Swipeable(props: SwipeableProps) {
 		})()
 	}, [swipedTowards, controls])
 
+	const [isFlipped, setIsFlipped] = React.useState(false)
+
+	function handleOnClick() {
+		// When we try to click the card that is not on its original position we return it back
+		if (rotate.get() || x.get() || isAnimating || startPoint) {
+			moveCardToItsInitialPosition(controls)
+			return
+		} else if (!isAnimating) {
+			setIsFlipped(!isFlipped)
+		}
+	}
+
+	useFlippable(controls, Boolean(isFlipped))
+
+	React.useEffect(() => {
+		console.log(isAnimating)
+	}, [isAnimating])
+
 	return (
-		<motion.div
-			className={cls("absolute w-360 h-360 bg-green-300 rounded-12px", {
-				"pointer-events-none": !isTheTopCard,
-			})}
-			drag={"x"}
-			dragElastic={0.8}
-			onDragStart={handleDragStart}
-			onDrag={handleDrag}
-			onDragEnd={handleDragEnd}
-			style={{
-				rotate,
-				background,
-				zIndex,
-			}}
-			animate={controls}
-			dragConstraints={{ left: 0, right: 0 }}
-			transition={{ duration: 0.2 }}
-			onAnimationStart={onAnimationStart}
-			onAnimationComplete={onAnimationComplete}
-		>
-			<div className={cls("text-white", { "opacity-0": !isTheTopCard })}>{children}</div>
+		<motion.div className={"perspective-1000 w-[100%] h-[100%] absolute"}>
+			<motion.div
+				className={cls("w-[100%] h-[100%] rounded-12px preserve-3d", {
+					"pointer-events-none": !isTheTopCard || isAnimating,
+					"z-100": isTheTopCard,
+				})}
+				drag={true}
+				dragElastic={0.4}
+				onDragStart={handleDragStart}
+				onDrag={handleDrag}
+				onDragEnd={handleDragEnd}
+				onClick={handleOnClick}
+				style={{
+					rotate,
+					x,
+					background,
+				}}
+				animate={controls}
+				dragConstraints={{ left: 0, right: 0 }}
+				transition={{ duration: 0.4, ease: "easeOut" }}
+				onAnimationStart={onAnimationStart}
+				onAnimationComplete={onAnimationComplete}
+			>
+				<FlippableContent
+					className={cls({ "opacity-0": !isTheTopCard })}
+					frontSideContent={frontSideContent}
+					backSideContent={backSideContent}
+				/>
+			</motion.div>
 		</motion.div>
 	)
 }

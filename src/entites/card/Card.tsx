@@ -1,7 +1,10 @@
-import { CardType } from "~/entites/card/model"
+import cls from "classnames"
+import { CardType } from "~/features/quizCard/model"
+import { WithOptionalClassName } from "~/app/types"
 
-export type CardProps = CardType
+export type CardProps = Pick<CardType, "title"> & WithOptionalClassName
 
 export function Card(props: CardProps) {
-	return <p>{JSON.stringify(props)}</p>
+	const { className, title } = props
+	return <div className={cls("card", className)}>{title}</div>
 }

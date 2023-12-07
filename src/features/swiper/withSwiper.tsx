@@ -1,66 +1,74 @@
 "use client"
 import React from "react"
-import { ExtendsId } from "~/app/types"
-import { Swipeable, SwipeableProps, SwipedCard } from "~/features/swipeable/ui/Swipeable"
-import { updateSwipedTowards } from "~/features/swipeable/utils"
+import { WithId, WithOptionalClassName } from "~/app/types"
+import { SwipeableProps, SwipedCard } from "~/features/swipeable/ui/Swipeable"
+import { getArrLastIndex, getArrLastItem, removeArrLastItem, updateSwipedTowards } from "~/features/swipeable/utils"
 import { SwipeDirection } from "~/features/swipeable"
 
-export type SwiperCard<T> = ExtendsId<T> & SwipedCard
+export type SwiperCard<T> = T & SwipedCard & WithId
 type SwiperData<T> = {
 	rightSwipesCounter: number
 	leftSwipesCounter: number
 	swipedCards: SwiperCard<T>[]
 }
 type SwiperProps<T> = {
-	cards: ExtendsId<T>[]
-	backgroundColors?: SwipeableProps["backgroundColors"]
-}
+	cards: (T & WithId)[]
+} & WithOptionalClassName
 
-export function withSwiper<ComponentProps>(Component: React.ComponentType<ExtendsId<ComponentProps>>) {
-	return function Swiper(props: SwiperProps<ComponentProps>) {
+// Component should receive DataType and Omit<SwipeableFlipEffectProps, "flippableProps">>.
+//  We omit "flippableProps" because it should render the data -> and it would be better abstract it
+export function withSwiper<DataType>(
+	Component: React.ComponentType<
+		DataType &
+			Pick<SwipeableProps, "isTheTopCard" | "onAnimationComplete" | "onAnimationStart" | "onSwipe" | "isAnimating">
+	>,
+) {
+	return function Swiper(props: SwiperProps<DataType>) {
 		const { cards } = props
-		const [swiperData, setSwiperData] = React.useState<SwiperData<ComponentProps>>({
+		const [swiperData, setSwiperData] = React.useState<SwiperData<DataType>>({
 			leftSwipesCounter: 0,
 			rightSwipesCounter: 0,
 			swipedCards: [],
 		})
-		const [currentCards, setCurrentCards] = React.useState<SwiperCard<ComponentProps>[]>(cards)
+		const [currentCards, setCurrentCards] = React.useState<SwiperCard<DataType>[]>(cards)
 
 		const handleSwipe = (direction: SwipeDirection) => {
-			const swipedSlide = updateSwipedTowards(currentCards[0], direction)
+			// TODO SHOULD THE FIRST ELEMENT
+			const swipedSlide = updateSwipedTowards(currentCards[getArrLastIndex(currentCards)], direction)
 			const updatedSwiperData = {
 				...swiperData,
 				swipedCards: [...swiperData.swipedCards, swipedSlide],
 			}
-			setCurrentCards(currentCards.slice(1))
+			// TODO SHOULD THE FIRST ELEMENT
+			setCurrentCards(removeArrLastItem(currentCards))
 
 			direction === "left"
 				? setSwiperData({
 						...updatedSwiperData,
-						leftSwipesCounter: swiperData.leftSwipesCounter + 1,
+						leftSwipesCounter: Math.min(cards.length, swiperData.leftSwipesCounter + 1),
 				  })
 				: setSwiperData({
 						...updatedSwiperData,
-						rightSwipesCounter: swiperData.rightSwipesCounter + 1,
+						rightSwipesCounter: Math.min(cards.length, swiperData.rightSwipesCounter + 1),
 				  })
 		}
 
 		const handleBack = () => {
-			const previousCard = swiperData.swipedCards[swiperData.swipedCards.length - 1]
+			const previousCard = getArrLastItem(swiperData.swipedCards)
 			switch (previousCard.swipedTowards) {
 				case "left":
 					setSwiperData({
 						...swiperData,
-						leftSwipesCounter: swiperData.leftSwipesCounter - 1,
-						swipedCards: swiperData.swipedCards.slice(0, swiperData.swipedCards.length - 1),
+						leftSwipesCounter: Math.max(0, swiperData.leftSwipesCounter - 1),
+						swipedCards: removeArrLastItem(swiperData.swipedCards),
 					})
 					setCurrentCards([previousCard, ...currentCards])
 					break
 				case "right":
 					setSwiperData({
 						...swiperData,
-						rightSwipesCounter: swiperData.rightSwipesCounter - 1,
-						swipedCards: swiperData.swipedCards.slice(0, swiperData.swipedCards.length - 1),
+						rightSwipesCounter: Math.max(0, swiperData.rightSwipesCounter - 1),
+						swipedCards: removeArrLastItem(swiperData.swipedCards),
 					})
 					setCurrentCards([previousCard, ...currentCards])
 					break
@@ -68,8 +76,8 @@ export function withSwiper<ComponentProps>(Component: React.ComponentType<Extend
 		}
 
 		const cleanSwipedStateOnAnimationEnd = () => {
-			const updatedCard = { ...currentCards[currentCards.length - 1], swipedTowards: null }
-			const updateCurrentCards = [...currentCards.slice(0, currentCards.length - 1), updatedCard]
+			const updatedCard = { ...getArrLastItem(currentCards), swipedTowards: null }
+			const updateCurrentCards = [...removeArrLastItem(currentCards), updatedCard]
 			setCurrentCards(updateCurrentCards)
 		}
 
@@ -81,30 +89,29 @@ export function withSwiper<ComponentProps>(Component: React.ComponentType<Extend
 		}
 
 		return (
-			<section className={"w-[100vw] h-[90vh] flex-center overflow-hidden"}>
-				<div className="flex-center w-full h-full relative">
+			<section className={"flex-1 overflow-hidden flex-center"}>
+				<div className={"w-640 h-360 relative"}>
 					{currentCards.map((card, index) => (
-						<Swipeable
+						<Component
+							{...card}
 							key={card.id}
-							zIndex={currentCards.length - index}
-							onSwipe={handleSwipe}
-							swipedTowards={card.swipedTowards}
 							onAnimationStart={handleAnimationStart}
 							onAnimationComplete={handleAnimationComplete}
-							isTheTopCard={index === 0}
-							backgroundColors={props.backgroundColors}
-						>
-							<Component {...card} />
-						</Swipeable>
+							className={`absolute`}
+							onSwipe={handleSwipe}
+							// TODO SHOULD BE THE FIRST ELEMENT
+							isTheTopCard={index === getArrLastIndex(currentCards)}
+							isAnimating={isAnimating}
+						/>
 					))}
-					<button
-						disabled={!swiperData.swipedCards.length || isAnimating}
-						className={"absolute bottom-[22%] text-black"}
-						onClick={handleBack}
-					>
-						back
-					</button>
 				</div>
+				<button
+					disabled={!swiperData.swipedCards.length || isAnimating}
+					className={"absolute left-[50%] bottom-[22%] text-black"}
+					onClick={handleBack}
+				>
+					back
+				</button>
 			</section>
 		)
 	}

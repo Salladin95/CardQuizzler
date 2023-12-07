@@ -1,5 +1,5 @@
 import { faker, fakerEN } from "@faker-js/faker"
-import { CardType } from "~/entites/card/model"
+import { CardType } from "~/features/quizCard/model"
 
 export function mockCard(): CardType {
 	return {

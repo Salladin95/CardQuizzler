@@ -10,7 +10,7 @@ export function rotateAndMoveSmoothly(to: number, rotation: number, controls: An
 	return controls.start({
 		rotate: rotation,
 		translateX: to,
-		transition: { duration: 0.2, ease: "easeOut" },
+		transition: { duration: 0.5, ease: "easeOut" },
 	})
 }
 
@@ -30,4 +30,8 @@ export async function animateOntoScreen(
 		x: [moveDistance, 0], // Animate from off-screen to the left to on-screen
 		rotate: [targetRotation, 0], // Animate rotation from the specified angle to 0
 	})
+}
+
+export function moveCardToItsInitialPosition(controls: AnimationControls) {
+	return controls.start({ rotate: 0, x: 0, y: 0 }, { duration: 0.2, ease: "easeOut" })
 }

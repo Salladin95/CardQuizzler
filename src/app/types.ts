@@ -1,1 +1,2 @@
-export type ExtendsId<T> = T & { id: string }
+export type WithId = { id: string }
+export type WithOptionalClassName = { className?: string }

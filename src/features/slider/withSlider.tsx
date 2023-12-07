@@ -1,46 +1,79 @@
 "use client"
 import React from "react"
-import { ExtendsId } from "~/app/types"
+import { WithOptionalClassName, WithId } from "~/app/types"
+import cls from "classnames"
 
-type SliderProps<T> = {
-	slides: ExtendsId<T>[]
+type AnswersCounter = {
+	positiveAnswerCounter: number
+	negativeAnswerCounter: number
+	answersStack: ("positive" | "negative")[]
 }
+type SliderProps<T> = {
+	slides: (WithId & T)[]
+} & WithOptionalClassName
 
-export function withSlider<ComponentProps>(Component: React.ComponentType<ExtendsId<ComponentProps>>) {
+export function withSlider<ComponentProps>(Component: React.ComponentType<ComponentProps>) {
 	return function Slider(props: SliderProps<ComponentProps>) {
-		const { slides } = props
-		const [counter, setCounter] = React.useState(0)
+		const { slides, ...rest } = props
+		const [sliderCounter, setSlideCounter] = React.useState(0)
+		const [answersCounter, setAnswersCounter] = React.useState<AnswersCounter>({
+			positiveAnswerCounter: 0,
+			negativeAnswerCounter: 0,
+			answersStack: [],
+		})
 		const slider = React.useRef<HTMLDivElement>(null!)
 
 		const move = (newCounter: number) => {
 			if (!slider.current.children.length) return
 			// All elements have the same width
 			const firstChild = slider.current.children[0] as HTMLDivElement
-			// All elements have the same width, it means if multiply the counter to the element's width, we get its position
+			// All elements have the same width, it means if multiply the sliderCounter to the element's width, we get its position
 			slider.current.style.transform = `translate(-${(firstChild.clientWidth + firstChild.offsetLeft) * newCounter}px)`
-			setCounter(newCounter)
+			setSlideCounter(newCounter)
 		}
 
 		const handlePositiveAnswer = () => {
-			const nextCounter = counter + 1
-			nextCounter < slides.length && move(nextCounter)
+			const nextCounter = sliderCounter + 1
+			if (nextCounter > slides.length) return
+			move(nextCounter)
+			setAnswersCounter({
+				...answersCounter,
+				positiveAnswerCounter: Math.min(slides.length, answersCounter.positiveAnswerCounter + 1),
+				answersStack: [...answersCounter.answersStack, "positive"],
+			})
 		}
 
 		const handleNegativeAnswer = () => {
-			const nextCounter = counter + 1
-			nextCounter < slides.length && move(nextCounter)
+			const nextCounter = sliderCounter + 1
+			if (nextCounter > slides.length) return
+			move(nextCounter)
+			setAnswersCounter({
+				...answersCounter,
+				positiveAnswerCounter: Math.max(0, answersCounter.positiveAnswerCounter - 1),
+				answersStack: [...answersCounter.answersStack, "negative"],
+			})
 		}
 
 		const handleBack = () => {
-			const prevCounter = counter - 1
-			prevCounter >= 0 && move(prevCounter)
+			const prevCounter = sliderCounter - 1
+			if (prevCounter < 0) return
+			move(prevCounter)
+			setAnswersCounter({
+				...answersCounter,
+				answersStack: answersCounter.answersStack.slice(0, answersCounter.answersStack.length - 1),
+			})
 		}
 
 		return (
-			<section className={"max-w-2lg overflow-hidden"}>
+			<section className={"overflow-hidden container"}>
 				<div className="flex mb-4 p-4 gap-x-4 transition-transform" ref={slider}>
 					{slides.map((slide) => (
-						<Component {...slide} key={slide.id} />
+						<Component
+							{...slide}
+							{...rest}
+							key={slide.id}
+							className={cls("dark-blue-gradient min-w-full h-[50vh] relative", rest.className)}
+						/>
 					))}
 				</div>
 				<div className={"flex gap-x-4 mb-4"}>

@@ -1,12 +1,16 @@
 import { SwiperCard } from "~/features/swiper"
 import { SwipeDirection } from "~/features/swipeable"
 
-export function getArrLastIndex(arr: unknown[]) {
+export function getArrLastIndex<T>(arr: T[]) {
 	return arr.length - 1
 }
 
-export function getArrLastItem(arr: unknown[]) {
+export function getArrLastItem<T>(arr: T[]) {
 	return arr[getArrLastIndex(arr)]
+}
+
+export function removeArrLastItem<T>(arr: T[]) {
+	return arr.slice(0, getArrLastIndex(arr))
 }
 
 export function updateSwipedTowards<T>(card: SwiperCard<T>, swipedTowards: SwipeDirection) {
