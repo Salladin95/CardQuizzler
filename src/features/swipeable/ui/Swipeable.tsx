@@ -7,6 +7,7 @@ import { calculateMoveParameters } from "../utils"
 import { SwipeDirection } from "~/features/swipeable"
 import { useFlippable } from "~/features/flippable/useFlippable"
 import { FlippableContent } from "~/features/flippable/FlippableContent"
+import { WithOptionalClassName } from "~/app/types"
 
 type StartPoint = {
 	x: number
@@ -50,7 +51,7 @@ export type SwipeableProps = SwipedCard & {
 
 	frontSideContent?: React.ReactNode
 	backSideContent?: React.ReactNode
-}
+} & WithOptionalClassName
 
 export function Swipeable(props: SwipeableProps) {
 	const {
@@ -63,6 +64,7 @@ export function Swipeable(props: SwipeableProps) {
 		isAnimating,
 		frontSideContent,
 		backSideContent,
+		className,
 	} = props
 	const controls = useAnimation()
 	const rotate = useMotionValue(0)
@@ -146,7 +148,7 @@ export function Swipeable(props: SwipeableProps) {
 	}, [isAnimating])
 
 	return (
-		<motion.div className={"perspective-1000 w-[100%] h-[100%] absolute"}>
+		<motion.div className={cn("perspective-1000 w-[100%] h-[100%]", className)}>
 			<motion.div
 				className={cn("w-[100%] h-[100%] rounded-12px preserve-3d", {
 					"pointer-events-none": !isTheTopCard || isAnimating,

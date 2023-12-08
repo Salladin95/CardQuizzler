@@ -12,9 +12,11 @@ type SliderProps<T> = {
 	slides: (WithId & T)[]
 } & WithOptionalClassName
 
+const offset = 16
+
 export function withSlider<ComponentProps>(Component: React.ComponentType<ComponentProps>) {
 	return function Slider(props: SliderProps<ComponentProps>) {
-		const { slides, ...rest } = props
+		const { slides, className, ...rest } = props
 		const [sliderCounter, setSlideCounter] = React.useState(0)
 		const [answersCounter, setAnswersCounter] = React.useState<AnswersCounter>({
 			positiveAnswerCounter: 0,
@@ -26,9 +28,9 @@ export function withSlider<ComponentProps>(Component: React.ComponentType<Compon
 		const move = (newCounter: number) => {
 			if (!slider.current.children.length) return
 			// All elements have the same width
-			const firstChild = slider.current.children[0] as HTMLDivElement
+			const element = slider.current.children[0] as HTMLDivElement
 			// All elements have the same width, it means if multiply the sliderCounter to the element's width, we get its position
-			slider.current.style.transform = `translate(-${(firstChild.clientWidth + firstChild.offsetLeft) * newCounter}px)`
+			slider.current.style.transform = `translate(-${(element.clientWidth + offset) * newCounter}px)`
 			setSlideCounter(newCounter)
 		}
 
@@ -72,7 +74,8 @@ export function withSlider<ComponentProps>(Component: React.ComponentType<Compon
 							{...slide}
 							{...rest}
 							key={slide.id}
-							className={cn("dark-blue-gradient min-w-full h-[50vh] relative", rest.className)}
+							// Min width always has to be 100%
+							className={cn("dark-blue-gradient h-[50vh] relative", className, "min-w-full")}
 						/>
 					))}
 				</div>

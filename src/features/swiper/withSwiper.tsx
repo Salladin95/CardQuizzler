@@ -4,6 +4,7 @@ import { WithId, WithOptionalClassName } from "~/app/types"
 import { SwipeableProps, SwipedCard } from "~/features/swipeable/ui/Swipeable"
 import { getArrLastIndex, getArrLastItem, removeArrLastItem, updateSwipedTowards } from "~/features/swipeable/utils"
 import { SwipeDirection } from "~/features/swipeable"
+import { cn } from "~/utils"
 
 export type SwiperCard<T> = T & SwipedCard & WithId
 type SwiperData<T> = {
@@ -22,7 +23,7 @@ export function withSwiper<DataType>(
 	>,
 ) {
 	return function Swiper(props: SwiperProps<DataType>) {
-		const { cards } = props
+		const { cards, className } = props
 		const [swiperData, setSwiperData] = React.useState<SwiperData<DataType>>({
 			leftSwipesCounter: 0,
 			rightSwipesCounter: 0,
@@ -91,15 +92,15 @@ export function withSwiper<DataType>(
 		}
 
 		return (
-			<section className={"flex-1 overflow-hidden flex-center"}>
-				<div className={"w-360 h-640 640:w-428 768:w-640 1280:w-1024 1280:w-768  relative"}>
-					{currentCards.map((card, index) => (
+			<section className={"w-[100%] h-[100%] overflow-hidden flex-center relative"}>
+				<div className={cn("w-360 h-640 relative", className)}>
+					{currentCards?.map((card, index) => (
 						<Component
 							{...card}
+							className={"absolute rounded-12px"}
 							key={card.id}
 							onAnimationStart={handleAnimationStart}
 							onAnimationComplete={handleAnimationComplete}
-							className={`absolute`}
 							onSwipe={handleSwipe}
 							// TODO SHOULD BE THE FIRST ELEMENT
 							isTheTopCard={index === getArrLastIndex(currentCards)}
@@ -109,7 +110,7 @@ export function withSwiper<DataType>(
 				</div>
 				<button
 					disabled={!swiperData.swipedCards.length || isAnimating}
-					className={"absolute left-[50%] bottom-[22%] text-black"}
+					className={"absolute left-[50%] bottom-[10%] text-black"}
 					onClick={handleBack}
 				>
 					back
