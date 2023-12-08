@@ -1,0 +1,121 @@
+@layer components {
+    .checkbox {
+        @apply border border-transparent flex items-center text-body-1 cursor-pointer transition-colors outline-none select-none;
+
+        &-input {
+            @apply flex-center border border-transparent appearance-none outline-none transition-colors cursor-pointer;
+        }
+
+        &-icon {
+            @apply opacity-0 transition-colors;
+        }
+
+        &[data-error="true"] {
+            .checkbox-input {
+                @apply ring-error ring-offset-error;
+            }
+        }
+
+        &-primary {
+            .checkbox-input {
+                @apply text-white gray-border focus:ring-primary focus:ring-offset-primary;
+
+                &-checked {
+                    @apply bg-primary;
+
+                    .checkbox-icon {
+                        @apply opacity-100;
+                    }
+                }
+            }
+        }
+
+        &-outlined {
+            @apply text-white gray-border focus-within:ring-primary focus-within:ring-offset-primary;
+
+            .checkbox-label {
+                @apply text-main;
+            }
+
+            .checkbox-input {
+                @apply gray-border focus:ring-primary focus:ring-offset-primary;
+
+                &-checked {
+                    @apply bg-primary;
+
+                    .checkbox-icon {
+                        @apply opacity-100;
+                    }
+                }
+            }
+        }
+
+        &-option {
+            @apply flex-center text-main bg-white gray-border;
+
+            &:has(input:checked) {
+                @apply bg-primary text-white;
+            }
+        }
+
+        &-circle {
+            .checkbox-input {
+                @apply text-white gray-border focus:ring-primary focus:ring-offset-primary;
+
+                &-checked {
+                    @apply bg-primary;
+
+                    .checkbox-icon {
+                        @apply opacity-100;
+                    }
+                }
+            }
+        }
+
+        &-size {
+            &-default {
+                @apply rounded;
+
+                &.checkbox-outlined {
+                    @apply py-2 px-4;
+                }
+
+                .checkbox-input {
+                    @apply h-6 min-w-6 rounded;
+                }
+
+                .checkbox-label {
+                    @apply ml-3 lowercase;
+                }
+            }
+
+            &-circle {
+                @apply rounded-full;
+
+                &.checkbox-outlined {
+                    @apply py-2 px-4;
+                }
+
+                .checkbox-input {
+                    @apply h-6 min-w-6 rounded-full;
+                }
+
+                .checkbox-label {
+                    @apply ml-3;
+                }
+
+                .checkbox-icon {
+                    @apply w-3 h-3;
+                }
+            }
+
+            &-option {
+                @apply w-fit min-w-11 h-11 px-2 rounded-md shrink-0 grow 1280:grow-0;
+
+                .checkbox-input {
+                    @apply w-0 h-0 opacity-0;
+                }
+            }
+        }
+    }
+}

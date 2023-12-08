@@ -1,0 +1,22 @@
+@layer components {
+    .textarea {
+        @apply text-body-1 shadow-md outline-none
+        border border-transparent transition-colors
+        disabled:cursor-not-allowed disabled:opacity-50;
+
+        &-primary {
+            @apply text-main bg-gray-100 gray-border placeholder-gray-300
+            focus-within:ring-primary focus-within:ring-offset-primary;
+
+            &[data-error="true"] {
+                @apply ring-error ring-offset-error;
+            }
+        }
+
+        &-size {
+            &-default {
+                @apply min-h-[8.25rem] rounded-lg p-3 resize-none;
+            }
+        }
+    }
+}

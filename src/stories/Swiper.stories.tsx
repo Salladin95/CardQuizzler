@@ -4,7 +4,7 @@ import { mockCards } from "~/entites/card"
 import React from "react"
 
 const meta: Meta<typeof Swiper> = {
-	title: "example/Swiper",
+	title: "Features/Swiper",
 	component: Swiper,
 	parameters: {
 		layout: "fullscreen",

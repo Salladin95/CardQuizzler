@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { Swipeable } from "~/features/swipeable"
 
 const meta: Meta<typeof Swipeable> = {
-	title: "example/Swipeable",
+	title: "Features/Swipeable",
 	component: Swipeable,
 	parameters: {
 		layout: "centered",

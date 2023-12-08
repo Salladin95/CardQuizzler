@@ -1,4 +1,24 @@
 const REM = 16
+
+// Sort colors by numbers: https://elektrobild.org/tools/sort-colors
+const colors = {
+	primary: "#7749F8",
+	gold: "#FFC107",
+	green: "#28A745",
+	info: "#3D8BFD",
+	danger: "#EC3A48",
+	main: "#333333",
+	white: "#FFF",
+	gray: {
+		100: "#F5F5F5",
+		200: "#EFEFEF",
+		300: "#D6D6D6",
+		400: "#CCCCCC",
+		500: "#7F7E7E",
+		600: "#4b5563",
+	},
+}
+
 function convertObjectPixelsToRems(object) {
 	return Object.keys(object).reduce((acc, key) => {
 		const value = object[key]
@@ -59,7 +79,51 @@ const config = {
 			"20px": "20px",
 		}),
 		extend: {
-			colors: {},
+			colors,
+			fontFamily: {
+				noto: ["var(--font-noto)"],
+				inter: ["var(--font-inter)"],
+			},
+			/**
+			 * Underline
+			 * */
+			textDecorationColor: {
+				primary: colors.primary,
+			},
+			textDecorationThickness: {
+				// 1px
+				primary: "0.0625rem",
+			},
+			textUnderlineOffset: {
+				// 2px
+				primary: "0.125rem",
+			},
+			/**
+			 * Ring
+			 * */
+			ringWidth: {
+				// 1px
+				primary: "0.0625rem",
+				error: "0.0625rem",
+			},
+			ringOpacity: {},
+			ringOffsetWidth: {
+				// 1px
+				primary: "0.0625rem",
+				error: "0.0625rem",
+			},
+			ringColor: {
+				primary: colors.primary,
+				error: colors.danger,
+			},
+			ringOffsetColor: {
+				primary: colors.gray["300"],
+				error: colors.gray["300"],
+			},
+			boxShadow: {
+				toggle: "0 0 0.125rem 0 rgba(0, 0, 0, 0.20)",
+				popover: "0px 8px 20px 0px rgba(0, 0, 0, 0.14)",
+			},
 			spacing: ({ theme }) => {
 				return convertObjectPixelsToRems({
 					...theme("screens"),

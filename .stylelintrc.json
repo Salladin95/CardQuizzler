@@ -5,6 +5,7 @@
     "no-descending-specificity": null,
     "scss/at-rule-no-unknown": null,
     "at-rule-empty-line-before": null,
-    "color-function-notation": null
+    "color-function-notation": null,
+    "no-duplicate-selectors": null
   }
 }

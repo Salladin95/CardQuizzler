@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+        @apply flex flex-col min-h-[100svh] text-16px;
+    }
+
+    body {
+        @apply flex-1 flex flex-col scroll-smooth text-black;
+    }
+
+    main {
+        @apply flex-1 flex flex-col;
+
+        & > div {
+            @apply flex-1;
+        }
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"] {
+        appearance: none;
+    }
+}
+
+@layer components {
+    .page {
+        @apply pt-40
+    }
+
+    .container {
+        @apply mx-auto;
+    }
+
+    .tablet-container {
+        @apply container md:max-w-sm;
+    }
+
+    .card {
+        @apply text-black w-[100%] h-[100%] bg-transparent rounded-12px flex-center transition-all border-purple-600 hover:border-2px;
+    }
+
+    .h1 {
+        @apply text-h1 font-noto;
+    }
+
+    .h2 {
+        @apply text-h2 font-noto;
+    }
+
+    .h3 {
+        @apply text-h3 font-noto;
+    }
+
+    .h4 {
+        @apply text-h4 font-noto;
+    }
+
+    .h5 {
+        @apply text-h5 font-noto;
+    }
+
+    .h6 {
+        @apply text-h6 font-noto;
+    }
+
+    .text-body-1,
+    .text-body-2,
+    .text-body-3,
+    .text-body-4 {
+        @apply font-inter;
+    }
+
+    p {
+        @apply text-body-1;
+    }
+
+    .text-superscript-1 {
+        @apply font-noto;
+    }
+
+    .text-superscript-2 {
+        @apply font-inter;
+    }
+}
+
+@layer utilities {
+    .gray-border {
+        @apply border border-gray-200 focus-within:border-gray-300 hover:border-gray-300;
+    }
+
+    .click-scale {
+        @apply active:transition-[transform] active:scale-click;
+    }
+
+    .hover-scale {
+        @apply hover:transition-[transform] hover:scale-click;
+    }
+
+    .hide-scrollbar {
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .gray-border {
+        @apply border border-gray-200 focus-within:border-gray-300 hover:border-gray-300;
+    }
+
+    .click-scale {
+        @apply active:transition-[transform] active:scale-click;
+    }
+
+    .hover-scale {
+        @apply hover:transition-[transform] hover:scale-click;
+    }
+
+    .hide-scrollbar {
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .full-size {
+        @apply w-full h-full;
+    }
+
+    .absolute-size {
+        @apply absolute w-full h-full inset-0;
+    }
+
+    .fixed-size {
+        @apply fixed w-full h-full inset-0;
+    }
+
+    .fixed-center {
+        @apply fixed top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2;
+    }
+
+    .absolute-center {
+        @apply absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2;
+    }
+
+    .absolute-x-center {
+        @apply absolute left-1/2 transform -translate-x-1/2;
+    }
+
+    .absolute-y-center {
+        @apply absolute top-1/2 transform -translate-y-1/2;
+    }
+
+    .flex-center {
+        @apply flex items-center justify-center;
+    }
+
+    .flex-col-center {
+        @apply flex-center flex-col;
+    }
+
+    .flex-cb {
+        @apply flex items-center justify-between;
+    }
+
+    .gray-border {
+        @apply border border-gray-200 focus-within:border-gray-300 hover:border-gray-300;
+    }
+
+    .click-scale {
+        @apply active:transition-[transform] active:scale-click;
+    }
+
+    .hover-scale {
+        @apply hover:transition-[transform] hover:scale-click;
+    }
+
+    .hide-scrollbar {
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,52 @@
+@layer components {
+    .input {
+        @apply text-body-1 flex flex-row items-center transition-colors cursor-text;
+
+        & input {
+            @apply w-full bg-inherit outline-none;
+
+            text-align: inherit;
+        }
+
+        .input-slot {
+        }
+
+        &-primary {
+            @apply border border-transparent text-body-1 outline-none
+            text-main bg-gray-100
+            gray-border focus-within:ring-primary focus-within:ring-offset-primary
+            placeholder-gray-400
+            disabled:cursor-not-allowed disabled:opacity-50;
+
+            &[data-error="true"] {
+                @apply ring-error ring-offset-error;
+            }
+
+            .input-slot {
+                @apply text-gray-400;
+            }
+        }
+
+        &-secondary {
+            @apply border border-transparent text-body-1 outline-none
+            text-main bg-white
+            focus-within:ring-primary focus-within:ring-offset-primary
+            hover:gray-border placeholder-gray-400
+            disabled:cursor-not-allowed disabled:opacity-50;
+
+            &[data-error="true"] {
+                @apply ring-error ring-offset-error;
+            }
+
+            .input-slot {
+                @apply text-gray-400;
+            }
+        }
+
+        &-size {
+            &-default {
+                @apply h-11 p-3 w-full rounded-lg gap-x-2;
+            }
+        }
+    }
+}

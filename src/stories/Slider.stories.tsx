@@ -4,7 +4,7 @@ import React from "react"
 import { Slider } from "~/features/slider"
 
 const meta: Meta<typeof Slider> = {
-	title: "example/Slider",
+	title: "Features/Slider",
 	component: Slider,
 	parameters: {
 		layout: "fullscreen",

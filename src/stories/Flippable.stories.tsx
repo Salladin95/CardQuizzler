@@ -3,7 +3,7 @@ import { Flippable, FlippableProps } from "~/features/flippable/Flippable"
 import React from "react"
 
 const meta: Meta<typeof Flippable> = {
-	title: "example/Flippable",
+	title: "Features/Flippable",
 	component: Flippable,
 	parameters: {
 		layout: "centered",
