@@ -54,7 +54,7 @@
     }
 
     .card {
-        @apply text-black w-[100%] h-[100%] bg-transparent border-gray-400 border-1px rounded-12px flex-center;
+        @apply text-black w-[100%] h-[100%] bg-transparent rounded-12px flex-center transition-all border-purple-600 hover:border-2px;
     }
 
     .perspective-1000 {

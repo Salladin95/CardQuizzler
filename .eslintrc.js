@@ -1,5 +1,11 @@
 module.exports = {
-	extends: ["eslint:recommended", "next", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+	extends: [
+        "eslint:recommended",
+        "next",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+        "plugin:storybook/recommended"
+    ],
 	parser: "@typescript-eslint/parser",
 	rules: {
 		// Common

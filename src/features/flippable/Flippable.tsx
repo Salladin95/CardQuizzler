@@ -1,9 +1,9 @@
 import React from "react"
 import { AnimationControls, motion, useAnimation } from "framer-motion"
 import { WithOptionalClassName } from "~/app/types"
-import cls from "classnames"
 import { FlippableContent } from "~/features/flippable/FlippableContent"
 import { useFlippable } from "~/features/flippable/useFlippable"
+import { cn } from "~/utils"
 
 export type FlippableProps = {
 	frontSideContent: React.ReactNode
@@ -42,10 +42,9 @@ export function Flippable(props: FlippableProps) {
 	useFlippable(controls, isFlipped)
 
 	return (
-		<div className={cls(className, "perspective-1000")} onClick={handleClick}>
+		<div className={"perspective-1000"} onClick={handleClick}>
 			<motion.div
-				className="preserve-3d w-[100%] h-[100%]"
-				initial={false}
+				className={cn("preserve-3d w-640 h-360 bg-blue-400", className)}
 				animate={controls}
 				onAnimationComplete={onAnimationComplete}
 				onAnimationStart={onAnimationStart}

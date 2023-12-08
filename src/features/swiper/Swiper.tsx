@@ -1,5 +1,5 @@
 "use client"
-import { withSwiper } from "~/features/swiper"
+import { withSwiper } from "~/features/swiper/index"
 import { QuizCard } from "~/features/quizCard/QuzCard"
 import { CardType } from "~/features/quizCard/model"
 

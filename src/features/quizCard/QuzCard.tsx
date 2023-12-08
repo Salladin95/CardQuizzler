@@ -1,6 +1,6 @@
+import React from "react"
 import { CardType } from "~/features/quizCard/model"
 import { Card } from "~/entites/card"
-import React from "react"
 import { Swipeable, SwipeableProps } from "~/features/swipeable"
 
 export type QuizCardProps = CardType & Omit<SwipeableProps, "frontSideContent" | "backSideContent">

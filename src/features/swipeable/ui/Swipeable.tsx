@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import cls from "classnames"
+import { cn } from "~/utils"
 import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "framer-motion"
 import { animateOntoScreen, moveCardToItsInitialPosition, rotateAndMoveSmoothly } from "../animations"
 import { calculateMoveParameters } from "../utils"
@@ -142,13 +142,13 @@ export function Swipeable(props: SwipeableProps) {
 	useFlippable(controls, Boolean(isFlipped))
 
 	React.useEffect(() => {
-		console.log(isAnimating)
+		// console.log(isAnimating)
 	}, [isAnimating])
 
 	return (
 		<motion.div className={"perspective-1000 w-[100%] h-[100%] absolute"}>
 			<motion.div
-				className={cls("w-[100%] h-[100%] rounded-12px preserve-3d", {
+				className={cn("w-[100%] h-[100%] rounded-12px preserve-3d", {
 					"pointer-events-none": !isTheTopCard || isAnimating,
 					"z-100": isTheTopCard,
 				})}
@@ -161,7 +161,8 @@ export function Swipeable(props: SwipeableProps) {
 				style={{
 					rotate,
 					x,
-					background,
+					// when we are animating the return animation, we want to apply the default color
+					background: !swipedTowards ? background : backgroundColors[1],
 				}}
 				animate={controls}
 				dragConstraints={{ left: 0, right: 0 }}
@@ -170,7 +171,7 @@ export function Swipeable(props: SwipeableProps) {
 				onAnimationComplete={onAnimationComplete}
 			>
 				<FlippableContent
-					className={cls({ "opacity-0": !isTheTopCard })}
+					className={cn({ "opacity-0": !isTheTopCard })}
 					frontSideContent={frontSideContent}
 					backSideContent={backSideContent}
 				/>

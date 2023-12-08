@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { WithOptionalClassName, WithId } from "~/app/types"
-import cls from "classnames"
+import { cn } from "~/utils"
 
 type AnswersCounter = {
 	positiveAnswerCounter: number
@@ -72,7 +72,7 @@ export function withSlider<ComponentProps>(Component: React.ComponentType<Compon
 							{...slide}
 							{...rest}
 							key={slide.id}
-							className={cls("dark-blue-gradient min-w-full h-[50vh] relative", rest.className)}
+							className={cn("dark-blue-gradient min-w-full h-[50vh] relative", rest.className)}
 						/>
 					))}
 				</div>

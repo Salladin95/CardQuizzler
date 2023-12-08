@@ -1,5 +1,5 @@
 import React from "react"
-import cls from "classnames"
+import { cn } from "~/utils"
 import { WithOptionalClassName } from "~/app/types"
 import { FlippableProps } from "~/features/flippable/Flippable"
 
@@ -9,9 +9,9 @@ export function FlippableContent(props: FlippableContentProps) {
 	const { frontSideContent, backSideContent, className } = props
 	return (
 		<>
-			<div className={cls("w-[100%] h-[100%] absolute backface-hidden", className)}>{frontSideContent}</div>
+			<div className={cn("w-[100%] h-[100%] absolute backface-hidden", className)}>{frontSideContent}</div>
 			<div
-				className={cls("w-[100%] h-[100%] absolute backface-hidden", className)}
+				className={cn("w-[100%] h-[100%] absolute backface-hidden", className)}
 				style={{
 					transform: `rotateY(180deg)`,
 				}}

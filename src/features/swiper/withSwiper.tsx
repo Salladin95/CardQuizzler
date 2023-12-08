@@ -15,8 +15,6 @@ type SwiperProps<T> = {
 	cards: (T & WithId)[]
 } & WithOptionalClassName
 
-// Component should receive DataType and Omit<SwipeableFlipEffectProps, "flippableProps">>.
-//  We omit "flippableProps" because it should render the data -> and it would be better abstract it
 export function withSwiper<DataType>(
 	Component: React.ComponentType<
 		DataType &
@@ -62,7 +60,9 @@ export function withSwiper<DataType>(
 						leftSwipesCounter: Math.max(0, swiperData.leftSwipesCounter - 1),
 						swipedCards: removeArrLastItem(swiperData.swipedCards),
 					})
-					setCurrentCards([previousCard, ...currentCards])
+					// TODO SHOULD BE LIKE THAT
+					// setCurrentCards([previousCard, ...currentCards])
+					setCurrentCards([...currentCards, previousCard])
 					break
 				case "right":
 					setSwiperData({
@@ -70,7 +70,9 @@ export function withSwiper<DataType>(
 						rightSwipesCounter: Math.max(0, swiperData.rightSwipesCounter - 1),
 						swipedCards: removeArrLastItem(swiperData.swipedCards),
 					})
-					setCurrentCards([previousCard, ...currentCards])
+					// TODO SHOULD BE LIKE THAT
+					// setCurrentCards([previousCard, ...currentCards])
+					setCurrentCards([...currentCards, previousCard])
 					break
 			}
 		}
@@ -90,7 +92,7 @@ export function withSwiper<DataType>(
 
 		return (
 			<section className={"flex-1 overflow-hidden flex-center"}>
-				<div className={"w-640 h-360 relative"}>
+				<div className={"w-360 h-640 640:w-428 768:w-640 1280:w-1024 1280:w-768  relative"}>
 					{currentCards.map((card, index) => (
 						<Component
 							{...card}
