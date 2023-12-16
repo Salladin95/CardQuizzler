@@ -1,9 +1,10 @@
 import React from "react"
-import { ColorPicker, useAwayClick } from "~/shared"
-import { motion, Variants } from "framer-motion"
-import { ColorPaletteSvg } from "~/features/richText/ui/icons"
-import { cn } from "~/utils"
 import { EditorState } from "draft-js"
+import { motion } from "framer-motion"
+import { ColorPicker, useAwayClick } from "~/shared"
+import { cn } from "~/utils"
+import { ColorPaletteSvg } from "~/features/richText/ui/icons"
+import { fadeAnimationVariants } from "./lib/animations"
 
 type CustomOptionProps = { onChange: (key: string, value: string | EditorState) => void }
 
@@ -15,19 +16,6 @@ export function EditorColorPickerOption(props: CustomOptionProps) {
 
 	function handleClick() {
 		setShowPalette(!showPalette)
-	}
-
-	const fadeAnimationVariants: Variants = {
-		open: {
-			opacity: 1,
-			y: [-10, 10],
-			transition: { type: "spring", bounce: 0.4, duration: 0.4 },
-		},
-		closed: {
-			opacity: 0,
-			y: 10,
-			transition: { ease: "easeOut", duration: 0.2 },
-		},
 	}
 
 	return (

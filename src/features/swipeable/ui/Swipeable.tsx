@@ -143,10 +143,6 @@ export function Swipeable(props: SwipeableProps) {
 
 	useFlippable(controls, Boolean(isFlipped))
 
-	React.useEffect(() => {
-		// console.log(isAnimating)
-	}, [isAnimating])
-
 	return (
 		<motion.div className={cn("perspective-1000 w-[100%] h-[100%]", className)}>
 			<motion.div
