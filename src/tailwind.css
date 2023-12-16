@@ -89,27 +89,38 @@
     .text-superscript-2 {
         @apply font-inter;
     }
+
+    .editor-inline-option {
+        @apply gray-border transition-colors hover:!shadow-none !shadow-none relative overflow-hidden;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: scale(0);
+            transition: transform .2s ease-in;
+            mix-blend-mode: difference;
+            background: radial-gradient(
+                    circle at center,
+                    #fff 24%,
+                    #000 25%,
+                    #000 100%);
+        }
+
+        &[aria-selected="true"] {
+            @apply !shadow-none;
+
+            &::after {
+                transform: scale(4);
+            }
+        }
+    }
 }
 
 @layer utilities {
-    .gray-border {
-        @apply border border-gray-200 focus-within:border-gray-300 hover:border-gray-300;
-    }
-
-    .click-scale {
-        @apply active:transition-[transform] active:scale-click;
-    }
-
-    .hover-scale {
-        @apply hover:transition-[transform] hover:scale-click;
-    }
-
-    .hide-scrollbar {
-        scrollbar-width: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
+    .disabled {
+        @apply opacity-80 pointer-events-none;
     }
 
     .gray-border {
@@ -170,25 +181,5 @@
 
     .flex-cb {
         @apply flex items-center justify-between;
-    }
-
-    .gray-border {
-        @apply border border-gray-200 focus-within:border-gray-300 hover:border-gray-300;
-    }
-
-    .click-scale {
-        @apply active:transition-[transform] active:scale-click;
-    }
-
-    .hover-scale {
-        @apply hover:transition-[transform] hover:scale-click;
-    }
-
-    .hide-scrollbar {
-        scrollbar-width: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
     }
 }

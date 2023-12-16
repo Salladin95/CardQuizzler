@@ -3,7 +3,7 @@
 import React from "react"
 import { cva, VariantProps } from "class-variance-authority"
 import { focusFirstDiv } from "~/utils"
-import { CheckIcon } from "./icons"
+import { CheckIcon } from "../icons"
 
 export const checkboxVariants = cva("checkbox", {
 	variants: {

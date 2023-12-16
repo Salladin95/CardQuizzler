@@ -2,7 +2,7 @@
 
 import React from "react"
 import { cva, VariantProps } from "class-variance-authority"
-import { focusFirstDiv } from "../utils"
+import { focusFirstDiv } from "../../utils"
 import { RegisterOptions } from "react-hook-form"
 
 export const radioVariants = cva("radio", {

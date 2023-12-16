@@ -7,6 +7,14 @@ export const focusFirstInput = (e: React.MouseEvent) => {
 }
 
 /**
+ *  Focuses first textarea of event
+ * */
+export const focusFirstTextArea = (e: React.MouseEvent) => {
+	const textarea = e.currentTarget.querySelector("textarea")
+	textarea && textarea.focus()
+}
+
+/**
  *  Focuses first div of event
  * */
 export const focusFirstDiv = (e: React.MouseEvent) => {

@@ -1,6 +1,6 @@
 import React from "react"
-import { getQueryClient } from "src/api/queryClient"
-import { QueryKeyOption, queryKeys } from "src/api/constants"
+import { getQueryClient } from "~/api/queryClient"
+import { QueryKeyOption, queryKeys } from "~/api/constants"
 import { dehydrate, Hydrate } from "@tanstack/react-query"
 
 type WithHydrationProps<DataT> = {
