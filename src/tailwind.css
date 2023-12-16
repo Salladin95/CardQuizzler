@@ -47,6 +47,18 @@
         @apply text-black w-[100%] h-[100%] bg-transparent rounded-12px flex-center transition-all border-purple-600 hover:border-2px;
     }
 
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+
+    .preserve-3d {
+        transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+    }
+
     .h1 {
         @apply text-h1 font-noto;
     }
@@ -181,5 +193,18 @@
 
     .flex-cb {
         @apply flex items-center justify-between;
+    }
+
+
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+
+    .preserve-3d {
+        transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
     }
 }
