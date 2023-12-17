@@ -44,7 +44,7 @@ export function Flippable(props: FlippableProps) {
 	return (
 		<div className={"perspective-1000"} onClick={handleClick}>
 			<motion.div
-				className={cn("preserve-3d w-640 h-360 bg-blue-400", className)}
+				className={cn("transform-style-3d w-640 h-360 bg-blue-400", className)}
 				animate={controls}
 				onAnimationComplete={onAnimationComplete}
 				onAnimationStart={onAnimationStart}

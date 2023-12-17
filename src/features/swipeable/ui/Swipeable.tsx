@@ -146,7 +146,7 @@ export function Swipeable(props: SwipeableProps) {
 	return (
 		<motion.div className={cn("perspective-1000 w-[100%] h-[100%]", className)}>
 			<motion.div
-				className={cn("w-[100%] h-[100%] rounded-12px preserve-3d", {
+				className={cn("w-[100%] h-[100%] rounded-12px transform-style-3d", {
 					"pointer-events-none": !isTheTopCard || isAnimating,
 					"z-100": isTheTopCard,
 				})}
