@@ -1,0 +1,16 @@
+.popover {
+    @apply border border-transparent outline-none transition-colors shadow-md;
+
+    &-primary {
+        @apply text-main font-normal leading-5 p-4
+        gray-border bg-white rounded-lg;
+    }
+
+    &-size {
+        &-default {}
+    }
+}
+
+.popover-trigger-width {
+    width: var(--radix-popover-trigger-width);
+}
