@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "framer-motion"
 import { animateOntoScreen, moveCardToItsInitialPosition, rotateAndMoveSmoothly } from "../animations"
 import { calculateMoveParameters } from "../utils"

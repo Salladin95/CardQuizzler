@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { PropsWithClassName, WithId } from "~/app/types"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 
 type AnswersCounter = {
 	positiveAnswerCounter: number

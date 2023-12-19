@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 import { PropsWithClassName } from "~/app/types"
 import { FlippableProps } from "~/features/flippable/Flippable"
 

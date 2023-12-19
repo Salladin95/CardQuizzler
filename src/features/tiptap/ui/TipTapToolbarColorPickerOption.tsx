@@ -2,7 +2,7 @@ import React from "react"
 import { motion } from "framer-motion"
 import { ColorPicker } from "~/shared"
 import { ColorPaletteSvg } from "~/features/tiptap/ui/icons"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 import { fadeAnimationVariants } from "../lib/animations"
 
 type TipTapToolbarColorPickerOptionProps = { onChange: (newColor: string) => void; onClick?: () => void }

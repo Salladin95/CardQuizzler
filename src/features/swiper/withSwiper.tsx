@@ -4,7 +4,7 @@ import { WithId, PropsWithClassName } from "~/app/types"
 import { SwipeableProps, SwipedCard } from "~/features/swipeable/ui/Swipeable"
 import { getArrLastIndex, getArrLastItem, removeArrLastItem, updateSwipedTowards } from "~/features/swipeable/utils"
 import { SwipeDirection } from "~/features/swipeable"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 
 export type SwiperCard<T> = T & SwipedCard & WithId
 type SwiperData<T> = {

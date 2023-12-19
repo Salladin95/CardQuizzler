@@ -4,7 +4,7 @@ import { ItalicSvg, StrikethroughSvg, UnderlineSvg } from "src/features/tiptap/u
 import { Editor } from "@tiptap/react"
 import { BoldSvg } from "~/features/tiptap/ui/icons"
 import { PropsWithClassName } from "~/app/types"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 import { TipTapToolbarOption } from "./TipTapToolbarOption"
 import { getTipTapEditorSvgClassName } from "../lib/lib"
 import { TipTapToolbarColorPickerOption } from "~/features/tiptap/ui/TipTapToolbarColorPickerOption"

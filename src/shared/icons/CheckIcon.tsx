@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 
 export const CheckIcon = (props: React.SVGAttributes<SVGElement>) => {
 	const { className, ...rest } = props

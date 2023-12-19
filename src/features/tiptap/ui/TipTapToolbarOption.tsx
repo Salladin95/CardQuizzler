@@ -1,7 +1,7 @@
 import { Editor } from "@tiptap/react"
 import React, { PropsWithChildren } from "react"
 import { Button } from "~/shared"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 
 type TipTapEditorOptionProps = {
 	editor: Editor | null

@@ -1,5 +1,5 @@
 import { DefaultSvgProps } from "~/app/types"
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 
 export function UnderlineSvg(props: DefaultSvgProps) {
 	const { className, ...rest } = props

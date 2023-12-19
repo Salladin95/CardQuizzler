@@ -1,4 +1,4 @@
-import { cn } from "~/utils"
+import { cn } from "src/lib"
 import { CardType } from "~/features/quizCard/model"
 import { PropsWithClassName } from "~/app/types"
 
