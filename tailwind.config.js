@@ -63,21 +63,223 @@ const config = {
 			1680: "1680px",
 			1860: "1860px",
 		},
-		fontSize: convertObjectPixelsToRems({
-			"8px": "8px",
-			"9px": "9px",
-			"10px": "10px",
-			"11px": "11px",
-			"12px": "12px",
-			"13px": "13px",
-			"14px": "14px",
-			"15px": "15px",
-			"16px": "16px",
-			"17px": "17px",
-			"18px": "18px",
-			"19px": "19px",
-			"20px": "20px",
-		}),
+		fontSize: {
+			/* Mobile */
+			// 34/48/600
+			h1: [
+				"2.125rem",
+				{
+					lineHeight: "3rem",
+					fontWeight: "600",
+				},
+			],
+			// 24/32/500
+			h2: [
+				"1.5rem",
+				{
+					lineHeight: "2rem",
+					fontWeight: "500",
+				},
+			],
+			// 18/20/600
+			h3: [
+				"1.125rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "600",
+				},
+			],
+			// 16/20/600
+			h4: [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "600",
+				},
+			],
+			// 16/20/500
+			h5: [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "500",
+				},
+			],
+			// 16/20/400
+			h6: [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "400",
+				},
+			],
+			// 16/20/400
+			"body-1": [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "400",
+				},
+			],
+			// 14/120%/400/-0.28px
+			"body-2": [
+				"0.875rem",
+				{
+					lineHeight: "120%",
+					letterSpacing: "-0.0175rem;",
+					fontWeight: "400",
+				},
+			],
+			// 14/120%/500/-0.28px
+			"body-3": [
+				"0.875rem",
+				{
+					lineHeight: "120%",
+					letterSpacing: "-0.0175rem;",
+					fontWeight: "500",
+				},
+			],
+			// 12/120%/400/-0.36px
+			"body-4": [
+				"0.75rem",
+				{
+					lineHeight: "normal",
+					letterSpacing: "-0.0225rem;",
+					fontWeight: "400",
+				},
+			],
+			// 18/20/600
+			"superscript-1": [
+				"1.125rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "600",
+				},
+			],
+			// 16/20/400
+			"superscript-2": [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "400",
+				},
+			],
+			/* Desktop */
+			// 34/48/600
+			"d-h1": [
+				"2.125rem",
+				{
+					lineHeight: "3rem",
+					fontWeight: "600",
+				},
+			],
+			// 24/32/500
+			"d-h2": [
+				"1.5rem",
+				{
+					lineHeight: "2rem",
+					fontWeight: "500",
+				},
+			],
+			// 18/20/600
+			"d-h3": [
+				"1.125rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "600",
+				},
+			],
+			// 16/20/600
+			"d-h4": [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "600",
+				},
+			],
+			// 16/20/500
+			"d-h5": [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "500",
+				},
+			],
+			// 16/20/400
+			"d-h6": [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "400",
+				},
+			],
+			// 16/20/400
+			"d-body-1": [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "400",
+				},
+			],
+			// 14/120%/400/-0.28px
+			"d-body-2": [
+				"0.875rem",
+				{
+					lineHeight: "120%",
+					letterSpacing: "-0.0175rem;",
+					fontWeight: "400",
+				},
+			],
+			// 14/120%/500/-0.28px
+			"d-body-3": [
+				"0.875rem",
+				{
+					lineHeight: "120%",
+					letterSpacing: "-0.0175rem;",
+					fontWeight: "500",
+				},
+			],
+			// 12/120%/400/-0.36px
+			"d-body-4": [
+				"0.75rem",
+				{
+					lineHeight: "normal",
+					letterSpacing: "-0.0225rem;",
+					fontWeight: "400",
+				},
+			],
+			// 18/20/600
+			"d-superscript-1": [
+				"1.125rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "600",
+				},
+			],
+			// 16/20/400
+			"d-superscript-2": [
+				"1rem",
+				{
+					lineHeight: "1.25rem",
+					fontWeight: "400",
+				},
+			],
+			...convertObjectPixelsToRems({
+				"8px": "8px",
+				"9px": "9px",
+				"10px": "10px",
+				"11px": "11px",
+				"12px": "12px",
+				"13px": "13px",
+				"14px": "14px",
+				"15px": "15px",
+				"16px": "16px",
+				"17px": "17px",
+				"18px": "18px",
+				"19px": "19px",
+				"20px": "20px",
+			}),
+		},
 		extend: {
 			colors,
 			fontFamily: {
@@ -240,7 +442,7 @@ const config = {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require("@xpd/tailwind-3dtransforms")],
 }
 
 module.exports = config

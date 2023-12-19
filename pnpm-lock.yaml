@@ -130,6 +130,9 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.11.0
     version: 6.11.0(eslint@8.51.0)(typescript@5.2.2)
+  '@xpd/tailwind-3dtransforms':
+    specifier: ^1.0.3
+    version: 1.0.3
   autoprefixer:
     specifier: ^10
     version: 10.4.16(postcss@8.4.31)
@@ -4843,6 +4846,10 @@ packages:
     dependencies:
       '@webassemblyjs/ast': 1.11.6
       '@xtuc/long': 4.2.2
+    dev: true
+
+  /@xpd/tailwind-3dtransforms@1.0.3:
+    resolution: {integrity: sha512-LEKfNj57djZAucQ1itu/zinRkYnkhzNjAMhz8DkbguTyBcTDHF1R6CuXO536BFE/YGyHDCYd7tDF5ghSrViUgQ==}
     dev: true
 
   /@xtuc/ieee754@1.2.0:
