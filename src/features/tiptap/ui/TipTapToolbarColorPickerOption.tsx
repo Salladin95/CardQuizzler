@@ -1,6 +1,6 @@
 import React from "react"
 import { motion } from "framer-motion"
-import { ColorPicker } from "~/shared"
+import { ColorPicker, useAwayClick } from "~/shared"
 import { ColorPaletteSvg } from "~/features/tiptap/ui/icons"
 import { cn } from "src/lib"
 import { fadeAnimationVariants } from "../lib/animations"
@@ -10,6 +10,9 @@ type TipTapToolbarColorPickerOptionProps = { onChange: (newColor: string) => voi
 export function TipTapToolbarColorPickerOption(props: TipTapToolbarColorPickerOptionProps) {
 	const [color, setColor] = React.useState("#fff")
 	const [showPalette, setShowPalette] = React.useState(false)
+	const ref = React.useRef<HTMLDivElement>(null!)
+
+	useAwayClick(ref, () => setShowPalette(false))
 
 	function handleClick() {
 		props.onClick && props.onClick()
@@ -17,7 +20,7 @@ export function TipTapToolbarColorPickerOption(props: TipTapToolbarColorPickerOp
 	}
 
 	return (
-		<div className={"w-[18px] h-[20px] ml-1 relative"}>
+		<div className={"w-[18px] h-[20px] ml-1 relative"} ref={ref}>
 			<ColorPaletteSvg
 				className={"w-full h-full hover:cursor-pointer hover:brightness-75 transition-all duration-200"}
 				onClick={handleClick}

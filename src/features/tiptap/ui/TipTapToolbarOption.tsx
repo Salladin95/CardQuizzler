@@ -15,7 +15,7 @@ export function TipTapToolbarOption(props: TipTapEditorOptionProps) {
 		<Button
 			variant={"secondary"}
 			onClick={onClick}
-			className={cn("w-min after:rounded-lg", {
+			className={cn("w-min h-min after:rounded-lg p-2", {
 				"bg-blue-100": editor?.isActive(name),
 			})}
 			data-active={Boolean(editor?.isActive(name))}
