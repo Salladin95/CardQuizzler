@@ -26,7 +26,7 @@ export function TipTapEditor(props: TipTapEditorProps) {
 		},
 		onUpdate({ editor }) {
 			onChange && onChange(editor.getHTML())
-			console.log(editor.getHTML)
+			console.log(editor.getHTML())
 		},
 		onBlur({ event }) {
 			if (event && event.relatedTarget && (event.relatedTarget as Element).closest(".editor-wrapper")) {

@@ -1,25 +1,23 @@
 import React from "react"
-import { EditorState } from "draft-js"
 import { motion } from "framer-motion"
-import { ColorPicker, useAwayClick } from "~/shared"
+import { ColorPicker } from "~/shared"
+import { ColorPaletteSvg } from "~/features/tiptap/ui/icons"
 import { cn } from "~/utils"
-import { ColorPaletteSvg } from "src/features/tiptap/ui/icons"
-import { fadeAnimationVariants } from "./lib/animations"
+import { fadeAnimationVariants } from "../lib/animations"
 
-type CustomOptionProps = { onChange: (key: string, value: string | EditorState) => void }
+type TipTapToolbarColorPickerOptionProps = { onChange: (newColor: string) => void; onClick?: () => void }
 
-export function EditorColorPickerOption(props: CustomOptionProps) {
-	const [color, setColor] = React.useState("")
+export function TipTapToolbarColorPickerOption(props: TipTapToolbarColorPickerOptionProps) {
+	const [color, setColor] = React.useState("#fff")
 	const [showPalette, setShowPalette] = React.useState(false)
-	const ref = React.useRef<HTMLDivElement>(null!)
-	useAwayClick(ref, () => setShowPalette(false))
 
 	function handleClick() {
+		props.onClick && props.onClick()
 		setShowPalette(!showPalette)
 	}
 
 	return (
-		<div className={"w-[18px] h-[20px] ml-1"} ref={ref}>
+		<div className={"w-[18px] h-[20px] ml-1 relative"}>
 			<ColorPaletteSvg
 				className={"w-full h-full hover:cursor-pointer hover:brightness-75 transition-all duration-200"}
 				onClick={handleClick}
@@ -30,14 +28,14 @@ export function EditorColorPickerOption(props: CustomOptionProps) {
 				initial={false}
 				animate={showPalette ? "open" : "closed"}
 				variants={fadeAnimationVariants}
-				className={cn("absolute z-10 left-[50%]", {
+				className={cn("absolute z-10", {
 					"pointer-events-none": !showPalette,
 				})}
 			>
 				<ColorPicker
 					onChange={(newColor) => {
 						setColor(newColor)
-						props.onChange("color", newColor)
+						props.onChange(newColor)
 					}}
 					color={color}
 				/>
