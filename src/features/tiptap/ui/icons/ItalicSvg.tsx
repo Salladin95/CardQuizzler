@@ -1,10 +1,19 @@
 import { DefaultSvgProps } from "~/app/types"
+import { cn } from "~/utils"
 
 export function ItalicSvg(props: DefaultSvgProps) {
+	const { className, ...rest } = props
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" width={800} height={800} fill="none" viewBox="-3 0 12 12" {...props}>
+		<svg
+			{...rest}
+			xmlns="http://www.w3.org/2000/svg"
+			width={20}
+			height={20}
+			fill="none"
+			viewBox="-3 0 12 12"
+			className={cn("fill-[#758CA3]", className)}
+		>
 			<path
-				fill="#758CA3"
 				fillRule="evenodd"
 				d="m1.18 10 1.605-8.023A1 1 0 0 1 3 0h2a1 1 0 1 1 0 2h-.18l-1.605 8.023A1 1 0 0 1 3 12H1a1 1 0 1 1 0-2h.18z"
 				clipRule="evenodd"

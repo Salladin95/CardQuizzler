@@ -3,7 +3,7 @@ import { EditorState } from "draft-js"
 import { motion } from "framer-motion"
 import { ColorPicker, useAwayClick } from "~/shared"
 import { cn } from "~/utils"
-import { ColorPaletteSvg } from "~/features/richText/ui/icons"
+import { ColorPaletteSvg } from "src/features/tiptap/ui/icons"
 import { fadeAnimationVariants } from "./lib/animations"
 
 type CustomOptionProps = { onChange: (key: string, value: string | EditorState) => void }

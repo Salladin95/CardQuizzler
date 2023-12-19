@@ -1,8 +1,8 @@
 import { cn } from "~/utils"
 import { CardType } from "~/features/quizCard/model"
-import { WithOptionalClassName } from "~/app/types"
+import { PropsWithClassName } from "~/app/types"
 
-export type CardProps = Pick<CardType, "title"> & WithOptionalClassName
+export type CardProps = Pick<CardType, "title"> & PropsWithClassName
 
 export function Card(props: CardProps) {
 	const { className, title } = props

@@ -106,31 +106,39 @@
         @apply gray-border transition-colors hover:!shadow-none !shadow-none relative overflow-hidden;
 
         &::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transform: scale(0);
-            transition: transform .2s ease-in;
-            mix-blend-mode: difference;
-            background: radial-gradient(
-                    circle at center,
-                    #fff 24%,
-                    #000 25%,
-                    #000 100%);
+            @apply radical-gradient-animation;
         }
 
         &[aria-selected="true"] {
             @apply !shadow-none;
 
             &::after {
-                transform: scale(4);
+                @apply scale-4;
             }
         }
     }
 }
 
 @layer utilities {
+    .radical-gradient-animation {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: scale(0);
+        transition: transform .2s ease-in;
+        mix-blend-mode: difference;
+        background: radial-gradient(
+                circle at center,
+                #fff 24%,
+                #000 25%,
+                #000 100%);
+    }
+
+    .scale-4 {
+        transform: scale(4);
+    }
+
     .disabled {
         @apply opacity-80 pointer-events-none;
     }

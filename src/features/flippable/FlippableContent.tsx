@@ -1,9 +1,9 @@
 import React from "react"
 import { cn } from "~/utils"
-import { WithOptionalClassName } from "~/app/types"
+import { PropsWithClassName } from "~/app/types"
 import { FlippableProps } from "~/features/flippable/Flippable"
 
-type FlippableContentProps = Pick<FlippableProps, "frontSideContent" | "backSideContent"> & WithOptionalClassName
+type FlippableContentProps = Pick<FlippableProps, "frontSideContent" | "backSideContent"> & PropsWithClassName
 
 export function FlippableContent(props: FlippableContentProps) {
 	const { frontSideContent, backSideContent, className } = props

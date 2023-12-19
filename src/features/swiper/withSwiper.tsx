@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { WithId, WithOptionalClassName } from "~/app/types"
+import { WithId, PropsWithClassName } from "~/app/types"
 import { SwipeableProps, SwipedCard } from "~/features/swipeable/ui/Swipeable"
 import { getArrLastIndex, getArrLastItem, removeArrLastItem, updateSwipedTowards } from "~/features/swipeable/utils"
 import { SwipeDirection } from "~/features/swipeable"
@@ -14,7 +14,7 @@ type SwiperData<T> = {
 }
 type SwiperProps<T> = {
 	cards: (T & WithId)[]
-} & WithOptionalClassName
+} & PropsWithClassName
 
 export function withSwiper<DataType>(
 	Component: React.ComponentType<

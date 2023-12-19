@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { WithOptionalClassName, WithId } from "~/app/types"
+import { PropsWithClassName, WithId } from "~/app/types"
 import { cn } from "~/utils"
 
 type AnswersCounter = {
@@ -10,7 +10,7 @@ type AnswersCounter = {
 }
 type SliderProps<T> = {
 	slides: (WithId & T)[]
-} & WithOptionalClassName
+} & PropsWithClassName
 
 const offset = 16
 

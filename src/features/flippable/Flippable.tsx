@@ -1,6 +1,6 @@
 import React from "react"
 import { AnimationControls, motion, useAnimation } from "framer-motion"
-import { WithOptionalClassName } from "~/app/types"
+import { PropsWithClassName } from "~/app/types"
 import { FlippableContent } from "~/features/flippable/FlippableContent"
 import { useFlippable } from "~/features/flippable/useFlippable"
 import { cn } from "~/utils"
@@ -13,7 +13,7 @@ export type FlippableProps = {
 	onAnimationComplete?: () => void
 	onClick?: () => void
 	isFlipped: boolean
-} & WithOptionalClassName
+} & PropsWithClassName
 
 export const flipTransition = { transition: { duration: 1, ease: "easeOut" } }
 export const flipEffect = (isFlipped: boolean) => ({ rotateY: isFlipped ? 180 : 0, rotateX: 0, ...flipTransition })

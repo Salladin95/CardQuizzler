@@ -7,7 +7,7 @@ import { calculateMoveParameters } from "../utils"
 import { SwipeDirection } from "~/features/swipeable"
 import { useFlippable } from "~/features/flippable/useFlippable"
 import { FlippableContent } from "~/features/flippable/FlippableContent"
-import { WithOptionalClassName } from "~/app/types"
+import { PropsWithClassName } from "~/app/types"
 
 type StartPoint = {
 	x: number
@@ -51,7 +51,7 @@ export type SwipeableProps = SwipedCard & {
 
 	frontSideContent?: React.ReactNode
 	backSideContent?: React.ReactNode
-} & WithOptionalClassName
+} & PropsWithClassName
 
 export function Swipeable(props: SwipeableProps) {
 	const {
