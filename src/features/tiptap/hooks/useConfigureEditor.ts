@@ -1,7 +1,6 @@
 import { EditorOptions, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { Bold } from "@tiptap/extension-bold"
-import { Color } from "@tiptap/extension-color"
 import { TextStyle } from "@tiptap/extension-text-style"
 import { Italic } from "@tiptap/extension-italic"
 import { Underline } from "@tiptap/extension-underline"
@@ -16,7 +15,6 @@ export function useConfigureEditor(props: { onChange?: (richText: string) => voi
 			Highlight.configure({ multicolor: true }),
 			Bold,
 			TextStyle,
-			Color,
 			Italic,
 			Underline,
 			Strike,
