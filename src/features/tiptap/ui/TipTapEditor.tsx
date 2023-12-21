@@ -1,24 +1,32 @@
 "use client"
-
 import React from "react"
+import { Popover } from "~/shared"
 import { EditorContent } from "@tiptap/react"
-import { TipTapEditorToolBar } from "./TipTapEditorToolBar"
-import { useConfigureEditor } from "~/features/tiptap"
-import { useHighlightText } from "~/shared/hooks/useHighlightText"
+import { useEditorHighlightPosition } from "~/features/tiptap/hooks/useEditorHighlightPosition"
+import { TipTapEditorToolBar, useConfigureEditor } from "~/features/tiptap"
 
-type TipTapEditorProps = {
+interface TipTapEditorProps {
 	onChange: (richText: string) => void
+	id: string
 }
 
 export function TipTapEditor(props: TipTapEditorProps) {
 	const editor = useConfigureEditor({ onChange: props.onChange })
-
-	const selection = useHighlightText()
+	const selectedTextPosition = useEditorHighlightPosition("#" + props.id)
 
 	return (
-		<div className={"editor-wrapper"}>
-			<TipTapEditorToolBar editor={editor} />
+		<div className={"editor-wrapper"} id={props.id}>
 			<EditorContent editor={editor} />
+			{selectedTextPosition && (
+				<Popover
+					open={Boolean(selectedTextPosition)}
+					trigger={null}
+					style={{ position: "absolute", top: selectedTextPosition.top - 80, left: selectedTextPosition.left - 125 }}
+					side={"top"}
+				>
+					<TipTapEditorToolBar editor={editor} />
+				</Popover>
+			)}
 		</div>
 	)
 }

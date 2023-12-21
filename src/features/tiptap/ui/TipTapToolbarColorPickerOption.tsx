@@ -14,9 +14,22 @@ export function TipTapToolbarColorPickerOption(props: TipTapToolbarColorPickerOp
 
 	useAwayClick(ref, () => setShowPalette(false))
 
-	function handleClick() {
-		props.onClick && props.onClick()
+	function handleClick(event: React.SyntheticEvent) {
+		// Check if there is selected text
+		const isTextSelected = Boolean(window.getSelection()?.toString().trim().length)
+		console.log(isTextSelected)
+
+		// If there is no selected text, call props.onClick
+		if (!isTextSelected) {
+			props.onClick && props.onClick()
+		}
+
+		// Show/hide the color palette based on the selected text
 		setShowPalette(!showPalette)
+
+		// Prevent default behavior and stop propagation
+		event.preventDefault()
+		event.stopPropagation()
 	}
 
 	return (

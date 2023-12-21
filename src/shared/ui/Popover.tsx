@@ -48,7 +48,7 @@ export type PopoverProps = RadixPopover.PopoverProps &
 		 * */
 		container?: HTMLElement
 	}
-export const Popover = (props: PopoverProps) => {
+export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>((props, ref) => {
 	const {
 		className,
 		trigger,
@@ -78,7 +78,7 @@ export const Popover = (props: PopoverProps) => {
 		<RadixPopover.Root defaultOpen={defaultOpen} onOpenChange={handleOpenChange} open={open}>
 			<RadixPopover.Trigger asChild>{trigger}</RadixPopover.Trigger>
 			<RadixPopover.Portal container={container}>
-				<RadixPopover.Content side={"bottom"} sideOffset={4} {...rest} asChild>
+				<RadixPopover.Content ref={ref} side={"bottom"} sideOffset={4} {...rest} asChild>
 					<Framer.motion.div
 						// Suspend element from removing by animation. Check tailwind.config.js keyframes
 						// https://www.radix-ui.com/primitives/docs/guides/animation
@@ -103,7 +103,7 @@ export const Popover = (props: PopoverProps) => {
 			</RadixPopover.Portal>
 		</RadixPopover.Root>
 	)
-}
+})
 
-Popover.Anchor = RadixPopover.Anchor
-Popover.Close = RadixPopover.Close
+// Popover.Anchor = RadixPopover.Anchor
+// Popover.Close = RadixPopover.Close

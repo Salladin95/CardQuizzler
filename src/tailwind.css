@@ -101,22 +101,6 @@
     .text-superscript-2 {
         @apply font-inter;
     }
-
-    .editor-inline-option {
-        @apply gray-border transition-colors hover:!shadow-none !shadow-none relative overflow-hidden;
-
-        &::after {
-            @apply radical-gradient-animation;
-        }
-
-        &[aria-selected="true"] {
-            @apply !shadow-none;
-
-            &::after {
-                @apply scale-4;
-            }
-        }
-    }
 }
 
 @layer utilities {
