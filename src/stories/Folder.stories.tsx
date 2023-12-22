@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react"
-import { Folder } from "~/shared"
+import { Folder } from "~/entites"
 
 const meta: Meta<typeof Folder> = {
-	title: "Shared/Folder",
+	title: "Entities/Folder",
 	component: Folder,
 	parameters: {
 		layout: "centered",

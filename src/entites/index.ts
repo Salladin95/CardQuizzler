@@ -1,3 +1,5 @@
 export * from "./card"
 export * from "./CheckboxGroup"
 export * from "./RadioGroup"
+export * from "./Folder"
+export * from "./Module"

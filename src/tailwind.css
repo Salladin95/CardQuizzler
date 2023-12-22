@@ -101,6 +101,16 @@
     .text-superscript-2 {
         @apply font-inter;
     }
+
+    .panel {
+        @apply bg-gray-800 rounded-lg min-w-[20rem] w-full py-4 px-2 text-white gray-border cursor-pointer
+        relative shadow-md;
+
+        &::after {
+            @apply absolute content-[''] w-full h-[4px] left-0 bottom-0 ease-out duration-300 transition-opacity
+            opacity-0 bg-white hover:opacity-100;
+        }
+    }
 }
 
 @layer utilities {
