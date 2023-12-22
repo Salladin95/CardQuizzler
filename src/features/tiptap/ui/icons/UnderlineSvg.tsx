@@ -1,7 +1,7 @@
-import { DefaultSvgProps } from "~/app/types"
+import { SvgDefaultProps } from "~/app/types"
 import { cn } from "src/lib"
 
-export function UnderlineSvg(props: DefaultSvgProps) {
+export function UnderlineSvg(props: SvgDefaultProps) {
 	const { className, ...rest } = props
 	return (
 		<svg

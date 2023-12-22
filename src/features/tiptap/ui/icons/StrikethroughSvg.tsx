@@ -1,7 +1,7 @@
-import { DefaultSvgProps } from "~/app/types"
+import { SvgDefaultProps } from "~/app/types"
 import { cn } from "src/lib"
 
-export function StrikethroughSvg(props: DefaultSvgProps) {
+export function StrikethroughSvg(props: SvgDefaultProps) {
 	const { className, ...rest } = props
 	return (
 		<svg

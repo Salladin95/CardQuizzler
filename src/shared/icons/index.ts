@@ -1,1 +1,5 @@
 export * from "./CheckIcon"
+export * from "./FolderIcon"
+export * from "./FolderOpenIcon"
+export * from "./FolderPlusIcon"
+export * from "./FolderMinusIcon"

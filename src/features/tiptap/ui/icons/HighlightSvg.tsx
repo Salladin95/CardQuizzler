@@ -1,7 +1,7 @@
-import { DefaultSvgProps } from "~/app/types"
+import { SvgDefaultProps } from "~/app/types"
 import { cn } from "~/lib"
 
-export function HighlightSvg(props: DefaultSvgProps) {
+export function HighlightSvg(props: SvgDefaultProps) {
 	const { className, ...rest } = props
 	return (
 		<svg

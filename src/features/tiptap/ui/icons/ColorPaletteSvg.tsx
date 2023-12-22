@@ -1,7 +1,7 @@
 import React from "react"
-import { DefaultSvgProps } from "~/app/types"
+import { SvgDefaultProps } from "~/app/types"
 
-export function ColorPaletteSvg(props: DefaultSvgProps) {
+export function ColorPaletteSvg(props: SvgDefaultProps) {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" width={40} height={40} viewBox="0 0 512 512" {...props}>
 			<path
