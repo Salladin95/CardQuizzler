@@ -1,5 +1,6 @@
 import { faker, fakerEN } from "@faker-js/faker"
 import { CardType } from "~/features/quizCard/model"
+import { createArray } from "~/lib/creators"
 
 export function mockCard(): CardType {
 	return {
@@ -14,10 +15,10 @@ export function asyncMockCard(): Promise<CardType> {
 }
 
 export function mockCards(amount = 10): CardType[] {
-	return Array.from({ length: amount }, mockCard)
+	return createArray(amount, mockCard)
 }
 
 export function asyncMockCards(amount = 10): Promise<CardType[]> {
-	const promises = Array.from({ length: amount }, asyncMockCard)
+	const promises = createArray(amount, asyncMockCard)
 	return Promise.all(promises)
 }

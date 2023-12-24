@@ -1,14 +1,19 @@
 import { FolderIcon } from "~/shared"
+import { PropsWithClassName } from "~/app/types"
+import { cn } from "~/lib"
 
-type FolderProps = {
+export type FolderType = {
+	id: string
 	title: string
 	amountOfModules: number
 }
 
+type FolderProps = FolderType & PropsWithClassName
+
 export function Folder(props: FolderProps) {
-	const { title, amountOfModules } = props
+	const { title, amountOfModules, className } = props
 	return (
-		<div className={"panel"}>
+		<div className={cn("panel py-4 px-2", className)}>
 			<p className={"mb-1 text-body-2"}>
 				Всего модулей: <span className={"italic"}>{amountOfModules}</span>
 			</p>

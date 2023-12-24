@@ -1,17 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { mockCards } from "~/entites/card"
 import React from "react"
-import { Slider } from "~/features/slider"
+import type { Meta, StoryObj } from "@storybook/react"
+import { Carousel } from "src/features/carousel"
+import { mockCards } from "~/lib/mock/mockCard"
 
-const meta: Meta<typeof Slider> = {
-	title: "Features/Slider",
-	component: Slider,
+const meta: Meta<typeof Carousel> = {
+	title: "Features/Carousel",
+	component: Carousel,
 	parameters: {
 		layout: "fullscreen",
 	},
 	render: (args, { loaded: { cards } }) => (
 		<div className={"w-[100vw] h-[100vh] flex-center"}>
-			<Slider slides={cards} />
+			<Carousel cards={cards} />
 		</div>
 	),
 }

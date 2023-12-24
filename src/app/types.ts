@@ -7,3 +7,5 @@ export type SelectOption<V = string> = {
 	label: string
 	value: V
 }
+
+export type PropsWithChildren = { children?: React.ReactNode }

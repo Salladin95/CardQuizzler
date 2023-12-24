@@ -36,15 +36,11 @@
     }
 
     .container {
-        @apply mx-auto;
-    }
-
-    .tablet-container {
-        @apply container md:max-w-sm;
+        @apply mx-auto max-w-1280 p-4;
     }
 
     .card {
-        @apply text-black w-[100%] h-[100%] bg-transparent rounded-12px flex-center transition-all border-purple-600 hover:border-2px;
+        @apply text-black w-[100%] h-[100%] bg-transparent rounded-12px flex-center transition-all;
     }
 
     .perspective-1000 {
@@ -102,13 +98,16 @@
         @apply font-inter;
     }
 
+    .panel-clip-polygon {
+        clip-path: polygon(0 0, 100% 0, 99% 100%, 1% 99%);
+    }
+
     .panel {
-        @apply bg-gray-800 rounded-lg min-w-[20rem] w-full py-4 px-2 text-white gray-border cursor-pointer
-        relative shadow-md;
+        @apply w-full h-full bg-gray-800 text-white cursor-pointer shadow-md ease-out
+        duration-300 transition-all relative rounded-lg hover:after:opacity-100;
 
         &::after {
-            @apply absolute content-[''] w-full h-[4px] left-0 bottom-0 ease-out duration-300 transition-opacity
-            opacity-0 bg-white hover:opacity-100;
+            @apply absolute content-[""] w-full h-[0.3rem] left-0 bottom-0 bg-white opacity-0 panel-clip-polygon;
         }
     }
 }

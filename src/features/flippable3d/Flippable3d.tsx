@@ -1,7 +1,7 @@
 import React from "react"
 import { motion } from "framer-motion"
 import { cn } from "~/lib"
-import { PropsWithClassName } from "~/app/types"
+import { PropsWithChildren, PropsWithClassName } from "~/app/types"
 
 export function Flippable3d() {
 	const [flipped, setFlipped] = React.useState(false)
@@ -52,7 +52,7 @@ export function Flippable3d() {
 type Flippable3dContentProps = {
 	style?: React.CSSProperties
 } & PropsWithClassName &
-	React.PropsWithChildren
+	PropsWithChildren
 
 export function Flippable3dContent(props: Flippable3dContentProps) {
 	const { className, children, style } = props
