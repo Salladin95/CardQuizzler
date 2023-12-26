@@ -92,8 +92,8 @@ export function withSwiper<DataType>(
 		}
 
 		return (
-			<section className={"w-[100%] h-[100%] overflow-hidden flex-center relative"}>
-				<div className={cn("w-360 h-640 relative", className)}>
+			<section className={""}>
+				<div className={cn("w-360 h-360 relative", className)}>
 					{currentCards?.map((card, index) => (
 						<Component
 							{...card}
@@ -110,7 +110,7 @@ export function withSwiper<DataType>(
 				</div>
 				<button
 					disabled={!swiperData.swipedCards.length || isAnimating}
-					className={"absolute left-[50%] bottom-[10%] text-black"}
+					className={"absolute left-[50%] bottom-[20%] text-black"}
 					onClick={handleBack}
 				>
 					back

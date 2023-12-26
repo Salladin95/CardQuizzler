@@ -8,22 +8,27 @@ import { Options, Splide, SplideSlide, SplideTrack } from "@splidejs/react-splid
 import "@splidejs/react-splide/css/core"
 
 type SplideCarouselProps<T> = {
-	cards: T[]
+	data: T[]
 	options?: Options
 	withControllers?: boolean
+	onClick?: (id: string) => void
 } & PropsWithClassName
 
 export function withSplideCarousel<DataType extends WithId>(
 	Component: React.ComponentType<DataType & PropsWithClassName>,
 ) {
 	return function (props: SplideCarouselProps<DataType>) {
-		const { cards, options = splideDefaultOptions, withControllers = true, className } = props
+		const { data, onClick, options = splideDefaultOptions, withControllers = true, className } = props
+
+		function handleClick(id: string) {
+			onClick && onClick(id)
+		}
 		return (
 			<Splide hasTrack={false} options={options}>
 				<SplideTrack>
-					{cards.map((card) => (
-						<SplideSlide key={card.id}>
-							<Component {...card} className={className} />
+					{data.map((slide) => (
+						<SplideSlide key={slide.id} onClick={() => handleClick(slide.id)}>
+							<Component {...slide} className={className} />
 						</SplideSlide>
 					))}
 				</SplideTrack>

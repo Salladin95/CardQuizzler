@@ -10,7 +10,7 @@ export function rotateAndMoveSmoothly(to: number, rotation: number, controls: An
 	return controls.start({
 		rotate: rotation,
 		translateX: to,
-		transition: { duration: 0.5, ease: "easeOut" },
+		transition: { duration: 0.2, ease: "easeOut" },
 	})
 }
 

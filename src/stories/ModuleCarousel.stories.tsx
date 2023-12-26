@@ -11,7 +11,7 @@ const meta: Meta<typeof ModuleCarousel> = {
 	},
 	render: (args, { loaded: { cards } }) => (
 		<div className={"w-[100vw] h-[100vh] flex-center"}>
-			<ModuleCarousel cards={cards} className={"w-360 h-428"} />
+			<ModuleCarousel data={cards} className={"w-360 h-428"} />
 		</div>
 	),
 }

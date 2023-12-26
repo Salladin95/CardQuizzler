@@ -11,7 +11,7 @@ const meta: Meta<typeof FolderCarousel> = {
 	},
 	render: (args, { loaded: { cards } }) => (
 		<div className={"container"}>
-			<FolderCarousel cards={cards} className={"h-[10rem]"} />,
+			<FolderCarousel data={cards} className={"h-[10rem]"} />,
 		</div>
 	),
 }

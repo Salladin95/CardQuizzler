@@ -40,7 +40,7 @@
     }
 
     .card {
-        @apply text-black w-[100%] h-[100%] bg-transparent rounded-12px flex-center transition-all;
+        @apply w-[100%] h-[100%] bg-transparent rounded-12px flex-center transition-all;
     }
 
     .perspective-1000 {

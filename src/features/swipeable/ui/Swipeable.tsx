@@ -22,7 +22,7 @@ export type SwipedCard = {
 }
 
 export const redGradient = "linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)"
-export const purpleGradient = "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)"
+export const purpleGradient = "linear-gradient(90deg, rgba(29,55,145,1) 0%, rgba(0,25,52,1) 100%)"
 export const greenGradient = "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"
 const swiperBackgroundColors: [string, string, string] = [redGradient, purpleGradient, greenGradient]
 export type SwipeableProps = SwipedCard & {
@@ -79,10 +79,12 @@ export function Swipeable(props: SwipeableProps) {
 	 * This is used to calculate the drag distance.
 	 */
 	const [startPoint, setStartPoint] = React.useState<StartPoint>(null)
+	const [isDragging, setIsDragging] = React.useState(false)
 
 	const handleDragStart = (_e: MouseEvent, info: PanInfo) => {
 		if (isAnimating || startPoint) return
 		setStartPoint({ x: info.point.x, y: info.point.y })
+		setIsDragging(true)
 	}
 
 	const handleDrag = (_e: MouseEvent, info: PanInfo) => {
@@ -108,6 +110,7 @@ export function Swipeable(props: SwipeableProps) {
 				break
 
 			default:
+				setIsDragging(false)
 				setStartPoint(null)
 				moveCardToItsInitialPosition(controls)
 		}
@@ -144,12 +147,15 @@ export function Swipeable(props: SwipeableProps) {
 	useFlippable(controls, Boolean(isFlipped))
 
 	return (
-		<motion.div className={cn("perspective-1000 w-[100%] h-[100%]", className)}>
+		<motion.div className={cn("perspective-1000 w-[100%] h-[100%] text-white", className)}>
 			<motion.div
-				className={cn("w-[100%] h-[100%] rounded-12px transform-style-3d", {
-					"pointer-events-none": !isTheTopCard || isAnimating,
-					"z-100": isTheTopCard,
-				})}
+				className={cn(
+					"w-[100%] h-[100%] rounded-12px transform-style-3d relative before:absolute before:content-[''] before:inset-[1.5rem] before:border-3px before:transform before:translate-z-[4rem]",
+					{
+						"pointer-events-none": !isTheTopCard || isAnimating,
+						"z-50": isTheTopCard,
+					},
+				)}
 				drag={true}
 				dragElastic={0.4}
 				onDragStart={handleDragStart}
@@ -167,6 +173,7 @@ export function Swipeable(props: SwipeableProps) {
 				transition={{ duration: 0.4, ease: "easeOut" }}
 				onAnimationStart={onAnimationStart}
 				onAnimationComplete={onAnimationComplete}
+				data-drag-active={isDragging}
 			>
 				<FlippableContent
 					className={cn({ "opacity-0": !isTheTopCard })}

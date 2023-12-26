@@ -15,7 +15,7 @@ export type FlippableProps = {
 	isFlipped: boolean
 } & PropsWithClassName
 
-export const flipTransition = { transition: { duration: 1, ease: "easeOut" } }
+export const flipTransition = { transition: { duration: 0.5, ease: "easeOut" } }
 export const flipEffect = (isFlipped: boolean) => ({ rotateY: isFlipped ? 180 : 0, rotateX: 0, ...flipTransition })
 export const flipAnimation = (controls: AnimationControls, isFlipped: boolean) =>
 	controls.start({ ...flipEffect(isFlipped) })
