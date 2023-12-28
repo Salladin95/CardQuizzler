@@ -1,5 +1,5 @@
 import React from "react"
-import { AnimationControls, motion, useAnimation } from "framer-motion"
+import { motion } from "framer-motion"
 import { PropsWithClassName } from "~/app/types"
 import { FlippableContent } from "~/features/flippable/FlippableContent"
 import { useFlippable } from "~/features/flippable/useFlippable"
@@ -12,40 +12,26 @@ export type FlippableProps = {
 	onAnimationStart?: () => void
 	onAnimationComplete?: () => void
 	onClick?: () => void
-	isFlipped: boolean
 } & PropsWithClassName
 
-export const flipTransition = { transition: { duration: 0.5, ease: "easeOut" } }
-export const flipEffect = (isFlipped: boolean) => ({ rotateY: isFlipped ? 180 : 0, rotateX: 0, ...flipTransition })
-export const flipAnimation = (controls: AnimationControls, isFlipped: boolean) =>
-	controls.start({ ...flipEffect(isFlipped) })
-
 export function Flippable(props: FlippableProps) {
-	const {
-		frontSideContent,
-		backSideContent,
-		className,
-		isAnimating,
-		isFlipped,
-		onClick,
-		onAnimationComplete,
-		onAnimationStart,
-	} = props
+	const { frontSideContent, backSideContent, className, isAnimating, onClick, onAnimationComplete, onAnimationStart } =
+		props
 
-	const controls = useAnimation()
-
+	const [isFlipped, setIsFlipped] = React.useState(false)
 	function handleClick() {
 		if (isAnimating || !onClick) return
 		onClick()
+		setIsFlipped(!isFlipped)
 	}
 
-	useFlippable(controls, isFlipped)
+	useFlippable("#flippable", isFlipped)
 
 	return (
 		<div className={"perspective-1000"} onClick={handleClick}>
 			<motion.div
-				className={cn("transform-style-3d w-640 h-360 bg-blue-400", className)}
-				animate={controls}
+				id={"flippable"}
+				className={cn("transform-style-3d w-428 h-428 bg-gold rounded-10px", className)}
 				onAnimationComplete={onAnimationComplete}
 				onAnimationStart={onAnimationStart}
 			>

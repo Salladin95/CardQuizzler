@@ -1,13 +1,30 @@
 import React from "react"
 import { CardType } from "~/features/quizCard/model"
-import { Card } from "~/entites/card"
-import { Swipeable, SwipeableProps } from "~/features/swipeable"
+import { FlippableContent } from "~/features/flippable/FlippableContent"
+import { PropsWithClassName } from "~/app/types"
+import { Card } from "~/entites"
+import { useFlippable } from "~/features/flippable/useFlippable"
 
-export type QuizCardProps = CardType & Omit<SwipeableProps, "frontSideContent" | "backSideContent">
+export type QuizCardProps = CardType & PropsWithClassName
 
 export function QuizCard(props: QuizCardProps) {
-	const { title, description, ...rest } = props
+	const { title, description, className } = props
+	const [isFlipped, setIsFlipped] = React.useState(false)
+
+	const swipeable = document.getElementById("swiper")?.lastElementChild?.querySelector("#swipeable")
+	useFlippable(swipeable, Boolean(isFlipped))
+
+	function handleClick() {
+		const isDragging = document.querySelector("[data-drag-active='true']")
+		if (isDragging) return
+		setIsFlipped(!isFlipped)
+	}
 	return (
-		<Swipeable {...rest} frontSideContent={<Card title={title} />} backSideContent={<Card title={description} />} />
+		<FlippableContent
+			onClick={handleClick}
+			className={className}
+			frontSideContent={<Card title={title} />}
+			backSideContent={<Card title={description} />}
+		/>
 	)
 }

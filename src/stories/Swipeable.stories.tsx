@@ -16,9 +16,8 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
 	render: (args) => <Swipeable {...args} />,
 	args: {
-		frontSideContent: "FRONT",
-		backSideContent: "BACK",
 		className: "w-360 h-428",
 		isTheTopCard: true,
+		children: <div className={""}>CONTENT</div>,
 	},
 }

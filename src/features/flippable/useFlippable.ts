@@ -1,9 +1,9 @@
 import React from "react"
-import { flipAnimation } from "~/features/flippable/Flippable"
-import { AnimationControls } from "framer-motion"
+import { animate } from "framer-motion"
 
-export function useFlippable(controls: AnimationControls, isFlipped: boolean) {
+export function useFlippable(elementOrSelector: Element | string | null | undefined, isFlipped: boolean) {
 	React.useEffect(() => {
-		flipAnimation(controls, isFlipped!)
-	}, [controls, isFlipped])
+		if (!elementOrSelector) return
+		animate(elementOrSelector, { rotateY: isFlipped ? 180 : 0, rotateX: 0 }, { duration: 0.5, ease: "easeOut" })
+	}, [elementOrSelector, isFlipped])
 }

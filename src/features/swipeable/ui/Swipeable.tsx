@@ -5,9 +5,7 @@ import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "fra
 import { animateOntoScreen, moveCardToItsInitialPosition, rotateAndMoveSmoothly } from "../animations"
 import { calculateMoveParameters } from "../utils"
 import { SwipeDirection } from "~/features/swipeable"
-import { useFlippable } from "~/features/flippable/useFlippable"
-import { FlippableContent } from "~/features/flippable/FlippableContent"
-import { PropsWithClassName } from "~/app/types"
+import { DataAttributesProps, PropsWithClassName } from "~/app/types"
 
 type StartPoint = {
 	x: number
@@ -48,10 +46,8 @@ export type SwipeableProps = SwipedCard & {
 	 * ]
 	 */
 	backgroundColors?: [string, string, string]
-
-	frontSideContent?: React.ReactNode
-	backSideContent?: React.ReactNode
-} & PropsWithClassName
+} & PropsWithClassName &
+	DataAttributesProps
 
 export function Swipeable(props: SwipeableProps) {
 	const {
@@ -62,15 +58,15 @@ export function Swipeable(props: SwipeableProps) {
 		isTheTopCard,
 		backgroundColors = swiperBackgroundColors,
 		isAnimating,
-		frontSideContent,
-		backSideContent,
 		className,
+		children,
+		...rest
 	} = props
 	const controls = useAnimation()
 	const rotate = useMotionValue(0)
 	const x = useMotionValue(0)
 	const rotateRange = [-maxRotateAngle, 0, maxRotateAngle]
-
+	const [dragActive, setDragActive] = React.useState(false)
 	// Background gradient transformation based on drag distance
 	const background = useTransform(rotate, rotateRange, backgroundColors)
 
@@ -79,12 +75,11 @@ export function Swipeable(props: SwipeableProps) {
 	 * This is used to calculate the drag distance.
 	 */
 	const [startPoint, setStartPoint] = React.useState<StartPoint>(null)
-	const [isDragging, setIsDragging] = React.useState(false)
 
 	const handleDragStart = (_e: MouseEvent, info: PanInfo) => {
 		if (isAnimating || startPoint) return
 		setStartPoint({ x: info.point.x, y: info.point.y })
-		setIsDragging(true)
+		setDragActive(true)
 	}
 
 	const handleDrag = (_e: MouseEvent, info: PanInfo) => {
@@ -110,9 +105,9 @@ export function Swipeable(props: SwipeableProps) {
 				break
 
 			default:
-				setIsDragging(false)
 				setStartPoint(null)
 				moveCardToItsInitialPosition(controls)
+				setDragActive(false)
 		}
 	}
 
@@ -132,25 +127,20 @@ export function Swipeable(props: SwipeableProps) {
 		})()
 	}, [swipedTowards, controls])
 
-	const [isFlipped, setIsFlipped] = React.useState(false)
-
 	function handleOnClick() {
 		// When we try to click the card that is not on its original position we return it back
-		if (rotate.get() || x.get() || isAnimating || startPoint) {
+		if (dragActive) {
 			moveCardToItsInitialPosition(controls)
 			return
-		} else if (!isAnimating) {
-			setIsFlipped(!isFlipped)
 		}
 	}
 
-	useFlippable(controls, Boolean(isFlipped))
-
 	return (
-		<motion.div className={cn("perspective-1000 w-[100%] h-[100%] text-white", className)}>
+		<div className={cn("perspective-1000 w-[100%] h-[100%] text-white", className)} {...rest}>
 			<motion.div
+				id={"swipeable"}
 				className={cn(
-					"w-[100%] h-[100%] rounded-12px transform-style-3d relative before:absolute before:content-[''] before:inset-[1.5rem] before:border-3px before:transform before:translate-z-[4rem]",
+					"w-[100%] h-[100%] rounded-12px flex-center transform-style-3d relative before:absolute before:content-[''] before:inset-[1.5rem] before:border-3px",
 					{
 						"pointer-events-none": !isTheTopCard || isAnimating,
 						"z-50": isTheTopCard,
@@ -173,14 +163,10 @@ export function Swipeable(props: SwipeableProps) {
 				transition={{ duration: 0.4, ease: "easeOut" }}
 				onAnimationStart={onAnimationStart}
 				onAnimationComplete={onAnimationComplete}
-				data-drag-active={isDragging}
+				data-drag-active={dragActive}
 			>
-				<FlippableContent
-					className={cn({ "opacity-0": !isTheTopCard })}
-					frontSideContent={frontSideContent}
-					backSideContent={backSideContent}
-				/>
+				{children}
 			</motion.div>
-		</motion.div>
+		</div>
 	)
 }

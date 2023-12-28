@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
-import { WithId, PropsWithClassName } from "~/app/types"
-import { SwipeableProps, SwipedCard } from "~/features/swipeable/ui/Swipeable"
+import { PropsWithClassName, WithId } from "~/app/types"
+import { Swipeable, SwipedCard } from "~/features/swipeable/ui/Swipeable"
 import { getArrLastIndex, getArrLastItem, removeArrLastItem, updateSwipedTowards } from "~/features/swipeable/utils"
 import { SwipeDirection } from "~/features/swipeable"
 import { cn } from "src/lib"
@@ -16,12 +16,7 @@ type SwiperProps<T> = {
 	cards: (T & WithId)[]
 } & PropsWithClassName
 
-export function withSwiper<DataType>(
-	Component: React.ComponentType<
-		DataType &
-			Pick<SwipeableProps, "isTheTopCard" | "onAnimationComplete" | "onAnimationStart" | "onSwipe" | "isAnimating">
-	>,
-) {
+export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 	return function Swiper(props: SwiperProps<DataType>) {
 		const { cards, className } = props
 		const [swiperData, setSwiperData] = React.useState<SwiperData<DataType>>({
@@ -93,10 +88,9 @@ export function withSwiper<DataType>(
 
 		return (
 			<section className={""}>
-				<div className={cn("w-360 h-360 relative", className)}>
+				<div id={"swiper"} className={cn("w-360 h-360 relative", className)}>
 					{currentCards?.map((card, index) => (
-						<Component
-							{...card}
+						<Swipeable
 							className={"absolute rounded-12px"}
 							key={card.id}
 							onAnimationStart={handleAnimationStart}
@@ -105,7 +99,9 @@ export function withSwiper<DataType>(
 							// TODO SHOULD BE THE FIRST ELEMENT
 							isTheTopCard={index === getArrLastIndex(currentCards)}
 							isAnimating={isAnimating}
-						/>
+						>
+							<Component {...card} className={cn({ "opacity-0": index !== getArrLastIndex(currentCards) })} />
+						</Swipeable>
 					))}
 				</div>
 				<button

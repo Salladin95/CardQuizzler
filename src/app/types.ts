@@ -9,3 +9,9 @@ export type SelectOption<V = string> = {
 }
 
 export type PropsWithChildren = { children?: React.ReactNode }
+
+export type DataAttributesProps = {
+	custom?: string
+} & {
+	[key: `data-${string}`]: unknown
+}
