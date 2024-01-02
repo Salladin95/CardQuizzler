@@ -1,11 +1,11 @@
 import React from "react"
-import { CardType } from "~/features/quizCard/model"
+import { TermType } from "~/app/models"
 import { FlippableContent } from "~/features/flippable/FlippableContent"
 import { PropsWithClassName } from "~/app/types"
 import { Card } from "~/entites"
 import { useFlippable } from "~/features/flippable/useFlippable"
 
-export type QuizCardProps = CardType & PropsWithClassName
+export type QuizCardProps = TermType & PropsWithClassName
 
 export function QuizCard(props: QuizCardProps) {
 	const { title, description, className } = props

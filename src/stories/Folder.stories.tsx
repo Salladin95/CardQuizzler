@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react"
 import { Folder } from "~/entites"
+import { mockFolder } from "~/lib/mock"
 
 const meta: Meta<typeof Folder> = {
 	title: "Entities/Folder",
@@ -20,7 +21,6 @@ type Story = StoryObj<typeof Folder>
 
 export const FolderStory: Story = {
 	args: {
-		title: "Grammar",
-		amountOfModules: 10,
+		...mockFolder(),
 	},
 }

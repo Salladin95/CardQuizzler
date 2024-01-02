@@ -1,7 +1,7 @@
 import React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { Swiper } from "~/features/swiper/Swiper"
-import { mockCards } from "~/lib/mock/mockCard"
+import { mockTerms } from "~/lib/mock/mockTerm"
 
 const meta: Meta<typeof Swiper> = {
 	title: "Features/Swiper",
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
 	loaders: [
 		() => ({
-			cards: mockCards(),
+			cards: mockTerms(),
 		}),
 	],
 }

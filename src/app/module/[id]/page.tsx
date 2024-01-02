@@ -1,8 +1,8 @@
 import { Swiper } from "~/features/swiper/Swiper"
-import { mockCards } from "~/lib/mock/mockCard"
+import { mockTerms } from "~/lib/mock/mockTerm"
 
 export default async function Module() {
-	const cards = mockCards()
+	const cards = mockTerms()
 	return (
 		<main className={"flex-center overflow-hidden"}>
 			<Swiper cards={cards} className={""} />

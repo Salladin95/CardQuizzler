@@ -1,4 +1,5 @@
 export * from "./Button"
+export * from "./Dialog"
 export * from "./Checkbox"
 export * from "./DataHydration"
 export * from "./Input"

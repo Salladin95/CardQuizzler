@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react"
 import { Module } from "~/entites"
+import { mockModule } from "~/lib/mock"
 
 const meta: Meta<typeof Module> = {
 	title: "Entities/Module",
@@ -20,7 +21,6 @@ type Story = StoryObj<typeof Module>
 
 export const ModuleStory: Story = {
 	args: {
-		title: "Grammar",
-		amountOfTerms: 10,
+		...mockModule(),
 	},
 }

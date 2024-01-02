@@ -1,21 +1,19 @@
+"use client"
+import { useRouter } from "next/navigation"
+import { cn } from "~/lib"
 import { FolderIcon } from "~/shared"
 import { PropsWithClassName } from "~/app/types"
-import { cn } from "~/lib"
-
-export type FolderType = {
-	id: string
-	title: string
-	amountOfModules: number
-}
+import { FolderType } from "~/app/models"
 
 type FolderProps = FolderType & PropsWithClassName
 
 export function Folder(props: FolderProps) {
-	const { title, amountOfModules, className } = props
+	const { title, modules, className, id } = props
+	const router = useRouter()
 	return (
-		<div className={cn("panel py-4 px-2", className)}>
+		<div onClick={() => router.push(`/folder/${id}`)} className={cn("panel py-4 px-2", className)}>
 			<p className={"mb-1 text-body-2"}>
-				Всего модулей: <span className={"italic"}>{amountOfModules}</span>
+				Всего модулей: <span className={"italic"}>{modules.length}</span>
 			</p>
 			<div className="flex items-center gap-x-2">
 				<FolderIcon />
