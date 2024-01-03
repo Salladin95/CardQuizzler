@@ -1,8 +1,8 @@
 import { Highlight } from "@tiptap/extension-highlight"
 import { Underline } from "@tiptap/extension-underline"
 import { TextStyle } from "@tiptap/extension-text-style"
-import { EditorOptions, useEditor } from "@tiptap/react"
 import { StarterKit } from "@tiptap/starter-kit"
+import { EditorOptions, useEditor } from "@tiptap/react"
 
 export function useConfigureEditor(props: Partial<EditorOptions>) {
 	return useEditor({
@@ -18,7 +18,7 @@ export function useConfigureEditor(props: Partial<EditorOptions>) {
 		],
 		editorProps: {
 			attributes: {
-				class: "textarea textarea-primary textarea-size-default w-full h-full min-w-[20rem]",
+				class: "input input-primary input-size-default w-full h-full min-w-[20rem]",
 			},
 		},
 		...props,

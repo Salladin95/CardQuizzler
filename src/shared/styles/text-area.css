@@ -15,7 +15,7 @@
 
         &-size {
             &-default {
-                @apply w-full min-h-[5.25rem] rounded-lg p-3 resize-none;
+                @apply w-full min-h-[8.25rem] rounded-lg p-3 resize-none;
             }
         }
     }
