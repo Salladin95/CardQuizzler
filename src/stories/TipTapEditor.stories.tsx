@@ -42,12 +42,18 @@ function RenderStory() {
 	return (
 		<div className={"flex flex-col gap-y-8"}>
 			<h1>Editor - 1</h1>
-			<TipTapEditor id={"tip-tap1"} onChange={(newRichText) => editor1?.commands.setContent(newRichText)} />
+			<TipTapEditor
+				id={"tip-tap1"}
+				options={{ onUpdate: (newRichText) => editor1?.commands.setContent(newRichText) }}
+			/>
 			<h1>Editor content - 1</h1>
 			<EditorContent editor={editor1} />
 
 			<h1>Editor - 2</h1>
-			<TipTapEditor id={"tip-tap2"} onChange={(newRichText) => editor2?.commands.setContent(newRichText)} />
+			<TipTapEditor
+				id={"tip-tap2"}
+				options={{ onUpdate: (newRichText) => editor2?.commands.setContent(newRichText) }}
+			/>
 			<h1>Editor content - 2</h1>
 			<EditorContent editor={editor2} />
 		</div>

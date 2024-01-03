@@ -31,7 +31,7 @@ export function Create() {
 			className={""}
 		>
 			<Button className={"mb-4"} variant={"secondary"} onClick={closePopover}>
-				<Link href={"create-module"}>Создать модуль</Link>
+				<Link href={"/module/create"}>Создать модуль</Link>
 			</Button>
 			<CreateEditFolder onSubmit={handleFolderCreation} />
 		</Popover>

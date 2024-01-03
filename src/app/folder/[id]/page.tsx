@@ -2,6 +2,7 @@ import { Module } from "~/entites"
 import { mockFolder } from "~/lib/mock/mock"
 import { AddIcon, Button, FolderIcon } from "~/shared"
 import { FolderSettingsMenu } from "./ui"
+import Link from "next/link"
 
 export default async function FolderPage() {
 	const folder = mockFolder()
@@ -11,9 +12,11 @@ export default async function FolderPage() {
 			<section className={"mb-4 flex items-center justify-between"}>
 				<p className={"h4"}>Всего модулей - {folder.modules.length}</p>
 				<div className={"flex gap-x-2"}>
-					<Button variant={"secondary"} className={"max-w-[3rem] h2"}>
-						<AddIcon />
-					</Button>
+					<Link href={"/module/create"}>
+						<Button variant={"secondary"} className={"max-w-[3rem] h2"}>
+							<AddIcon />
+						</Button>
+					</Link>
 					<FolderSettingsMenu folder={folder} />
 				</div>
 			</section>
@@ -26,9 +29,11 @@ export default async function FolderPage() {
 					<Module {...module} key={module.id} />
 				))}
 			</section>
-			<Button variant={"primary"} className={"max-w-[20rem] h3 mx-auto"}>
-				Добавить модуль
-			</Button>
+			<Link href={"/module/create"}>
+				<Button variant={"primary"} className={"max-w-[20rem] h3 mx-auto"}>
+					Добавить модуль
+				</Button>
+			</Link>
 		</main>
 	)
 }
