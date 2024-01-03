@@ -1,9 +1,9 @@
 import React from "react"
-import { TermType } from "~/app/models"
-import { FlippableContent } from "~/features/flippable/FlippableContent"
-import { PropsWithClassName } from "~/app/types"
 import { Card } from "~/entites"
-import { useFlippable } from "~/features/flippable/useFlippable"
+import { TermType } from "~/app/models"
+import { PropsWithClassName } from "~/app/types"
+import { FlippableContent } from "../flippable/FlippableContent"
+import { useFlippable } from "../flippable/useFlippable"
 
 export type QuizCardProps = TermType & PropsWithClassName
 

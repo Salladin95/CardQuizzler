@@ -3,10 +3,10 @@ import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button, Popover } from "~/shared"
-import { mockCreateFolder } from "~/lib/mock/"
-import { CreateEditFolder } from "~/features/createEditFolder"
+import { mockCreateFolder } from "~/lib/mock"
+import { CreateEditFolder } from "~/entites/createEditFolder"
 
-export function Create() {
+export function CreateModuleFolder() {
 	const router = useRouter()
 	const [showPopover, setShowPopover] = React.useState(false)
 

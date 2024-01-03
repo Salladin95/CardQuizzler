@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
-import { Button, Dialog, Input } from "~/shared"
 import { FolderType } from "~/app/models"
+import { Button, Dialog, Input } from "~/shared"
 
 type CreateFolderProps = {
 	onSubmit?: (folderName: string) => void

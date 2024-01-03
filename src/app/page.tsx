@@ -1,9 +1,9 @@
 import React from "react"
 import Link from "next/link"
-import { Create } from "./ui"
 import { Button } from "~/shared"
 import { FolderCarousel, ModuleCarousel } from "~/widgets"
 import { mockFolders, mockModules } from "~/lib/mock/mock"
+import { CreateModuleFolder } from "~/entites/createModuleFolder"
 
 export default async function Home() {
 	return (
@@ -27,7 +27,7 @@ export default async function Home() {
 			</section>
 
 			<div className={"flex gap-x-4"}>
-				<Create />
+				<CreateModuleFolder />
 				<Button className={"mb-4"}>
 					{/*TODO: ADD LOGIC FOR EXTRACTING ID OF RANDOM MODULE*/}
 					<Link href={`/module/${22}`}>Открыть рандомный модуль</Link>

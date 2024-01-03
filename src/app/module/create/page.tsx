@@ -1,10 +1,12 @@
+"use client"
 import React from "react"
-import { ModuleEditor } from "~/app/module/create/ui"
+import { ModuleEditor } from "src/widgets/moduleEditor"
 
 export default function CreateModule() {
 	return (
 		<main className={"container"}>
-			<ModuleEditor />
+			{/* TODO: REPLACE MOCK LOGIC */}
+			<ModuleEditor onSubmit={(terms) => console.log(terms)} />
 		</main>
 	)
 }

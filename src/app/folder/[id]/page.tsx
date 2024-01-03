@@ -1,8 +1,8 @@
+import Link from "next/link"
 import { Module } from "~/entites"
 import { mockFolder } from "~/lib/mock/mock"
 import { AddIcon, Button, FolderIcon } from "~/shared"
-import { FolderSettingsMenu } from "./ui"
-import Link from "next/link"
+import { FolderSettingsMenu } from "~/entites/folderSettingsMenu"
 
 export default async function FolderPage() {
 	const folder = mockFolder()

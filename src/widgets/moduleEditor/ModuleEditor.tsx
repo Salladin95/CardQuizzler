@@ -1,19 +1,20 @@
 "use client"
 import React from "react"
 import { TermType } from "~/app/models"
-import { TermEditor } from "~/app/module/create/ui"
+import { TermEditor } from "~/widgets/moduleEditor/index"
 import { mockEmptyTerm } from "~/lib/mock"
 import { AddIcon, Button, Input } from "~/shared"
 import { AnimatePresence, motion } from "framer-motion"
 
 type ModuleEditorProps = {
-	id?: string
+	terms?: TermType[]
+	onSubmit: (terms: TermType[]) => void
 }
 
 export function ModuleEditor(props: ModuleEditorProps) {
-	const { id } = props
+	const { onSubmit } = props
 	// TODO: FETCH MODULE IF THERE IS ID
-	const [terms, setTerms] = React.useState<TermType[]>([mockEmptyTerm()])
+	const [terms, setTerms] = React.useState<TermType[]>(props.terms || [mockEmptyTerm()])
 
 	function insertTerm(newTerm: TermType, at = terms.length) {
 		const updatedTerms = [...terms]
@@ -36,11 +37,17 @@ export function ModuleEditor(props: ModuleEditorProps) {
 		setTerms((prevTerms) => prevTerms.filter((_, i) => i !== index))
 	}, [])
 
+	const handleSubmit = () => onSubmit(terms)
+	const title = !props.terms ? "Создать новый модуль" : "Обновить модуль"
+	const submitBtnTitle = !props.terms ? "Создать" : "Сохранить"
+
 	return (
 		<section>
 			<div className="flex justify-between mb-4">
-				<h1 className={"h2"}>{!id ? "Создать новый модуль" : "Обновить модуль"}</h1>
-				<Button className={"w-min"}>{!id ? "Создать" : "Сохранить"}</Button>
+				<h1 className={"h2"}>{title}</h1>
+				<Button className={"w-min"} onClick={handleSubmit}>
+					{submitBtnTitle}
+				</Button>
 			</div>
 			<Input placeholder={"Введите название молуя"} className={"mb-8"} />
 			<section className={"flex flex-col gap-y-4 mb-12"}>
@@ -79,7 +86,9 @@ export function ModuleEditor(props: ModuleEditorProps) {
 			<Button className={"w-min mx-auto"} onClick={() => insertTerm(mockEmptyTerm())}>
 				Добавить
 			</Button>
-			<Button className={"w-min ml-auto px-8 py-6"}>{!id ? "Создать" : "Сохранить"}</Button>
+			<Button className={"w-min ml-auto px-8 py-6"} onClick={handleSubmit}>
+				{submitBtnTitle}
+			</Button>
 		</section>
 	)
 }
