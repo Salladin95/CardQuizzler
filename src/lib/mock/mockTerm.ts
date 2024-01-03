@@ -10,6 +10,14 @@ export function mockTerm(): TermType {
 	}
 }
 
+export function mockEmptyTerm(): TermType {
+	return {
+		id: faker.string.uuid(),
+		title: "",
+		description: "",
+	}
+}
+
 export function asyncMockTerm(): Promise<TermType> {
 	return Promise.resolve(mockTerm())
 }

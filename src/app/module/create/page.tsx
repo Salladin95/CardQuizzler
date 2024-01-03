@@ -5,10 +5,10 @@ import { AddIcon, Button, Input } from "~/shared"
 import { TipTapEditor } from "~/features/tiptap"
 import { TermType } from "~/app/models"
 import { AnimatePresence, motion } from "framer-motion"
-import { mockTerm } from "~/lib/mock"
+import { mockEmptyTerm } from "~/lib/mock"
 
 export default function CreateModule() {
-	const [terms, setTerms] = React.useState<TermType[]>([mockTerm()])
+	const [terms, setTerms] = React.useState<TermType[]>([mockEmptyTerm()])
 
 	function insertTerm(newTerm: TermType, at = terms.length) {
 		const updatedTerms = [...terms]
@@ -64,7 +64,11 @@ export default function CreateModule() {
 									initial={{ opacity: 0 }}
 									transition={{ opacity: { duration: 0.1 } }}
 								>
-									<Button variant={"secondary"} className={"w-min"} onClick={() => insertTerm(mockTerm(), index + 1)}>
+									<Button
+										variant={"secondary"}
+										className={"w-min"}
+										onClick={() => insertTerm(mockEmptyTerm(), index + 1)}
+									>
 										<AddIcon />
 									</Button>
 								</motion.div>
@@ -72,7 +76,7 @@ export default function CreateModule() {
 						))}
 					</AnimatePresence>
 				</section>
-				<Button className={"w-min mx-auto"} onClick={() => insertTerm(mockTerm())}>
+				<Button className={"w-min mx-auto"} onClick={() => insertTerm(mockEmptyTerm())}>
 					Добавить
 				</Button>
 				<Button className={"w-min p-6 ml-auto"}>Создать</Button>

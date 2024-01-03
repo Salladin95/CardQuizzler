@@ -24,7 +24,7 @@ export function TipTapEditor(props: TipTapEditorProps) {
 				<Popover
 					open={Boolean(selectedTextPosition)}
 					trigger={null}
-					style={{ position: "absolute", top: selectedTextPosition.top - 80, left: selectedTextPosition.left - 125 }}
+					style={{ position: "absolute", top: selectedTextPosition?.top - 80, left: selectedTextPosition?.left - 125 }}
 					side={"top"}
 				>
 					<TipTapEditorToolBar editor={editor} />
