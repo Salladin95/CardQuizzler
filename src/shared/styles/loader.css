@@ -1,0 +1,29 @@
+@layer {
+    .loader {
+        svg {
+            @apply animate-spin;
+        }
+
+        &-primary {
+            @apply text-primary fill-gray-100;
+        }
+
+        &-secondary {
+            @apply text-gray-100 fill-primary;
+        }
+
+        &-size {
+            &-default {
+                @apply h-8 w-8;
+            }
+
+            &-md {
+                @apply h-6 w-6;
+            }
+
+            &-sm {
+                @apply h-4 w-4;
+            }
+        }
+    }
+}

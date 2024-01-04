@@ -15,3 +15,10 @@ export type ModuleType = {
 	title: string
 	terms: TermType[]
 }
+
+export type HomePageData = {
+	folders: FolderType[]
+	modules: ModuleType[]
+	lastActions: ModuleType[]
+	difficultModules: ModuleType[]
+}

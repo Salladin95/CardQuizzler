@@ -1,0 +1,43 @@
+@layer components {
+    .toast {
+        @apply flex flex-col cursor-pointer shadow-md;
+
+        &-viewport {
+            @apply z-10 fixed bottom-4 360:top-4 right-4 h-min flex flex-col 640:top-[unset] 640:bottom-4 gap-y-4;
+        }
+
+        &-title {
+            @apply text-h4 mb-2;
+        }
+
+        &-description {
+            @apply text-body-3;
+        }
+
+        &-primary {
+            @apply text-white bg-primary;
+        }
+
+        &-error {
+            @apply text-white bg-danger;
+        }
+
+        &-info {
+            @apply text-white bg-info;
+        }
+
+        .scroll-area {
+            @apply rounded-none;
+        }
+
+        &-size {
+            &-default {
+                @apply w-80 rounded-lg p-2;
+
+                .toast-content {
+                    @apply h-16;
+                }
+            }
+        }
+    }
+}

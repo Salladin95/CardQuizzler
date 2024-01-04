@@ -8,7 +8,7 @@ import { Options, Splide, SplideSlide, SplideTrack } from "@splidejs/react-splid
 import "@splidejs/react-splide/css/core"
 
 type SplideCarouselProps<T> = {
-	data: T[]
+	data: T[] | undefined | null
 	options?: Options
 	withControllers?: boolean
 	onClick?: (id: string) => void
@@ -23,6 +23,9 @@ export function withSplideCarousel<DataType extends WithId>(
 		function handleClick(id: string) {
 			onClick && onClick(id)
 		}
+
+		if (!data) return null
+
 		return (
 			<Splide hasTrack={false} options={options}>
 				<SplideTrack>

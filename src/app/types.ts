@@ -1,6 +1,7 @@
 import React from "react"
 
 export type WithId = { id: string }
+export type WithParamsId = { params: WithId }
 export type PropsWithClassName = { className?: string }
 export type SvgDefaultProps = React.HTMLAttributes<SVGElement>
 export type SelectOption<V = string> = {
@@ -13,3 +14,27 @@ export type DataAttributesProps = {
 } & {
 	[key: `data-${string}`]: unknown
 }
+
+export type ApiResponse<T> = {
+	detail: T
+}
+
+export type ApiValidationError = {
+	input: null
+	/**
+	 * Path to field with error
+	 * */
+	loc: string[]
+	/**
+	 * Error message
+	 * */
+	msg: string
+	/**
+	 * Error type
+	 * */
+	type: string
+}
+
+export type ApiValidationResponse = ApiResponse<ApiValidationError[]>
+export type ApiResponseError = string
+export type ApiCommonResponse = ApiResponse<ApiResponseError>

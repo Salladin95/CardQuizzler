@@ -1,44 +1,65 @@
+"use client"
 import React from "react"
 import Link from "next/link"
-import { Button } from "~/shared"
+import { faker } from "@faker-js/faker"
+import { HomePageData } from "~/app/models"
+import { getHomePageData } from "~/api/requests"
+import { Button, DataHydration, Loader } from "~/shared"
 import { FolderCarousel, ModuleCarousel } from "~/widgets"
-import { mockFolders, mockModules } from "~/lib/mock/mock"
 import { CreateModuleFolder } from "~/entites/CreateModuleFolder"
+import { homeDataKeys, useFetchDifficultModules, useFetchFolders, useFetchLastActions, useFetchModules } from "~/api"
 
-export default async function Home() {
+function Home() {
+	const { data: lastActions, isLoading: isLastActionsLoading } = useFetchLastActions()
+	const { data: difficultModules, isLoading: isDifModulesLoading } = useFetchDifficultModules()
+	const { data: modules, isLoading: isModulesLoading } = useFetchModules()
+	const { data: folders, isLoading: isFoldersLoading } = useFetchFolders()
+
+	if (isDifModulesLoading || isLastActionsLoading || isModulesLoading || isFoldersLoading) {
+		return (
+			<main className={"bg-gray-100 flex-center"}>
+				<Loader className={"flex-none"} />
+			</main>
+		)
+	}
+
 	return (
 		<main className={"container"}>
 			<section className="mb-4">
 				<h1>Последние действия</h1>
-				{/*TODO: REMOVE MOCKED DATA*/}
-				<ModuleCarousel data={mockModules()} className={"h-[13rem]"} />
+				<ModuleCarousel data={lastActions} className={"h-[13rem]"} />
 			</section>
 
 			<section className="">
 				<h3>Сложные модули</h3>
-				{/*TODO: REMOVE MOCKED DATA*/}
-				<ModuleCarousel data={mockModules()} className={"h-[13rem]"} />
+				<ModuleCarousel data={difficultModules} className={"h-[13rem]"} />
 			</section>
 
 			<section className="mb-4">
 				<h2>Мои папки</h2>
-				{/*TODO: REMOVE MOCKED DATA*/}
-				<FolderCarousel data={mockFolders()} className={"h-[13rem]"} />
+				<FolderCarousel data={folders} className={"h-[13rem]"} />
 			</section>
 
 			<section className="">
 				<h3>Мои модули</h3>
-				{/*TODO: REMOVE MOCKED DATA*/}
-				<ModuleCarousel data={mockModules(15)} className={"h-[13rem]"} />
+				<ModuleCarousel data={modules} className={"h-[13rem]"} />
 			</section>
 
 			<div className={"flex gap-x-4"}>
 				<CreateModuleFolder />
 				<Button className={"mb-4"}>
 					{/*TODO: ADD LOGIC FOR EXTRACTING ID OF RANDOM MODULE*/}
-					<Link href={`/module/${22}`}>Открыть рандомный модуль</Link>
+					<Link href={`/module/${faker.string.uuid()}`}>Открыть рандомный модуль</Link>
 				</Button>
 			</div>
 		</main>
+	)
+}
+
+export default function HomeWithDataHydration() {
+	return (
+		<DataHydration<HomePageData> getData={getHomePageData} queryKeys={homeDataKeys}>
+			<Home />
+		</DataHydration>
 	)
 }

@@ -45,8 +45,10 @@ export const fade: Record<string, Framer.MotionProps> = {
 	},
 }
 
-export default {
+const Motions = {
 	opacity,
 	fade,
 	height,
 }
+
+export default Motions
