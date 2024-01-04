@@ -44,7 +44,7 @@ export const Dialog = (props: DialogProps) => {
 	} = props
 	const [open, setOpen] = React.useState(false)
 	React.useEffect(() => setOpen(Boolean(propsOpen)), [propsOpen])
-	React.useEffect(() => onOpenChange && onOpenChange(open), [open])
+	React.useEffect(() => onOpenChange && onOpenChange(open), [onOpenChange, open])
 
 	return (
 		<RadixDialog.Root defaultOpen={defaultOpen} onOpenChange={setOpen} open={open}>
