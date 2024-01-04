@@ -1,16 +1,14 @@
 "use client"
-import { useRouter } from "next/navigation"
 import { cn } from "~/lib"
 import { PropsWithClassName } from "~/app/types"
 import { ModuleType } from "~/app/models"
 
-type ModuleProps = ModuleType & PropsWithClassName
+export type ModuleProps = ModuleType & PropsWithClassName
 
 export function Module(props: ModuleProps) {
-	const { title, terms, className, id } = props
-	const router = useRouter()
+	const { title, terms, className } = props
 	return (
-		<div onClick={() => router.push(`/module/${id}`)} className={cn("panel min-w-[20rem] w-full py-4 px-2", className)}>
+		<div className={cn("panel min-w-[20rem] w-full py-4 px-2", className)}>
 			<p className={"mb-1 text-body-2"}>
 				Всего терминов: <span className={"italic"}>{terms.length}</span>
 			</p>

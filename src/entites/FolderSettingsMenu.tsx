@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { FolderType } from "~/app/models"
-import { CreateEditFolder } from "~/entites/createEditFolder"
+import { CreateEditFolder } from "./CreateEditFolder"
 import { AdjustIcon, Button, EllipsisIcon, Popover, TrashIcon } from "~/shared"
 
 type UpdateProps = {

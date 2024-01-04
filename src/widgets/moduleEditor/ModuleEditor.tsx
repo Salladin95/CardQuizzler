@@ -2,9 +2,9 @@
 import React from "react"
 import { TermType } from "~/app/models"
 import { TermEditor } from "~/widgets/moduleEditor/index"
-import { mockEmptyTerm } from "~/lib/mock"
+import { mockEmptyTerm, mockEmptyTerms } from "~/lib/mock"
 import { AddIcon, Button, Input } from "~/shared"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion, Reorder } from "framer-motion"
 
 type ModuleEditorProps = {
 	terms?: TermType[]
@@ -13,8 +13,9 @@ type ModuleEditorProps = {
 
 export function ModuleEditor(props: ModuleEditorProps) {
 	const { onSubmit } = props
+
 	// TODO: FETCH MODULE IF THERE IS ID
-	const [terms, setTerms] = React.useState<TermType[]>(props.terms || [mockEmptyTerm()])
+	const [terms, setTerms] = React.useState<TermType[]>(props.terms || mockEmptyTerms())
 
 	function insertTerm(newTerm: TermType, at = terms.length) {
 		const updatedTerms = [...terms]
@@ -50,10 +51,11 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				</Button>
 			</div>
 			<Input placeholder={"Введите название молуя"} className={"mb-8"} />
-			<section className={"flex flex-col gap-y-4 mb-12"}>
+			<Reorder.Group axis={"y"} values={terms} onReorder={setTerms} className={"flex flex-col gap-y-4 mb-12"}>
 				<AnimatePresence initial={false}>
 					{terms.map((term, index) => (
-						<motion.div
+						<Reorder.Item
+							value={term}
 							key={term.id}
 							initial={{ height: 0, opacity: 0 }}
 							animate={{
@@ -62,13 +64,13 @@ export function ModuleEditor(props: ModuleEditorProps) {
 							}}
 							exit={{ opacity: 0, height: 0 }}
 							transition={{ duration: 0.2 }}
-							className={"relative"}
+							className={"relative hover:cursor-grab"}
 						>
 							<TermEditor index={index} term={term} onUpdate={handleUpdate} onDelete={handleDelete} />
 							<motion.div
 								whileHover={{ opacity: 1 }}
 								className={"w-full flex-center absolute z-50 -bottom-[13%]"}
-								initial={{ opacity: 0 }}
+								style={{ opacity: 0 }}
 								transition={{ opacity: { duration: 0.1 } }}
 							>
 								<Button
@@ -79,10 +81,10 @@ export function ModuleEditor(props: ModuleEditorProps) {
 									<AddIcon />
 								</Button>
 							</motion.div>
-						</motion.div>
+						</Reorder.Item>
 					))}
 				</AnimatePresence>
-			</section>
+			</Reorder.Group>
 			<Button className={"w-min mx-auto"} onClick={() => insertTerm(mockEmptyTerm())}>
 				Добавить
 			</Button>

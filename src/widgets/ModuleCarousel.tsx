@@ -1,6 +1,6 @@
 "use client"
 import { withSplideCarousel } from "~/features/splideCarousel/withSplideCarousel"
-import { Module } from "~/entites"
 import { ModuleType } from "~/app/models"
+import { ModuleContextMenu } from "~/entites/ModuleContextMenu"
 
-export const ModuleCarousel = withSplideCarousel<ModuleType>(Module)
+export const ModuleCarousel = withSplideCarousel<ModuleType>(ModuleContextMenu)

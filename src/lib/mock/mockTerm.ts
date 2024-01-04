@@ -26,6 +26,10 @@ export function mockTerms(amount = 10): TermType[] {
 	return createArray(amount, mockTerm)
 }
 
+export function mockEmptyTerms(amount = 5): TermType[] {
+	return createArray(amount, mockEmptyTerm)
+}
+
 export function asyncMockTerms(amount = 10): Promise<TermType[]> {
 	const promises = createArray(amount, asyncMockTerm)
 	return Promise.all(promises)

@@ -1,5 +1,6 @@
 export * from "./AddIcon"
 export * from "./AdjustIcon"
+export * from "./ArrowsPointingOutIcon"
 export * from "./CheckIcon"
 export * from "./Ellipsis"
 export * from "./FolderIcon"

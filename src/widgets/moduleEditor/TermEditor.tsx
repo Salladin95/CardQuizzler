@@ -26,7 +26,7 @@ export function TermEditor(props: CreateModuleEditorProps) {
 					Close
 				</Button>
 			</div>
-			<div className={"flex gap-4 mb-8"}>
+			<div className={"flex flex-col 768:flex-row gap-4 mb-8"}>
 				<TermEditorItem
 					onUpdate={(title) => handleUpdate({ title })}
 					id={`term-title-${index}`}

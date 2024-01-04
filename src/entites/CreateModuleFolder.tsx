@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button, Popover } from "~/shared"
 import { mockCreateFolder } from "~/lib/mock"
-import { CreateEditFolder } from "~/entites/createEditFolder"
+import { CreateEditFolder } from "./CreateEditFolder"
 
 export function CreateModuleFolder() {
 	const router = useRouter()

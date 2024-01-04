@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Button } from "~/shared"
 import { FolderCarousel, ModuleCarousel } from "~/widgets"
 import { mockFolders, mockModules } from "~/lib/mock/mock"
-import { CreateModuleFolder } from "~/entites/createModuleFolder"
+import { CreateModuleFolder } from "~/entites/CreateModuleFolder"
 
 export default async function Home() {
 	return (
@@ -24,6 +24,12 @@ export default async function Home() {
 				<h2>Мои папки</h2>
 				{/*TODO: REMOVE MOCKED DATA*/}
 				<FolderCarousel data={mockFolders()} className={"h-[13rem]"} />
+			</section>
+
+			<section className="">
+				<h3>Мои модули</h3>
+				{/*TODO: REMOVE MOCKED DATA*/}
+				<ModuleCarousel data={mockModules(15)} className={"h-[13rem]"} />
 			</section>
 
 			<div className={"flex gap-x-4"}>
