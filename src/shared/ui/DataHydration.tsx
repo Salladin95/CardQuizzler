@@ -1,7 +1,6 @@
 "use client"
 import React from "react"
-import { getQueryClient } from "~/api/queryClient"
-import { dehydrate, DehydratedState, Hydrate } from "@tanstack/react-query"
+import { dehydrate, DehydratedState, Hydrate, QueryClient } from "@tanstack/react-query"
 
 type WithHydrationProps<DataT> = {
 	children: React.ReactNode
@@ -11,7 +10,7 @@ type WithHydrationProps<DataT> = {
 
 export function DataHydration<DataT>(props: WithHydrationProps<DataT>) {
 	const { queryKeys, children, getData } = props
-	const queryClient = getQueryClient()
+	const [queryClient] = React.useState(() => new QueryClient())
 	const [dehydratedState, setDehydratedState] = React.useState<DehydratedState>()
 	React.useEffect(() => {
 		;(async () => {
