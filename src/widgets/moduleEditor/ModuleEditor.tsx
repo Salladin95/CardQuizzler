@@ -57,46 +57,52 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				placeholder={"Введите название молуя"}
 				className={"mb-8"}
 			/>
-			<Reorder.Group axis={"y"} values={terms} onReorder={setTerms} className={"flex flex-col gap-y-4 mb-12"}>
+			<Reorder.Group axis={"y"} values={terms} onReorder={setTerms} className={"flex flex-col gap-4"}>
 				<AnimatePresence initial={false}>
 					{terms.map((term, index) => (
 						<Reorder.Item
 							value={term}
 							key={term.id}
-							initial={{ height: 0, opacity: 0 }}
+							initial={{ opacity: 0 }}
 							animate={{
 								opacity: 1,
-								height: "auto",
 							}}
-							exit={{ opacity: 0, height: 0 }}
-							transition={{ duration: 0.2 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.3, ease: "easeOut" }}
 							className={"relative hover:cursor-grab"}
 						>
-							<TermEditor index={index} term={term} onUpdate={handleUpdate} onDelete={handleDelete} />
-							<motion.div
-								whileHover={{ opacity: 1 }}
-								className={"w-full flex-center absolute z-50 -bottom-[13%]"}
-								style={{ opacity: 0 }}
-								transition={{ opacity: { duration: 0.1 } }}
-							>
-								<Button
-									variant={"secondary"}
-									className={"w-min"}
-									onClick={() => insertTerm(mockEmptyTerm(), index + 1)}
+							<motion.div>
+								<TermEditor index={index} term={term} onUpdate={handleUpdate} onDelete={handleDelete} />
+								<motion.div
+									layout
+									initial={false}
+									whileHover={{ opacity: 1 }}
+									className={"w-full flex-center absolute z-50 -bottom-[13%]"}
+									style={{ opacity: 0 }}
+									transition={{ duration: 0.3 }}
 								>
-									<AddIcon />
-								</Button>
+									<Button
+										variant={"secondary"}
+										className={"w-min"}
+										onClick={() => insertTerm(mockEmptyTerm(), index + 1)}
+									>
+										<AddIcon />
+									</Button>
+								</motion.div>
 							</motion.div>
 						</Reorder.Item>
 					))}
+
+					<motion.div layout initial={false} animate={{ height: "auto" }} transition={{ duration: 0.5 }}>
+						<Button className={"w-min mx-auto mt-12"} onClick={() => insertTerm(mockEmptyTerm())}>
+							Добавить
+						</Button>
+						<Button className={"w-min ml-auto px-8 py-6"} onClick={handleSubmit}>
+							{submitBtnTitle}
+						</Button>
+					</motion.div>
 				</AnimatePresence>
 			</Reorder.Group>
-			<Button className={"w-min mx-auto"} onClick={() => insertTerm(mockEmptyTerm())}>
-				Добавить
-			</Button>
-			<Button className={"w-min ml-auto px-8 py-6"} onClick={handleSubmit}>
-				{submitBtnTitle}
-			</Button>
 		</section>
 	)
 }
