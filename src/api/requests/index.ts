@@ -1,5 +1,5 @@
-import { FolderType, HomePageData, ModuleType } from "~/app/models"
-import { mockFolders, mockGetFolder, mockGetModule, mockModules } from "~/lib/mock"
+import { HomePageData } from "~/app/models"
+import { mockFolders, mockModules } from "~/lib/mock"
 
 export function getHomePageData(): Promise<HomePageData> {
 	// TODO: REPLACE MOCK LOGIC
@@ -10,12 +10,6 @@ export function getHomePageData(): Promise<HomePageData> {
 	return Promise.resolve({ folders, modules, lastActions, difficultModules })
 }
 
-export function getFolder(id: string): Promise<FolderType> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockGetFolder(id))
-}
+export * from "./folder.requests"
+export * from "./module.requests"
 
-export function getModule(id: string): Promise<ModuleType> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockGetModule(id))
-}

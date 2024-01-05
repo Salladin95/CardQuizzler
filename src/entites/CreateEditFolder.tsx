@@ -26,7 +26,6 @@ export function CreateEditFolder(props: CreateFolderProps) {
 
 	function handleSubmit() {
 		if (!folderName) {
-			console.log("FOLDER NAME IS EMPTY")
 			return
 		}
 		setShowDialog(false)

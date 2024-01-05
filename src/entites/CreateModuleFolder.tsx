@@ -3,8 +3,9 @@ import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button, Popover } from "~/shared"
-import { mockCreateFolder } from "~/lib/mock"
 import { CreateEditFolder } from "./CreateEditFolder"
+import { foldersQueryKey, useCreateFolderMutation } from "~/api"
+import { useQueryClient } from "@tanstack/react-query"
 
 export function CreateModuleFolder() {
 	const router = useRouter()
@@ -14,11 +15,12 @@ export function CreateModuleFolder() {
 		setShowPopover(false)
 	}
 
-	function handleFolderCreation(folderName: string) {
-		console.log("CREATING FOLDER")
+	const queryClient = useQueryClient()
+	const createFolder = useCreateFolderMutation({ onSuccess: () => queryClient.invalidateQueries([foldersQueryKey]) })
+
+	async function handleFolderCreation(folderName: string) {
 		closePopover()
-		// TODO: REPLACE MOCK FUNCTION
-		const folder = mockCreateFolder(folderName)
+		const folder = await createFolder.mutateAsync(folderName)
 		router.push(`/folder/${folder.id}`)
 	}
 

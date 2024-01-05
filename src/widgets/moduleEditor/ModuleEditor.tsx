@@ -8,14 +8,15 @@ import { AnimatePresence, motion, Reorder } from "framer-motion"
 
 type ModuleEditorProps = {
 	terms?: TermType[]
-	onSubmit: (terms: TermType[]) => void
+	moduleName?: string
+	onSubmit: (moduleName: string, terms: TermType[]) => void
 }
 
 export function ModuleEditor(props: ModuleEditorProps) {
 	const { onSubmit } = props
 
-	// TODO: FETCH MODULE IF THERE IS ID
 	const [terms, setTerms] = React.useState<TermType[]>(props.terms || mockEmptyTerms())
+	const [moduleName, setModuleName] = React.useState(props.moduleName || "")
 
 	function insertTerm(newTerm: TermType, at = terms.length) {
 		const updatedTerms = [...terms]
@@ -38,7 +39,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 		setTerms((prevTerms) => prevTerms.filter((_, i) => i !== index))
 	}, [])
 
-	const handleSubmit = () => onSubmit(terms)
+	const handleSubmit = () => onSubmit(moduleName, terms)
 	const title = !props.terms ? "Создать новый модуль" : "Обновить модуль"
 	const submitBtnTitle = !props.terms ? "Создать" : "Сохранить"
 
@@ -50,7 +51,12 @@ export function ModuleEditor(props: ModuleEditorProps) {
 					{submitBtnTitle}
 				</Button>
 			</div>
-			<Input placeholder={"Введите название молуя"} className={"mb-8"} />
+			<Input
+				value={moduleName}
+				onChange={(e) => setModuleName(e.currentTarget.value)}
+				placeholder={"Введите название молуя"}
+				className={"mb-8"}
+			/>
 			<Reorder.Group axis={"y"} values={terms} onReorder={setTerms} className={"flex flex-col gap-y-4 mb-12"}>
 				<AnimatePresence initial={false}>
 					{terms.map((term, index) => (

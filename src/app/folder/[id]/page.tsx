@@ -1,25 +1,35 @@
 "use client"
 import React from "react"
 import Link from "next/link"
-import { WithId, WithParamsId } from "~/app/types"
 import { FolderType } from "~/app/models"
 import { getFolder } from "~/api/requests"
-import { folderQueryKey, useFetchFolder } from "~/api"
-import { FolderSettingsMenu, ModuleContextMenu } from "~/entites"
-import { AddIcon, Button, DataHydration, FolderIcon, LoadingDataRenderer } from "~/shared"
+import { WithId, WithParamsId } from "~/app/types"
+import { useQueryClient } from "@tanstack/react-query"
+import { FolderContextMenu, ModuleContextMenu } from "~/entites"
+import { folderQueryKey, useAddModuleToFolderMutation, useFetchFolder } from "~/api"
+import { AddIcon, Button, CloseIcon, DataHydration, Dialog, FolderIcon, LoadingDataRenderer } from "~/shared"
 
 function Folder(folder: FolderType) {
+	const [showDialog, setShowDialog] = React.useState(false)
+
+	const queryClient = useQueryClient()
+	const addModuleToTheFolder = useAddModuleToFolderMutation({
+		onSuccess: () => queryClient.invalidateQueries([folderQueryKey, folder.id]),
+	})
+
+	function handleAddModuleToTheFolder(moduleId: string) {
+		addModuleToTheFolder.mutate({ moduleId, folderId: folder.id })
+		setShowDialog(false)
+	}
 	return (
 		<main className={"container"}>
 			<section className={"mb-4 flex items-center justify-between"}>
 				<p className={"h4"}>Всего модулей - {folder.modules.length}</p>
 				<div className={"flex gap-x-2"}>
-					<Link href={`/module/create/${folder.id}`}>
-						<Button variant={"secondary"} className={"max-w-[3rem] h2"}>
-							<AddIcon />
-						</Button>
-					</Link>
-					<FolderSettingsMenu folder={folder} />
+					<Button onClick={() => setShowDialog(true)} variant={"secondary"} className={"max-w-[3rem] h2"}>
+						<AddIcon />
+					</Button>
+					<FolderContextMenu folder={folder} />
 				</div>
 			</section>
 			<section className={"flex items-center gap-x-2 mb-4"}>
@@ -31,11 +41,39 @@ function Folder(folder: FolderType) {
 					<ModuleContextMenu {...module} key={module.id} />
 				))}
 			</section>
-			<Link href={`/module/create/${folder.id}`}>
-				<Button variant={"primary"} className={"max-w-[20rem] h3 mx-auto"}>
-					Добавить модуль
+			<Button onClick={() => setShowDialog(true)} variant={"primary"} className={"max-w-[20rem] h3 mx-auto"}>
+				Добавить модуль
+			</Button>
+			<Dialog
+				open={showDialog}
+				onOpenChange={setShowDialog}
+				className={"w-360 640:w-428 1024:w-768 overflow-y-scroll h-[90vh] p-0 rounded-none"}
+			>
+				<div className={"flex justify-between items-center mb-8 bg-gray-800 text-white px-4 py-6"}>
+					<h1 className={"h2"}>Добавить модуль</h1>
+					<Button variant={"gray"} className={"w-min"} onClick={() => setShowDialog(false)}>
+						<CloseIcon />
+					</Button>
+				</div>
+
+				<Button asChild variant={"secondary"} className={"h3 mb-4 mx-auto w-[90%]"}>
+					<Link href={`/module/create/${folder.id}`}>Создать новый модуль модуль</Link>
 				</Button>
-			</Link>
+
+				<section className={"flex flex-col gap-y-2 px-6 py-8 "}>
+					{folder.modules.map((module) => (
+						<div
+							key={module.id}
+							className={"flex justify-between items-center px-4 py-3 rounded bg-gray-800 text-white"}
+						>
+							<span>{module.title}</span>
+							<Button className={"w-min"} variant={"secondary"} onClick={() => handleAddModuleToTheFolder(module.id)}>
+								<AddIcon />
+							</Button>
+						</div>
+					))}
+				</section>
+			</Dialog>
 		</main>
 	)
 }

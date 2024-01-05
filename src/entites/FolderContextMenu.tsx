@@ -2,13 +2,15 @@
 import React from "react"
 import { FolderType } from "~/app/models"
 import { CreateEditFolder } from "./CreateEditFolder"
+import { useQueryClient } from "@tanstack/react-query"
 import { AdjustIcon, Button, EllipsisIcon, Popover, TrashIcon } from "~/shared"
+import { folderQueryKey, foldersQueryKey, useDeleteFolderMutation, useUpdateFolderMutation } from "~/api"
 
-type UpdateProps = {
+type FolderSettingsMenuProps = {
 	folder: FolderType
 }
 
-export function FolderSettingsMenu(props: UpdateProps) {
+export function FolderContextMenu(props: FolderSettingsMenuProps) {
 	const { folder } = props
 	const [showPopover, setShowPopover] = React.useState(false)
 
@@ -16,14 +18,26 @@ export function FolderSettingsMenu(props: UpdateProps) {
 		setShowPopover(false)
 	}
 
-	function editFolder(folderName: string) {
+	const queryClient = useQueryClient()
+	const updateFolder = useUpdateFolderMutation({
+		onSuccess: (folder) => queryClient.invalidateQueries([foldersQueryKey, folderQueryKey, folder.id]),
+	})
+
+	const deleteFolder = useDeleteFolderMutation({
+		onSuccess: () => queryClient.invalidateQueries([foldersQueryKey, folderQueryKey, folder.id]),
+	})
+
+	function handleUpdateFolder(folderName: string) {
+		closePopover()
 		if (folderName === folder.title) {
-			console.log("FOLDER TITLE HASN'T UPDATED")
 			return
 		}
-		console.log("UPDATING FOLDER")
+		updateFolder.mutate({ folderName, id: folder.id })
+	}
+
+	function handleDeleteFolder() {
 		closePopover()
-		// TODO: PUT LOGIC HERE
+		deleteFolder.mutate(folder.id)
 	}
 
 	return (
@@ -46,11 +60,11 @@ export function FolderSettingsMenu(props: UpdateProps) {
 						<span>Редактировать</span>
 					</Button>
 				}
-				onSubmit={editFolder}
+				onSubmit={handleUpdateFolder}
 				folder={folder}
 				title={"Изменить папку"}
 			/>
-			<Button onClick={closePopover} className={"h4 justify-start"}>
+			<Button onClick={handleDeleteFolder} className={"h4 justify-start"}>
 				<span className={"mr-2"}>
 					<TrashIcon />
 				</span>
