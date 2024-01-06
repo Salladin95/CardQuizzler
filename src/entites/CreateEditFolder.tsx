@@ -11,13 +11,7 @@ type CreateFolderProps = {
 }
 
 export function CreateEditFolder(props: CreateFolderProps) {
-	const {
-		onSubmit,
-		title = "Создать новую папку",
-		trigger = <Button variant={"secondary"}>Создать папку</Button>,
-		folder,
-	} = props
-
+	const { onSubmit, title, trigger, folder } = props
 	const [folderName, setFolderName] = React.useState(folder?.title || "")
 	const [showDialog, setShowDialog] = React.useState(false)
 
@@ -35,7 +29,6 @@ export function CreateEditFolder(props: CreateFolderProps) {
 	return (
 		<Dialog
 			open={showDialog}
-			onOpenChange={setShowDialog}
 			trigger={trigger}
 			className={"w-360 640:w-428 768:w-640 h-[20rem] py-12 px-8"}
 		>

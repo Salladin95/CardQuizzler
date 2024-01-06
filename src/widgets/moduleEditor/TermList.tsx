@@ -1,65 +1,47 @@
 import React from "react"
 import { TermType } from "~/app/models"
+import { TermEditor } from "./TermEditor"
 import { AddIcon, Button } from "~/shared"
-import { mockEmptyTerm } from "~/lib/mock"
-import { AnimatePresence, motion, Reorder } from "framer-motion"
-import { TermEditor } from "~/widgets/moduleEditor/TermEditor"
+import { AnimatePresence, Reorder } from "framer-motion"
 
 type TermListProps = {
 	terms: TermType[]
 	onReorder: (terms: TermType[]) => void
 	onUpdate: (updatedTerm: TermType, index: number) => void
 	onDelete: (index: number) => void
-	onInsert: (newTerm: TermType, at: number) => void
-	onAddTerm: () => void
-	submitBtnTitle: string
-	onSubmit: () => void
+	onAddTerm: (at: number) => void
 }
 
 export function TermList(props: TermListProps) {
-	const { terms, onInsert, onDelete, onReorder, onUpdate, onAddTerm, onSubmit, submitBtnTitle } = props
+	const { terms, onAddTerm, onDelete, onReorder, onUpdate } = props
 	return (
-		<Reorder.Group axis="y" values={terms} onReorder={onReorder} className="flex flex-col gap-4">
+		<Reorder.Group axis="y" values={terms} onReorder={onReorder} className="flex flex-col">
 			<AnimatePresence initial={false}>
 				{terms.map((term, index) => (
 					<Reorder.Item
-						value={term}
 						key={term.id}
+						value={term}
 						initial={{ opacity: 0 }}
 						animate={{
 							opacity: 1,
 						}}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.3, ease: "easeOut" }}
-						className="relative hover:cursor-grab"
+						exit={{ opacity: 0, height: 0 }}
+						transition={{ opacity: { duration: 0.4 }, height: { duration: 0.4 }, ease: "easeOut" }}
+						className="hover:cursor-grab relative"
 					>
-						<motion.div>
+						<div className={"mb-4"}>
 							<TermEditor index={index} term={term} onUpdate={onUpdate} onDelete={onDelete} />
-							<motion.div
-								layout
-								initial={false}
-								whileHover={{ opacity: 1 }}
-								className="w-full flex-center absolute z-50 -bottom-[13%]"
-								style={{ opacity: 0 }}
-								transition={{ duration: 0.3 }}
+							<Button
+								variant="secondary"
+								className="w-min mx-auto absolute-x-center z-50 -bottom-[3%] opacity-0 transition-opacity
+								hover:opacity-100 before:absolute before:content-[''] before:w-[50vw] before:h-8"
+								onClick={() => onAddTerm(index + 1)}
 							>
-								<Button variant="secondary" className="w-min" onClick={() => onInsert(mockEmptyTerm(), index + 1)}>
-									<AddIcon />
-								</Button>
-							</motion.div>
-						</motion.div>
+								<AddIcon />
+							</Button>
+						</div>
 					</Reorder.Item>
 				))}
-
-				{/* TODO: FIX - THESE BUTTONS SHOULDN"T BE HERE, BUT I PLACE IT HERE BECAUSE THEY JUMP WHEN I DELETE TERM */}
-				<motion.div layout initial={false} animate={{ height: "auto" }} transition={{ duration: 0.5 }}>
-					<Button className="w-min mx-auto mt-12" onClick={onAddTerm}>
-						Добавить
-					</Button>
-					<Button className="w-min ml-auto px-8 py-6" onClick={onSubmit}>
-						{submitBtnTitle}
-					</Button>
-				</motion.div>
 			</AnimatePresence>
 		</Reorder.Group>
 	)

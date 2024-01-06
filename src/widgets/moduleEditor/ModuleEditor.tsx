@@ -16,6 +16,9 @@ export function ModuleEditor(props: ModuleEditorProps) {
 	const [terms, setTerms] = React.useState<TermType[]>(props.terms || mockEmptyTerms())
 	const [moduleName, setModuleName] = React.useState(props.moduleName || "")
 
+	// Created separated value for error, because I don't want to show input's error state on first render
+	const [hasError, setHasError] = React.useState(false)
+
 	const insertTerm = (newTerm: TermType, at = terms.length) => {
 		const updatedTerms = [...terms]
 		updatedTerms.splice(at, 0, newTerm)
@@ -38,30 +41,41 @@ export function ModuleEditor(props: ModuleEditorProps) {
 	const title = !props.terms ? "Создать новый модуль" : "Обновить модуль"
 	const submitBtnTitle = !props.terms ? "Создать" : "Сохранить"
 
+	// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
+	const isSubmitDisabled = !terms.length || !moduleName
+
 	return (
 		<section>
 			<div className="flex justify-between mb-4">
 				<h1 className="h2">{title}</h1>
-				<Button className="w-min" onClick={handleSubmit}>
+				<Button disabled={isSubmitDisabled} className="w-min" onClick={handleSubmit}>
 					{submitBtnTitle}
 				</Button>
 			</div>
 			<Input
 				value={moduleName}
-				onChange={(e) => setModuleName(e.currentTarget.value)}
+				onChange={(e) => {
+					const value = e.currentTarget.value
+					setModuleName(value)
+					setHasError(!value)
+				}}
 				placeholder={"Введите название молуя"}
 				className={"mb-8"}
+				error={hasError}
 			/>
 			<TermList
 				terms={terms}
 				onReorder={handleReorder}
 				onUpdate={handleUpdate}
 				onDelete={handleDelete}
-				onInsert={insertTerm}
-				onSubmit={handleSubmit}
-				submitBtnTitle={submitBtnTitle}
-				onAddTerm={() => insertTerm(mockEmptyTerm())}
+				onAddTerm={(index: number) => insertTerm(mockEmptyTerm(), index)}
 			/>
+			<Button className="w-min mx-auto mt-6" onClick={() => insertTerm(mockEmptyTerm())}>
+				Добавить
+			</Button>
+			<Button disabled={isSubmitDisabled} className="w-min ml-auto px-8 py-6" onClick={handleSubmit}>
+				{submitBtnTitle}
+			</Button>
 		</section>
 	)
 }

@@ -19,7 +19,6 @@ export function CreateModuleFolder() {
 	const createFolder = useCreateFolderMutation({ onSuccess: () => queryClient.invalidateQueries([foldersQueryKey]) })
 
 	async function handleFolderCreation(folderName: string) {
-		closePopover()
 		const folder = await createFolder.mutateAsync(folderName)
 		router.push(`/folder/${folder.id}`)
 	}
@@ -35,7 +34,11 @@ export function CreateModuleFolder() {
 			<Button className={"mb-4"} variant={"secondary"} onClick={closePopover}>
 				<Link href={"/module/create"}>Создать модуль</Link>
 			</Button>
-			<CreateEditFolder onSubmit={handleFolderCreation} />
+			<CreateEditFolder
+				trigger={<Button variant={"secondary"}>Создать папку</Button>}
+				title={"Создать новую папку"}
+				onSubmit={handleFolderCreation}
+			/>
 		</Popover>
 	)
 }
