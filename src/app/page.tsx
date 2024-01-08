@@ -3,10 +3,10 @@ import React from "react"
 import Link from "next/link"
 import { faker } from "@faker-js/faker"
 import { HomePageData } from "~/app/models"
+import { CreateModuleFolder } from "~/entites"
 import { getHomePageData } from "~/api/requests"
 import { Button, DataHydration, Loader } from "~/shared"
 import { FolderCarousel, ModuleCarousel } from "~/widgets"
-import { CreateModuleFolder } from "~/entites/CreateModuleFolder"
 import { homeDataKeys, useFetchDifficultModules, useFetchFolders, useFetchLastActions, useFetchModules } from "~/api"
 
 function Home() {
@@ -24,7 +24,7 @@ function Home() {
 	}
 
 	return (
-		<main className={"container"}>
+		<main className={"container overflow-hidden"}>
 			<section className="mb-4">
 				<h1>Последние действия</h1>
 				<ModuleCarousel data={lastActions} className={"h-[13rem]"} />

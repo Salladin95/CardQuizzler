@@ -27,11 +27,7 @@ export function CreateEditFolder(props: CreateFolderProps) {
 	}
 
 	return (
-		<Dialog
-			open={showDialog}
-			trigger={trigger}
-			className={"w-360 640:w-428 768:w-640 h-[20rem] py-12 px-8"}
-		>
+		<Dialog open={showDialog} trigger={trigger} className={"w-360 640:w-428 768:w-640 h-[20rem] py-12 px-8"}>
 			<div className={"relative w-full h-full"}>
 				<h1 className={"mb-6 h2 640:h1 text-center"}>{title}</h1>
 				<Input

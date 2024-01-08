@@ -1,10 +1,10 @@
 "use client"
 import React from "react"
-import { TermType } from "~/app/models"
-import { Button } from "~/shared"
-import { TermEditorItem } from "./TermEditorItem"
-import { PropsWithClassName } from "~/app/types"
 import { cn } from "~/lib"
+import { TermType } from "~/app/models"
+import { Button, CloseIcon } from "~/shared"
+import { PropsWithClassName } from "~/app/types"
+import { TermEditorItem } from "./TermEditorItem"
 
 type CreateModuleEditorProps = {
 	term: TermType
@@ -21,14 +21,14 @@ export function TermEditor(props: CreateModuleEditorProps) {
 	}
 
 	return (
-		<div className={cn("rounded bg-gray-800 px-8 py-4 text-white", className)}>
+		<div className={cn("rounded bg-gray-800 px-8 pt-4 pb-10 text-white cursor-grab", className)}>
 			<div className={"flex justify-between"}>
-				<span>{index + 1}</span>
-				<Button className={"w-min"} onClick={() => onDelete(index)} variant={"gray"}>
-					Close
+				<span data-no-dnd="true">{index + 1}</span>
+				<Button data-no-dnd="true" variant={"none"} className={"w-min"} onClick={() => onDelete(index)}>
+					<CloseIcon />
 				</Button>
 			</div>
-			<div className={"flex flex-col 768:flex-row gap-4 mb-8"}>
+			<div className={"flex flex-col 768:flex-row gap-4 cursor-default"} data-no-dnd="true">
 				<TermEditorItem
 					onUpdate={(title) => handleUpdate({ title })}
 					id={`term-title-${index}`}

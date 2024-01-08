@@ -87,7 +87,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 		}
 
 		return (
-			<section className={""}>
+			<section>
 				<div id={"swiper"} className={cn("w-360 h-360 relative", className)}>
 					{currentCards?.map((card, index) => (
 						<Swipeable

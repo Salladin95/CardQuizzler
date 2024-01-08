@@ -1,48 +1,27 @@
 import React from "react"
 import { TermType } from "~/app/models"
-import { TermEditor } from "./TermEditor"
-import { AddIcon, Button } from "~/shared"
-import { AnimatePresence, Reorder } from "framer-motion"
+import { TermListItem } from "./TermListItem"
+import { AnimatePresence } from "framer-motion"
+import { SortableItem, withSortableGroup } from "~/features/sortable"
 
-type TermListProps = {
-	terms: TermType[]
-	onReorder: (terms: TermType[]) => void
+export type TermListProps = {
+	items: TermType[]
 	onUpdate: (updatedTerm: TermType, index: number) => void
 	onDelete: (index: number) => void
 	onAddTerm: (at: number) => void
 }
 
-export function TermList(props: TermListProps) {
-	const { terms, onAddTerm, onDelete, onReorder, onUpdate } = props
+function TermListComponent(props: TermListProps) {
+	const { items, onAddTerm, onDelete, onUpdate } = props
 	return (
-		<Reorder.Group axis="y" values={terms} onReorder={onReorder} className="flex flex-col">
-			<AnimatePresence initial={false}>
-				{terms.map((term, index) => (
-					<Reorder.Item
-						key={term.id}
-						value={term}
-						initial={{ opacity: 0 }}
-						animate={{
-							opacity: 1,
-						}}
-						exit={{ opacity: 0, height: 0 }}
-						transition={{ opacity: { duration: 0.4 }, height: { duration: 0.4 }, ease: "easeOut" }}
-						className="hover:cursor-grab relative"
-					>
-						<div className={"mb-4"}>
-							<TermEditor index={index} term={term} onUpdate={onUpdate} onDelete={onDelete} />
-							<Button
-								variant="secondary"
-								className="w-min mx-auto absolute-x-center z-50 -bottom-[3%] opacity-0 transition-opacity
-								hover:opacity-100 before:absolute before:content-[''] before:w-[50vw] before:h-8"
-								onClick={() => onAddTerm(index + 1)}
-							>
-								<AddIcon />
-							</Button>
-						</div>
-					</Reorder.Item>
-				))}
-			</AnimatePresence>
-		</Reorder.Group>
+		<AnimatePresence initial={false}>
+			{items.map((term, index) => (
+				<SortableItem key={term.id} {...term}>
+					<TermListItem index={index} term={term} onUpdate={onUpdate} onDelete={onDelete} onAddTerm={onAddTerm} />
+				</SortableItem>
+			))}
+		</AnimatePresence>
 	)
 }
+
+export const TermList = withSortableGroup<TermType, Omit<TermListProps, "items">>(TermListComponent)

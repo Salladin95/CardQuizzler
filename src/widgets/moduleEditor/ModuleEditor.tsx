@@ -1,9 +1,9 @@
 "use client"
 import React from "react"
 import { TermType } from "~/app/models"
-import { mockEmptyTerm, mockEmptyTerms } from "~/lib/mock"
 import { Button, Input } from "~/shared"
-import { TermList } from "./TermList"
+import { TermList } from "~/widgets/moduleEditor/TermList"
+import { mockEmptyTerm, mockEmptyTerms } from "~/lib/mock"
 
 type ModuleEditorProps = {
 	terms?: TermType[]
@@ -45,7 +45,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 	const isSubmitDisabled = !terms.length || !moduleName
 
 	return (
-		<section>
+		<section className={"overflow-hidden"}>
 			<div className="flex justify-between mb-4">
 				<h1 className="h2">{title}</h1>
 				<Button disabled={isSubmitDisabled} className="w-min" onClick={handleSubmit}>
@@ -64,13 +64,13 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				error={hasError}
 			/>
 			<TermList
-				terms={terms}
+				items={terms}
 				onReorder={handleReorder}
 				onUpdate={handleUpdate}
 				onDelete={handleDelete}
 				onAddTerm={(index: number) => insertTerm(mockEmptyTerm(), index)}
 			/>
-			<Button className="w-min mx-auto mt-6" onClick={() => insertTerm(mockEmptyTerm())}>
+			<Button className="w-min mx-auto mt-8" onClick={() => insertTerm(mockEmptyTerm())}>
 				Добавить
 			</Button>
 			<Button disabled={isSubmitDisabled} className="w-min ml-auto px-8 py-6" onClick={handleSubmit}>
