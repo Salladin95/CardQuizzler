@@ -3,8 +3,8 @@ import React from "react"
 import { cn } from "~/lib"
 import { TermType } from "~/app/models"
 import { Button, CloseIcon } from "~/shared"
+import { TipTapEditor } from "~/features/tiptap"
 import { PropsWithClassName } from "~/app/types"
-import { TermEditorItem } from "./TermEditorItem"
 
 type CreateModuleEditorProps = {
 	term: TermType
@@ -42,6 +42,31 @@ export function TermEditor(props: CreateModuleEditorProps) {
 					initialContent={term.description}
 				/>
 			</div>
+		</div>
+	)
+}
+
+type TermEditorItemProps = {
+	id: string
+	title: string
+	initialContent: string
+	onUpdate: (content: string) => void
+}
+
+export function TermEditorItem(props: TermEditorItemProps) {
+	const { id, title, initialContent, onUpdate } = props
+	return (
+		<div className={"flex-1"}>
+			<p className={"mb-2"}>{title}</p>
+			<TipTapEditor
+				options={{
+					content: initialContent,
+					onBlur({ editor }) {
+						onUpdate(editor.getHTML())
+					},
+				}}
+				id={id}
+			/>
 		</div>
 	)
 }

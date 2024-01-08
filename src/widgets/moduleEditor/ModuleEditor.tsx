@@ -70,7 +70,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				onDelete={handleDelete}
 				onAddTerm={(index: number) => insertTerm(mockEmptyTerm(), index)}
 			/>
-			<Button className="w-min mx-auto mt-8" onClick={() => insertTerm(mockEmptyTerm())}>
+			<Button className="w-min mx-auto" onClick={() => insertTerm(mockEmptyTerm())}>
 				Добавить
 			</Button>
 			<Button disabled={isSubmitDisabled} className="w-min ml-auto px-8 py-6" onClick={handleSubmit}>
