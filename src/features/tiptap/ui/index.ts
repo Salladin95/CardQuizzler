@@ -1,2 +1,2 @@
-export * from "./TipTapEditor"
-export * from "./TipTapEditorToolBar"
+export * from "./Editor"
+export * from "./EditorToolBar"

@@ -1,12 +1,12 @@
 import React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { TipTapEditor, useConfigureEditor } from "~/features/tiptap/"
+import { Editor, useConfigureEditor } from "~/features/tiptap/"
 import { EditorContent } from "@tiptap/react"
 
-const meta: Meta<typeof TipTapEditor> = {
+const meta: Meta<typeof Editor> = {
 	title: "Features/TipTapEditor",
-	component: TipTapEditor,
+	component: Editor,
 	parameters: {
 		layout: "centered",
 		docs: {
@@ -19,7 +19,7 @@ const meta: Meta<typeof TipTapEditor> = {
 
 export default meta
 
-type Story = StoryObj<typeof TipTapEditor>
+type Story = StoryObj<typeof Editor>
 
 function RenderStory() {
 	const editor1 = useConfigureEditor({
@@ -42,18 +42,12 @@ function RenderStory() {
 	return (
 		<div className={"flex flex-col gap-y-8"}>
 			<h1>Editor - 1</h1>
-			<TipTapEditor
-				id={"tip-tap1"}
-				options={{ onUpdate: (newRichText) => editor1?.commands.setContent(newRichText) }}
-			/>
+			<Editor options={{ onUpdate: (newRichText) => editor1?.commands.setContent(newRichText) }} />
 			<h1>Editor content - 1</h1>
 			<EditorContent editor={editor1} />
 
 			<h1>Editor - 2</h1>
-			<TipTapEditor
-				id={"tip-tap2"}
-				options={{ onUpdate: (newRichText) => editor2?.commands.setContent(newRichText) }}
-			/>
+			<Editor options={{ onUpdate: (newRichText) => editor2?.commands.setContent(newRichText) }} />
 			<h1>Editor content - 2</h1>
 			<EditorContent editor={editor2} />
 		</div>

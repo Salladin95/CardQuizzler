@@ -28,9 +28,16 @@ export type PopoverVariant = VariantProps<typeof popoverVariants>
 export type PopoverProps = RadixPopover.PopoverProps &
 	RadixPopover.PopoverContentProps & {
 		/**
+		 * Anchor is used to position popover relative to a specific UI element.
+		 */
+		anchor?: React.ReactNode
+		/**
+		 * Anchor is used to position popover relative to a specific UI element.
+		 */
+		/**
 		 * React node for popover trigger
 		 * */
-		trigger: React.ReactNode
+		trigger?: React.ReactNode
 		/**
 		 * Variant: [primary]
 		 */
@@ -50,6 +57,7 @@ export type PopoverProps = RadixPopover.PopoverProps &
 	}
 export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>((props, ref) => {
 	const {
+		anchor,
 		className,
 		trigger,
 		children,
@@ -68,15 +76,32 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>((props, re
 		setOpen(Boolean(propsOpen))
 	}, [propsOpen])
 
-	const handleOpenChange = (open: boolean) => {
-		onOpenChange ? onOpenChange(open) : setOpen(open)
-	}
+	const handleOpenChange = React.useCallback(
+		(open: boolean) => {
+			onOpenChange ? onOpenChange(open) : setOpen(open)
+		},
+		[onOpenChange],
+	)
 
 	const animation = fade[props.side || "bottom"]
 
+	React.useEffect(() => {
+		function closePopover() {
+			if (open) {
+				handleOpenChange(false)
+			}
+		}
+
+		document.addEventListener("scroll", closePopover)
+		return () => {
+			document.removeEventListener("scroll", closePopover)
+		}
+	}, [handleOpenChange, open])
+
 	return (
 		<RadixPopover.Root defaultOpen={defaultOpen} onOpenChange={handleOpenChange} open={open}>
-			<RadixPopover.Trigger asChild>{trigger}</RadixPopover.Trigger>
+			{anchor && <RadixPopover.Anchor asChild>{anchor}</RadixPopover.Anchor>}
+			{trigger && <RadixPopover.Trigger asChild>{trigger}</RadixPopover.Trigger>}
 			<RadixPopover.Portal container={container}>
 				<RadixPopover.Content ref={ref} side={"bottom"} sideOffset={4} {...rest} asChild>
 					<Framer.motion.div

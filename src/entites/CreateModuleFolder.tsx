@@ -24,21 +24,17 @@ export function CreateModuleFolder() {
 	}
 
 	return (
-		<Popover
-			onOpenChange={setShowPopover}
-			open={showPopover}
-			side={"top"}
-			trigger={<Button>Создать</Button>}
-			className={""}
-		>
-			<Button className={"mb-4"} variant={"secondary"} onClick={closePopover}>
-				<Link href={"/module/create"}>Создать модуль</Link>
-			</Button>
-			<CreateEditFolder
-				trigger={<Button variant={"secondary"}>Создать папку</Button>}
-				title={"Создать новую папку"}
-				onSubmit={handleFolderCreation}
-			/>
+		<Popover onOpenChange={setShowPopover} open={showPopover} side={"top"} trigger={<Button>Создать</Button>}>
+			<div className={"px-4 py-2"}>
+				<Button className={"mb-4"} variant={"secondary"} onClick={closePopover}>
+					<Link href={"/module/create"}>Создать модуль</Link>
+				</Button>
+				<CreateEditFolder
+					trigger={<Button variant={"secondary"}>Создать папку</Button>}
+					title={"Создать новую папку"}
+					onSubmit={handleFolderCreation}
+				/>
+			</div>
 		</Popover>
 	)
 }

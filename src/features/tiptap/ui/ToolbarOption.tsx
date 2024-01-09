@@ -10,7 +10,7 @@ type TipTapEditorOptionProps = {
 	onClick: () => void
 } & PropsWithChildren
 
-export function TipTapToolbarOption(props: TipTapEditorOptionProps) {
+export function ToolbarOption(props: TipTapEditorOptionProps) {
 	const { editor, name, children, onClick } = props
 	return (
 		<Button

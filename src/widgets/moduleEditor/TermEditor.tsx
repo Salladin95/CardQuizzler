@@ -3,7 +3,7 @@ import React from "react"
 import { cn } from "~/lib"
 import { TermType } from "~/app/models"
 import { Button, CloseIcon } from "~/shared"
-import { TipTapEditor } from "~/features/tiptap"
+import { Editor } from "~/features/tiptap"
 import { PropsWithClassName } from "~/app/types"
 
 type CreateModuleEditorProps = {
@@ -29,15 +29,9 @@ export function TermEditor(props: CreateModuleEditorProps) {
 				</Button>
 			</div>
 			<div className={"flex flex-col 768:flex-row gap-4 cursor-default"} data-no-dnd="true">
-				<TermEditorItem
-					onUpdate={(title) => handleUpdate({ title })}
-					id={`term-title-${index}`}
-					title={"Термин"}
-					initialContent={term.title}
-				/>
+				<TermEditorItem onUpdate={(title) => handleUpdate({ title })} title={"Термин"} initialContent={term.title} />
 				<TermEditorItem
 					onUpdate={(description) => handleUpdate({ description })}
-					id={`term-description-${index}`}
 					title={"Определение"}
 					initialContent={term.description}
 				/>
@@ -47,25 +41,23 @@ export function TermEditor(props: CreateModuleEditorProps) {
 }
 
 type TermEditorItemProps = {
-	id: string
 	title: string
 	initialContent: string
 	onUpdate: (content: string) => void
 }
 
 export function TermEditorItem(props: TermEditorItemProps) {
-	const { id, title, initialContent, onUpdate } = props
+	const { title, initialContent, onUpdate } = props
 	return (
 		<div className={"flex-1"}>
 			<p className={"mb-2"}>{title}</p>
-			<TipTapEditor
+			<Editor
 				options={{
 					content: initialContent,
 					onBlur({ editor }) {
 						onUpdate(editor.getHTML())
 					},
 				}}
-				id={id}
 			/>
 		</div>
 	)
