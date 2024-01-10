@@ -45,7 +45,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 	const isSubmitDisabled = !terms.length || !moduleName
 
 	return (
-		<section className={"overflow-hidden"}>
+		<section className={"overflow-hidden p-1"}>
 			<div className="flex justify-between mb-4">
 				<h1 className="h2">{title}</h1>
 				<Button disabled={isSubmitDisabled} className="w-min" onClick={handleSubmit}>

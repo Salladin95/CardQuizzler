@@ -3,24 +3,40 @@ import React from "react"
 import Link from "next/link"
 import { FolderType } from "~/app/models"
 import { getFolder } from "~/api/requests"
+import { isModuleInFolder } from "~/app/folder/lib/utils"
 import { WithId, WithParamsId } from "~/app/types"
 import { useQueryClient } from "@tanstack/react-query"
 import { FolderContextMenu, ModuleContextMenu } from "~/entites"
 import { folderQueryKey, useAddModuleToFolderMutation, useFetchFolder } from "~/api"
-import { AddIcon, Button, CloseIcon, DataHydration, Dialog, FolderIcon, LoadingDataRenderer } from "~/shared"
+import { AddIcon, Button, CloseIcon, DataHydration, Dialog, FolderIcon, LoadingDataRenderer, TrashIcon } from "~/shared"
 
 function Folder(folder: FolderType) {
 	const [showDialog, setShowDialog] = React.useState(false)
-
 	const queryClient = useQueryClient()
-	const addModuleToTheFolder = useAddModuleToFolderMutation({
+
+	const addModuleToFolder = useAddModuleToFolderMutation({
+		onSuccess: () => queryClient.invalidateQueries([folderQueryKey, folder.id]),
+	})
+	const deleteModuleFromFolder = useAddModuleToFolderMutation({
 		onSuccess: () => queryClient.invalidateQueries([folderQueryKey, folder.id]),
 	})
 
-	function handleAddModuleToTheFolder(moduleId: string) {
-		addModuleToTheFolder.mutate({ moduleId, folderId: folder.id })
-		setShowDialog(false)
+	function handleActionButtonClick(moduleId: string) {
+		if (isModuleInFolder(folder, moduleId)) {
+			return deleteModuleFromFolder.mutate({ moduleId, folderId: folder.id })
+		}
+		return addModuleToFolder.mutate({ moduleId, folderId: folder.id })
 	}
+
+	function ActionButton(props: { id: string }) {
+		const { id } = props
+		return (
+			<Button className={"w-min"} variant={"secondary"} onClick={() => handleActionButtonClick(id)}>
+				{isModuleInFolder(folder, id) ? <AddIcon /> : <TrashIcon />}
+			</Button>
+		)
+	}
+
 	return (
 		<main className={"container"}>
 			<section className={"mb-4 flex items-center justify-between"}>
@@ -57,7 +73,7 @@ function Folder(folder: FolderType) {
 				</div>
 
 				<Button asChild variant={"secondary"} className={"h3 mb-4 mx-auto w-[90%]"}>
-					<Link href={`/module/create/${folder.id}`}>Создать новый модуль модуль</Link>
+					<Link href={`/module/create/${folder.id}`}>Создать новый модуль</Link>
 				</Button>
 
 				<section className={"flex flex-col gap-y-2 px-6 py-8 "}>
@@ -67,9 +83,7 @@ function Folder(folder: FolderType) {
 							className={"flex justify-between items-center px-4 py-3 rounded bg-gray-800 text-white"}
 						>
 							<span>{module.title}</span>
-							<Button className={"w-min"} variant={"secondary"} onClick={() => handleAddModuleToTheFolder(module.id)}>
-								<AddIcon />
-							</Button>
+							<ActionButton id={module.id} />
 						</div>
 					))}
 				</section>

@@ -39,3 +39,11 @@ export type AddModuleToFolderPayload = { moduleId: string; folderId: string }
 export function addModuleToFolder(payload: AddModuleToFolderPayload): Promise<FolderType> {
 	return Promise.resolve(mockFolder())
 }
+
+export type DeleteModuleFromFolderPayload = AddModuleToFolderPayload
+export type DeleteModuleFromFolderResponse = string
+export function deleteModuleFromFolder(
+	payload: DeleteModuleFromFolderPayload,
+): Promise<DeleteModuleFromFolderResponse> {
+	return Promise.resolve("SUCCESS")
+}

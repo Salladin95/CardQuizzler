@@ -10,9 +10,12 @@ import {
 	CreateFolderPayload,
 	deleteFolder,
 	DeleteFolderResult,
+	deleteModuleFromFolder,
+	DeleteModuleFromFolderPayload,
+	DeleteModuleFromFolderResponse,
 	updateFolder,
 	UpdateFolderPayload,
-} from "~/api"
+} from "~/api/requests"
 
 export const foldersQueryKey = "folders-query-key"
 export const folderQueryKey = "folder-query-key"
@@ -65,6 +68,20 @@ export function useAddModuleToFolderMutation(
 	const apiErrorToast = useApiErrorToast()
 	return useMutation({
 		mutationFn: (payload) => addModuleToFolder(payload),
+		onError: apiErrorToast,
+		...options,
+	})
+}
+
+export function useDeleteModuleFromFolderMutation(
+	options?: Omit<
+		UseMutationOptions<DeleteModuleFromFolderResponse, AxiosError, DeleteModuleFromFolderPayload>,
+		"mutationFn"
+	>,
+) {
+	const apiErrorToast = useApiErrorToast()
+	return useMutation({
+		mutationFn: (payload) => deleteModuleFromFolder(payload),
 		onError: apiErrorToast,
 		...options,
 	})

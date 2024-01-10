@@ -17,7 +17,7 @@ export function EditorToolBar(props: TipTapEditorToolBarProps) {
 	const { editor, className, ...rest } = props
 	if (!editor) return null
 	return (
-		<div data-no-dnd="true" className={cn("flex-center gap-x-3 tip-tap-toolbar p-2", className)} {...rest}>
+		<div data-no-dnd="true" className={cn("flex-center gap-x-3 tip-tap-toolbar", className)} {...rest}>
 			<ToolbarOption editor={editor} onClick={() => editor?.chain().toggleBold().run()} name={"bold"}>
 				<BoldSvg {...getTipTapEditorSvgProps("bold", editor)} />
 			</ToolbarOption>
