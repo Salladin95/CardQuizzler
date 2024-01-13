@@ -3,9 +3,9 @@ import React from "react"
 import { cn } from "~/lib"
 import { Popover } from "~/shared"
 import { PropsWithClassName } from "~/app/types"
+import { EditorToolBar } from "./EditorToolBar"
 import { EditorContent, EditorOptions } from "@tiptap/react"
-import { EditorToolBar, useConfigureEditor } from "~/features/tiptap"
-import { HighlightedPosition, useEditorHighlightedPosition } from "~/features/tiptap/hooks"
+import { HighlightedPosition, useConfigureEditor, useEditorHighlightedPosition } from "../hooks"
 
 type TipTapEditorProps = {
 	options?: Partial<EditorOptions>

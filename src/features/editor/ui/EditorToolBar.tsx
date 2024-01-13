@@ -1,12 +1,13 @@
+"use client"
 import React from "react"
 
-import { cn } from "src/lib"
+import { cn } from "~/lib"
 import { Editor } from "@tiptap/react"
 import { ToolbarOption } from "./ToolbarOption"
 import { Button, Radio, Tooltip } from "~/shared"
 import { getTipTapEditorSvgProps } from "../lib/lib"
 import { DataAttributesProps, PropsWithClassName } from "~/app/types"
-import { BoldSvg, HighlightSvg, ItalicSvg, StrikethroughSvg, UnderlineSvg } from "src/features/tiptap/ui/icons"
+import { BoldSvg, HighlightSvg, ItalicSvg, StrikethroughSvg, UnderlineSvg } from "../ui/icons"
 
 type TipTapEditorToolBarProps = {
 	editor: Editor | null

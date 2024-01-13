@@ -1,5 +1,5 @@
 import { SvgDefaultProps } from "~/app/types"
-import { cn } from "src/lib"
+import { cn } from "~/lib"
 
 export function BoldSvg(props: SvgDefaultProps) {
 	const { className, ...rest } = props

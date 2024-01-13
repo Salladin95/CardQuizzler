@@ -1,9 +1,9 @@
 import React from "react"
-import { Card } from "~/entites"
 import { TermType } from "~/app/models"
 import { PropsWithClassName } from "~/app/types"
-import { FlippableContent } from "../flippable/FlippableContent"
 import { useFlippable } from "../flippable/useFlippable"
+import { FlippableContent } from "../flippable/FlippableContent"
+import { DisplayEditorContent } from "~/features/quizCard/DisplayEditorContent"
 
 export type QuizCardProps = TermType & PropsWithClassName
 
@@ -23,8 +23,8 @@ export function QuizCard(props: QuizCardProps) {
 		<FlippableContent
 			onClick={handleClick}
 			className={className}
-			frontSideContent={<Card title={title} />}
-			backSideContent={<Card title={description} />}
+			frontSideContent={<DisplayEditorContent content={title} />}
+			backSideContent={<DisplayEditorContent content={description} />}
 		/>
 	)
 }

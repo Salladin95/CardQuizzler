@@ -1,10 +1,20 @@
 "use client"
 import React from "react"
+import { calculateProgress, cn } from "src/lib"
+import { Button, CircularProgressBar, Confetti, ConfettiIcon, FlatProgressBar } from "~/shared"
 import { PropsWithClassName, WithId } from "~/app/types"
-import { Swipeable, SwipedCard } from "~/features/swipeable/ui/Swipeable"
-import { getArrLastIndex, getArrLastItem, removeArrLastItem, updateSwipedTowards } from "~/features/swipeable/utils"
-import { SwipeDirection } from "~/features/swipeable"
-import { cn } from "src/lib"
+import { TurnLeftIcon } from "~/shared/ui/icons/TurnLeftIcon"
+import { getRandomInspirationalMessage } from "./lib/inspirationalMessages"
+import {
+	getArrLastIndex,
+	getArrLastItem,
+	removeArrLastItem,
+	Swipeable,
+	SwipedCard,
+	SwipeDirection,
+	updateSwipedTowards,
+} from "../swipeable/"
+import { getNegativeAnswers, getPositiveAnswers } from "~/features/swiper/lib/utils"
 
 export type SwiperCard<T> = T & SwipedCard & WithId
 type SwiperData<T> = {
@@ -25,6 +35,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 			swipedCards: [],
 		})
 		const [currentCards, setCurrentCards] = React.useState<SwiperCard<DataType>[]>(cards)
+		const [progress, setProgress] = React.useState(0)
 
 		const handleSwipe = (direction: SwipeDirection) => {
 			// TODO SHOULD THE FIRST ELEMENT
@@ -86,31 +97,92 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 			cleanSwipedStateOnAnimationEnd()
 		}
 
+		React.useEffect(() => {
+			setProgress(calculateProgress(swiperData.rightSwipesCounter + swiperData.leftSwipesCounter, cards.length))
+		}, [cards.length, swiperData])
+
+		const negativeAnswers = getNegativeAnswers(swiperData.swipedCards)
+		const positiveAnswers = getPositiveAnswers(swiperData.swipedCards)
+
 		return (
-			<section>
-				<div id={"swiper"} className={cn("w-360 h-360 relative", className)}>
-					{currentCards?.map((card, index) => (
-						<Swipeable
-							className={"absolute rounded-12px"}
-							key={card.id}
-							onAnimationStart={handleAnimationStart}
-							onAnimationComplete={handleAnimationComplete}
-							onSwipe={handleSwipe}
-							// TODO SHOULD BE THE FIRST ELEMENT
-							isTheTopCard={index === getArrLastIndex(currentCards)}
-							isAnimating={isAnimating}
+			<section className={"container flex-center"}>
+				<FlatProgressBar progress={progress} className={"absolute inset-0 w-full"} />
+				{progress !== 100 && (
+					<div
+						id={"swiper"}
+						className={cn("w-360 h-428 640:w-428 768:w-640 768:h-640 1024:w-768 relative ", className)}
+					>
+						{currentCards?.map((card, index) => (
+							<Swipeable
+								className={"absolute rounded-12px"}
+								key={card.id}
+								onAnimationStart={handleAnimationStart}
+								onAnimationComplete={handleAnimationComplete}
+								onSwipe={handleSwipe}
+								// TODO SHOULD BE THE FIRST ELEMENT
+								isTheTopCard={index === getArrLastIndex(currentCards)}
+								isAnimating={isAnimating}
+								swipedTowards={card.swipedTowards}
+							>
+								<Component {...card} className={cn({ "opacity-0": index !== getArrLastIndex(currentCards) })} />
+							</Swipeable>
+						))}
+						<Button
+							variant={"none"}
+							disabled={!swiperData.swipedCards.length || isAnimating}
+							className={cn("absolute-x-center -bottom-[15%] 768:-bottom-[10%] text-black cursor-pointer w-min", {
+								"opacity-30": !swiperData.swipedCards.length || isAnimating,
+							})}
+							onClick={handleBack}
 						>
-							<Component {...card} className={cn({ "opacity-0": index !== getArrLastIndex(currentCards) })} />
-						</Swipeable>
-					))}
-				</div>
-				<button
-					disabled={!swiperData.swipedCards.length || isAnimating}
-					className={"absolute left-[50%] bottom-[20%] text-black"}
-					onClick={handleBack}
-				>
-					back
-				</button>
+							<TurnLeftIcon />
+						</Button>
+					</div>
+				)}
+				{progress === 100 && (
+					<div className={"w-[100%] h-[100%]"}>
+						<Confetti />
+						<div className={"flex-center mt-12 mb-12"}>
+							<h1 className={"h1 mr-3"}>{getRandomInspirationalMessage()}</h1>
+							<ConfettiIcon className={"w-[10rem] h-[10rem]"} />
+						</div>
+
+						<div className={"flex items-center gap-8 mb-12"}>
+							<CircularProgressBar progress={calculateProgress(positiveAnswers.length, cards.length)} />
+							<div className={"w-[30%]"}>
+								<div
+									className={
+										"flex justify-between items-center mb-4 text-green text-[1.2rem] border-2 border-[#A1EEBD] rounded-full py-1 px-4"
+									}
+								>
+									<span>Знаю</span>
+									<span className={"w-8 h-8 rounded-full flex-center border-[1px] border-green text-body-1"}>
+										{positiveAnswers.length}
+									</span>
+								</div>
+								<div
+									className={
+										"flex justify-between items-center text-[#DC8686] text-[1.2rem] border-2 border-[#FF8080] rounded-full py-1 px-4"
+									}
+								>
+									<span>Еще изучаю</span>
+									<span className={"w-8 h-8 rounded-full flex-center border-[1px] border-[#DC8686] text-body-1"}>
+										{negativeAnswers.length}
+									</span>
+								</div>
+							</div>
+						</div>
+
+						{negativeAnswers.length && (
+							<Button className={"mb-4 mx-auto w-[20rem]"}>
+								Продолжить изучение - {negativeAnswers.length} терминов
+							</Button>
+						)}
+						<Button className={"w-[20rem] mx-auto"} variant={"secondary"}>
+							Начать заново
+						</Button>
+					</div>
+				)}
 			</section>
 		)
 	}

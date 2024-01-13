@@ -8,7 +8,7 @@ import { WithId, WithParamsId } from "~/app/types"
 import { useQueryClient } from "@tanstack/react-query"
 import { FolderContextMenu, ModuleContextMenu } from "~/entites"
 import { folderQueryKey, useAddModuleToFolderMutation, useFetchFolder } from "~/api"
-import { AddIcon, Button, CloseIcon, DataHydration, Dialog, FolderIcon, LoadingDataRenderer, TrashIcon } from "~/shared"
+import { AddIcon, Button, XMarkIcon, DataHydration, Dialog, FolderIcon, LoadingDataRenderer, TrashIcon } from "~/shared"
 
 function Folder(folder: FolderType) {
 	const [showDialog, setShowDialog] = React.useState(false)
@@ -68,7 +68,7 @@ function Folder(folder: FolderType) {
 				<div className={"flex justify-between items-center mb-8 bg-gray-800 text-white px-4 py-6"}>
 					<h1 className={"h2"}>Добавить модуль</h1>
 					<Button variant={"gray"} className={"w-min"} onClick={() => setShowDialog(false)}>
-						<CloseIcon />
+						<XMarkIcon />
 					</Button>
 				</div>
 

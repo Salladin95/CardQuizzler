@@ -2,8 +2,8 @@
 import React from "react"
 import { cn } from "~/lib"
 import { TermType } from "~/app/models"
-import { Button, CloseIcon } from "~/shared"
-import { Editor } from "~/features/tiptap"
+import { Button, XMarkIcon } from "~/shared"
+import { Editor } from "~/features/editor"
 import { PropsWithClassName } from "~/app/types"
 
 type CreateModuleEditorProps = {
@@ -25,7 +25,7 @@ export function TermEditor(props: CreateModuleEditorProps) {
 			<div className={"flex justify-between"}>
 				<span data-no-dnd="true">{index + 1}</span>
 				<Button data-no-dnd="true" variant={"none"} className={"w-min"} onClick={() => onDelete(index)}>
-					<CloseIcon />
+					<XMarkIcon />
 				</Button>
 			</div>
 			<div className={"flex flex-col 768:flex-row gap-4 cursor-default"} data-no-dnd="true">

@@ -4,6 +4,7 @@ import { TermType } from "~/app/models"
 import { Button, Input } from "~/shared"
 import { TermList } from "~/widgets/moduleEditor/TermList"
 import { mockEmptyTerm, mockEmptyTerms } from "~/lib/mock"
+import useAddClassToTag from "~/shared/hooks/useAddClassToTag"
 
 type ModuleEditorProps = {
 	terms?: TermType[]
@@ -43,6 +44,8 @@ export function ModuleEditor(props: ModuleEditorProps) {
 
 	// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
 	const isSubmitDisabled = !terms.length || !moduleName
+
+	useAddClassToTag("hide-scrollbar", "body")
 
 	return (
 		<section className={"overflow-hidden p-1"}>

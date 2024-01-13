@@ -1,5 +1,5 @@
 import React from "react"
-import { ReactQueryProvider } from "~/providers"
+import { ReactQueryProvider } from "src/providers"
 import type { Metadata } from "next"
 
 import "~/globals.css"
