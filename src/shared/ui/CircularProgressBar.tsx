@@ -65,7 +65,7 @@ export function CircularProgressBar(props: CircularProgressBarProps) {
 				// fill={"url(#gradient)"}
 				fill={"#333C83"}
 			>
-				{progress}%
+				{progress.toFixed()}%
 			</text>
 		</svg>
 	)

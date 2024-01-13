@@ -1,6 +1,6 @@
 "use client"
-import { withSwiper } from "~/features/swiper/index"
-import { QuizCard } from "~/features/quizCard/QuizCard"
 import { TermType } from "~/app/models"
+import { withSwiper } from "./withSwiper"
+import { QuizCard } from "~/features/quizCard/QuizCard"
 
 export const Swiper = withSwiper<TermType>(QuizCard)
