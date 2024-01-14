@@ -113,7 +113,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 
 		return (
 			<section className={"container flex-center"}>
-				<div id={"swiper"} className={cn("w-360 h-428 640:w-428 768:w-640 768:h-640 1024:w-768 relative ", className)}>
+				<div className={cn("w-360 h-428 640:w-428 768:w-640 768:h-640 1024:w-768 relative ", className)}>
 					{currentCards?.map((card, index) => (
 						<Swipeable
 							className={"absolute rounded-12px"}
@@ -126,7 +126,11 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 							isAnimating={isAnimating}
 							swipedTowards={card.swipedTowards}
 						>
-							<Component {...card} className={cn({ "opacity-0": index !== getArrLastIndex(currentCards) })} />
+							<Component
+								{...card}
+								isAnimating={isAnimating}
+								className={cn({ "opacity-0": index !== getArrLastIndex(currentCards) })}
+							/>
 						</Swipeable>
 					))}
 					<Button

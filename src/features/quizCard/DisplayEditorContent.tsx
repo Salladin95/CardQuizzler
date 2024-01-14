@@ -1,8 +1,9 @@
+import React from "react"
 import { EditorContent } from "@tiptap/react"
 import { useConfigureEditor } from "~/features/editor"
 
-export function DisplayEditorContent(props: { content: string }) {
-	const { content } = props
+export function DisplayEditorContent(props: { content: string; onClick?: (e: React.SyntheticEvent) => void }) {
+	const { content, onClick } = props
 	const editorContent = useConfigureEditor({
 		editable: false,
 		editorProps: {
@@ -14,7 +15,7 @@ export function DisplayEditorContent(props: { content: string }) {
 	})
 
 	return (
-		<div className={"w-full h-full flex-center"}>
+		<div onClick={onClick} className={"w-full h-full flex-center"}>
 			<EditorContent editor={editorContent} />
 		</div>
 	)

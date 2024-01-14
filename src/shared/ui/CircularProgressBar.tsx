@@ -1,7 +1,7 @@
 import React from "react"
 import { motion } from "framer-motion"
 import { SvgDefaultProps } from "~/app/types"
-import {cn} from "~/lib";
+import { cn } from "~/lib"
 
 type CircularProgressBarProps = SvgDefaultProps & {
 	progress: number

@@ -106,7 +106,7 @@ export function Swipeable(props: SwipeableProps) {
 
 			default:
 				setStartPoint(null)
-				moveCardToItsInitialPosition(controls)
+				await moveCardToItsInitialPosition(controls)
 				setDragActive(false)
 		}
 	}
@@ -127,7 +127,7 @@ export function Swipeable(props: SwipeableProps) {
 		})()
 	}, [swipedTowards, controls])
 
-	function handleOnClick() {
+	function handleOnClick(_e: React.SyntheticEvent) {
 		// When we try to click the card that is not on its original position we return it back
 		if (dragActive) {
 			moveCardToItsInitialPosition(controls)
@@ -138,9 +138,8 @@ export function Swipeable(props: SwipeableProps) {
 	return (
 		<div className={cn("perspective-1000 w-[100%] h-[100%] text-white", className)} {...rest}>
 			<motion.div
-				id={"swipeable"}
 				className={cn(
-					"w-[100%] h-[100%] rounded-12px flex-center transform-style-3d relative before:absolute before:content-[''] before:inset-[1.5rem] before:border-3px",
+					"swipeable w-[100%] h-[100%] rounded-12px flex-center transform-style-3d relative before:absolute before:content-[''] before:inset-[1.5rem] before:border-3px",
 					{
 						"pointer-events-none": !isTheTopCard || isAnimating,
 						"z-50": isTheTopCard,

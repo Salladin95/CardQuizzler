@@ -5,26 +5,30 @@ import { useFlippable } from "../flippable/useFlippable"
 import { FlippableContent } from "../flippable/FlippableContent"
 import { DisplayEditorContent } from "~/features/quizCard/DisplayEditorContent"
 
-export type QuizCardProps = TermType & PropsWithClassName
+export type QuizCardProps = TermType &
+	PropsWithClassName & {
+		isAnimating?: boolean
+	}
 
 export function QuizCard(props: QuizCardProps) {
-	const { title, description, className } = props
+	const { title, description, className, isAnimating } = props
 	const [isFlipped, setIsFlipped] = React.useState(false)
+	const [flippableTarget, setFlippableTarget] = React.useState<Element | null>(null)
 
-	const swipeable = document.getElementById("swiper")?.lastElementChild?.querySelector("#swipeable")
-	useFlippable(swipeable, Boolean(isFlipped))
+	const isFlipping = useFlippable(flippableTarget, Boolean(isFlipped))
 
-	function handleClick() {
-		const isDragging = document.querySelector("[data-drag-active='true']")
-		if (isDragging) return
+	function handleClick(e: React.SyntheticEvent) {
+		const isDragging = e.currentTarget.closest("[data-drag-active='true']")
+		if (isDragging || isAnimating || isFlipping) return
 		setIsFlipped(!isFlipped)
+		setFlippableTarget(e.currentTarget.closest(".swipeable"))
 	}
+
 	return (
 		<FlippableContent
-			onClick={handleClick}
-			className={className}
-			frontSideContent={<DisplayEditorContent content={title} />}
-			backSideContent={<DisplayEditorContent content={description} />}
+			className={`${className} quiz-card`}
+			frontSideContent={<DisplayEditorContent onClick={handleClick} content={title} />}
+			backSideContent={<DisplayEditorContent onClick={handleClick} content={description} />}
 		/>
 	)
 }
