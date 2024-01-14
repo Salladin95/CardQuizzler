@@ -2,7 +2,7 @@
 import React from "react"
 import { PropsWithClassName, WithId } from "~/app/types"
 import { CarouselControllers } from "~/features/splideCarousel/CarouselControllers"
-import { splideDefaultOptions } from "~/features/splideCarousel/lib/splideDefaultOptions"
+import { getSplideDefaultOptions } from "~/features/splideCarousel/lib/getSplideDefaultOptions"
 import { Options, Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
 
 import "@splidejs/react-splide/css/core"
@@ -18,7 +18,7 @@ export function withSplideCarousel<DataType extends WithId>(
 	Component: React.ComponentType<DataType & PropsWithClassName>,
 ) {
 	return function (props: SplideCarouselProps<DataType>) {
-		const { data, onClick, options = splideDefaultOptions, withControllers = true, className } = props
+		const { data, onClick, options, withControllers = true, className } = props
 
 		function handleClick(id: string) {
 			onClick && onClick(id)
@@ -27,7 +27,7 @@ export function withSplideCarousel<DataType extends WithId>(
 		if (!data) return null
 
 		return (
-			<Splide hasTrack={false} options={options}>
+			<Splide hasTrack={false} options={{ ...getSplideDefaultOptions(data.length), ...options }}>
 				<SplideTrack>
 					{data.map((slide) => (
 						<SplideSlide key={slide.id} onClick={() => handleClick(slide.id)}>

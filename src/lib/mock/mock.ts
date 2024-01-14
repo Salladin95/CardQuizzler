@@ -23,7 +23,7 @@ export function mockFolders(length = 10) {
 	return createArray<FolderType>(length, mockFolder)
 }
 
-export function mockModules(length = 10) {
+export function mockModules(length = 2) {
 	return createArray<ModuleType>(length, mockModule)
 }
 
