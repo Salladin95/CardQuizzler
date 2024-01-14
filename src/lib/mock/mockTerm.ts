@@ -22,7 +22,7 @@ export function asyncMockTerm(): Promise<TermType> {
 	return Promise.resolve(mockTerm())
 }
 
-export function mockTerms(amount = 10): TermType[] {
+export function mockTerms(amount = 3): TermType[] {
 	return createArray(amount, mockTerm)
 }
 

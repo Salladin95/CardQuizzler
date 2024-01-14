@@ -19,7 +19,7 @@ const fadeTransition = {
 	bounce: 0.3,
 	duration: 0.3,
 }
-export const fade: Record<string, Framer.MotionProps> = {
+export const fade: Record<"left" | "top" | "bottom" | "right", Framer.MotionProps> = {
 	left: {
 		animate: { x: 0, opacity: 1, pointerEvents: "auto" },
 		initial: { x: "-30%", opacity: 0, pointerEvents: "none" },

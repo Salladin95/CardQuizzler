@@ -10,8 +10,8 @@ export function InspirationalMessage(props: InspirationalMessageProps) {
 	const { className } = props
 	return (
 		<div className={cn("flex-center", className)}>
-			<h1 className={"h1 mr-3"}>{getRandomInspirationalMessage()}</h1>
-			<ConfettiIcon className={"w-[10rem] h-[10rem]"} />
+			<h1 className={"h3 mr-4 768:h1 640:h2"}>{getRandomInspirationalMessage()}</h1>
+			<ConfettiIcon className={"768:min-w-[7rem] 768:min-h-[7rem] min-w-[4rem] min-h-[4rem]"} />
 		</div>
 	)
 }
