@@ -27,22 +27,22 @@ function Home() {
 		<main className={"container overflow-hidden"}>
 			<section className="mb-4">
 				<h1>Последние действия</h1>
-				<ModuleCarousel data={lastActions} className={"h-[13rem]"} />
+				<ModuleCarousel data={lastActions} className={"h-[11rem]"} />
 			</section>
 
 			<section className="">
 				<h3>Сложные модули</h3>
-				<ModuleCarousel data={difficultModules} className={"h-[13rem]"} />
+				<ModuleCarousel data={difficultModules} className={"h-[11rem]"} />
 			</section>
 
 			<section className="mb-4">
 				<h2>Мои папки</h2>
-				<FolderCarousel data={folders} className={"h-[13rem]"} />
+				<FolderCarousel data={folders} className={"h-[9rem]"} />
 			</section>
 
-			<section className="">
+			<section className="mb-12">
 				<h3>Мои модули</h3>
-				<ModuleCarousel data={modules} className={"h-[13rem]"} />
+				<ModuleCarousel data={modules} className={"h-[11rem]"} />
 			</section>
 
 			<div className={"flex gap-x-4"}>

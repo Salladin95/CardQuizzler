@@ -11,11 +11,7 @@ export function ModuleContextMenu(props: ModuleProps) {
 	return (
 		<Popover
 			side={"top"}
-			trigger={
-				<div>
-					<Module {...props} />
-				</div>
-			}
+			trigger={<Module {...props} />}
 			open={showPopover}
 			onOpenChange={setShowPopover}
 			className={"min-w-[10rem] flex-center flex-col gap-y-2"}

@@ -11,7 +11,14 @@ export function Folder(props: FolderProps) {
 	const { title, modules, className, id } = props
 	const router = useRouter()
 	return (
-		<div onClick={() => router.push(`/folder/${id}`)} className={cn("panel py-4 px-2", className)}>
+		<div
+			onClick={() => router.push(`/folder/${id}`)}
+			className={cn(
+				"py-4 px-2 bg-gray-700 text-white rounded-lg",
+				"cursor-pointer transition-colors border-4 border-gray-800 hover:border-[#6528F7]",
+				className,
+			)}
+		>
 			<p className={"mb-1 text-body-2"}>
 				Всего модулей: <span className={"italic"}>{modules.length}</span>
 			</p>
