@@ -12,6 +12,7 @@ export function ReactQueryProvider({ children }: PropsWithChildren) {
 					queries: {
 						// to avoid re-fetching immediately on the client
 						staleTime: 120 * 1000,
+						retry: false,
 					},
 				},
 			}),

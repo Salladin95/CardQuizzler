@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios"
 import { serialize } from "object-to-formdata"
+import { refresh } from "~/api"
 
 /**
  * Core axios instance
@@ -88,8 +89,51 @@ const downloadResponseErrorInterceptor = (result: { response: AxiosResponse }) =
 	throw { ...result, response: { ...result.response, data: json } }
 }
 
+let isRefreshing = false
+let refreshQueue: (() => void)[] = []
+
+/**
+ * Axios makes a refresh call when an error with status 401 is received.
+ */
+async function makeRefreshCall(res: { response: AxiosResponse }) {
+	const { response } = res
+
+	if (response && response.status === 401) {
+		const { config } = response
+		const prevReq = config as InternalAxiosRequestConfig & { sent?: boolean }
+
+		if (!prevReq.sent && !isRefreshing) {
+			prevReq.sent = true
+			try {
+				isRefreshing = true
+				await refresh() // Your refresh function
+				isRefreshing = false
+
+				// Retry the original request with the updated token
+				const newRequest = await axiosInstance(config)
+				return Promise.resolve({ response: newRequest })
+			} catch (refreshError) {
+				console.error("Token refresh failed:", refreshError)
+				return Promise.reject(res)
+			} finally {
+				// Process the queued requests
+				refreshQueue.forEach((resolve) => resolve())
+				refreshQueue = []
+			}
+		} else if (isRefreshing) {
+			// If a refresh is in progress, enqueue the request and wait
+			return new Promise<AxiosResponse>((resolve) => {
+				refreshQueue.push(() => {
+					resolve(axiosInstance(config))
+				})
+			})
+		}
+	}
+	return Promise.reject(res)
+}
+
 axiosInstance.interceptors.request.use(requestInterceptor)
-axiosInstance.interceptors.response.use(responseInterceptor)
+axiosInstance.interceptors.response.use(responseInterceptor, makeRefreshCall)
 
 axiosFormDataInstance.interceptors.request.use(requestInterceptor, formDataRequestInterceptor)
 axiosFormDataInstance.interceptors.response.use(responseInterceptor)

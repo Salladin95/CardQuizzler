@@ -52,7 +52,7 @@ export default function SignIn() {
 					loading={signIn.isLoading}
 					disabled={!email || !password}
 					type={"submit"}
-					className={"max-w-[20rem] mx-auto"}
+					className={"max-w-[20rem] mx-auto relative"}
 				>
 					{signIn.isLoading && <Loader className={"absolute-center"} variant={"secondary"} />}
 					Войти

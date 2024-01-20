@@ -11,7 +11,9 @@ export function Header(props: HeaderProps) {
 			<div>
 				<Link href={"/"}>CardQuizzler</Link>
 			</div>
-			<div>{props.profile ? "Личный кабинет" : "Войти"}</div>
+			<div>
+				<Link href={"/auth/sign-in"}> {props.profile ? "Личный кабинет" : "Войти"}</Link>
+			</div>
 		</header>
 	)
 }
