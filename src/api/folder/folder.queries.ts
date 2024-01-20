@@ -15,7 +15,7 @@ import {
 	DeleteModuleFromFolderResponse,
 	updateFolder,
 	UpdateFolderPayload,
-} from "~/api/requests"
+} from "./folder.requests"
 
 export const foldersQueryKey = "folders-query-key"
 export const folderQueryKey = "folder-query-key"

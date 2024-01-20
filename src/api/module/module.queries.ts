@@ -10,7 +10,7 @@ import {
 	DeleteModuleResult,
 	updateModule,
 	UpdateModulePayload,
-} from "~/api"
+} from "./module.requests"
 
 export const modulesQueryKey = "modules-query-key"
 export const moduleQueryKey = "module-query-key"

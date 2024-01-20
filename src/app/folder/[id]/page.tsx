@@ -2,7 +2,7 @@
 import React from "react"
 import Link from "next/link"
 import { FolderType } from "~/app/models"
-import { getFolder } from "~/api/requests"
+import { getFolder } from "~/api"
 import { isModuleInFolder } from "~/app/folder/lib/utils"
 import { WithId, WithParamsId } from "~/app/types"
 import { useQueryClient } from "@tanstack/react-query"

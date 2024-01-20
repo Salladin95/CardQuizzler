@@ -3,7 +3,6 @@ import { ReactQueryProvider } from "src/providers"
 import type { Metadata } from "next"
 
 import "~/globals.css"
-import { Header } from "~/widgets"
 import { PropsWithChildren } from "~/app/types"
 
 export const metadata: Metadata = {
@@ -14,11 +13,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en">
-			<body className={""}>
-				<ReactQueryProvider>
-					<Header />
-					{children}
-				</ReactQueryProvider>
+			<body>
+				<ReactQueryProvider>{children}</ReactQueryProvider>
 			</body>
 		</html>
 	)

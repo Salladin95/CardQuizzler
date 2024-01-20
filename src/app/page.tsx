@@ -4,10 +4,16 @@ import Link from "next/link"
 import { faker } from "@faker-js/faker"
 import { HomePageData } from "~/app/models"
 import { CreateModuleFolder } from "~/entites"
-import { getHomePageData } from "~/api/requests"
 import { Button, DataHydration, Loader } from "~/shared"
-import { FolderCarousel, ModuleCarousel } from "~/widgets"
-import { homeDataKeys, useFetchDifficultModules, useFetchFolders, useFetchLastActions, useFetchModules } from "~/api"
+import { FolderCarousel, Header, ModuleCarousel } from "~/widgets"
+import {
+	getHomePageData,
+	homeDataKeys,
+	useFetchDifficultModules,
+	useFetchFolders,
+	useFetchLastActions,
+	useFetchModules,
+} from "~/api"
 
 function Home() {
 	const { data: lastActions, isLoading: isLastActionsLoading } = useFetchLastActions()
@@ -59,6 +65,7 @@ function Home() {
 export default function HomeWithDataHydration() {
 	return (
 		<DataHydration<HomePageData> getData={getHomePageData} queryKeys={homeDataKeys}>
+			<Header />
 			<Home />
 		</DataHydration>
 	)
