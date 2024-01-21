@@ -8,8 +8,10 @@ import { SelectOption } from "~/app/types"
  *
  * @returns {T}[]
  */
-export const createArray = <T>(length: number, iterator: (value: unknown, index: number, array: unknown[]) => T): T[] =>
-	new Array(length).fill(0).map(iterator)
+export const createArray = <T, V = string>(
+	length: number,
+	iterator: (value: V, index: number, array: unknown[]) => T,
+): T[] => new Array(length).fill(0).map(iterator)
 
 /**
  * Creates SelectOption
@@ -19,7 +21,7 @@ export const createArray = <T>(length: number, iterator: (value: unknown, index:
  * @param label
  * @return {@link SelectOption}
  */
-export const createOption = (value = "0", label = `Option ${value}`): SelectOption => ({
+export const createOption = (value: string = "0", label = `Option ${value}`): SelectOption => ({
 	value,
 	label,
 })

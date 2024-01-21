@@ -8,12 +8,8 @@ type HeaderProps = { style?: React.CSSProperties; profile?: Profile | null | und
 export function Header(props: HeaderProps) {
 	return (
 		<header style={props?.style} className={cn("flex justify-between bg-transparent px-8 py-4", props?.className)}>
-			<div>
-				<Link href={"/"}>CardQuizzler</Link>
-			</div>
-			<div>
-				<Link href={"/auth/sign-in"}> {props.profile ? "Личный кабинет" : "Войти"}</Link>
-			</div>
+			<Link href={"/"}>CardQuizzler</Link>
+			<Link href={"/auth"}> {props.profile ? "Личный кабинет" : "Войти"}</Link>
 		</header>
 	)
 }

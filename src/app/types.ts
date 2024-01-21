@@ -3,7 +3,7 @@ import React from "react"
 export type WithId = { id: string }
 export type WithParamsId = { params: WithId }
 export type PropsWithClassName = { className?: string }
-export type SvgDefaultProps = React.HTMLAttributes<SVGElement>
+export type SvgDefaultProps = React.HTMLAttributes<SVGElement> & { viewBox?: string }
 export type SelectOption<V = string> = {
 	label: string
 	value: V

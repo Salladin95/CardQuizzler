@@ -1,6 +1,7 @@
 @import "input.css";
 @import "radio.css";
 @import "toast.css";
+@import "select.css";
 @import "dialog.css";
 @import "button.css";
 @import "loader.css";
@@ -8,3 +9,5 @@
 @import "popover.css";
 @import "checkbox.css";
 @import "text-area.css";
+@import "scroll-area.css";
+@import "tab-trigger.css";
