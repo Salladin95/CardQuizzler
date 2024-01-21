@@ -2,18 +2,18 @@
 import React from "react"
 import { Button, Input, Loader } from "~/shared"
 import * as RadixTabs from "@radix-ui/react-tabs"
+import { TabContentProps } from "~/app/auth/page"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 
-type SignInTabContent = {
-	isLoading?: boolean
-	tabName: string
-	onSubmit: (e: React.FormEvent) => void
+type SignInTabContent = TabContentProps
+
+export enum SignInFormEnum {
+	EMAIL = "email",
+	PASSWORD = "password",
 }
 
 export function SignInTab(props: SignInTabContent) {
 	const { isLoading, tabName, onSubmit } = props
-	const [email, setEmail] = React.useState("")
-	const [password, setPassword] = React.useState("")
 
 	return (
 		<RadixTabs.Content className="bg-transparentoutline-none" value={tabName}>
@@ -25,10 +25,9 @@ export function SignInTab(props: SignInTabContent) {
 					<Input
 						placeholder={"Введите почту..."}
 						className={"mt-2 mb-4"}
-						value={email}
-						onChange={(e) => setEmail(e.currentTarget.value)}
-						id={"email"}
+						id={SignInFormEnum.EMAIL}
 						autoComplete={"username"}
+						name={SignInFormEnum.EMAIL}
 						required
 					/>
 				</fieldset>
@@ -37,18 +36,17 @@ export function SignInTab(props: SignInTabContent) {
 						Пароль
 					</label>
 					<PasswordInput
-						className={"mt-2 mb-8"}
+						className={"mt-2 mb-4"}
 						placeholder={"Введите пароль..."}
-						value={password}
-						onChange={(e) => setPassword(e.currentTarget.value)}
-						id={"password"}
-						autoComplete={"current-password"}
+						id={SignInFormEnum.PASSWORD}
+						name={SignInFormEnum.PASSWORD}
+						autoComplete={"new-password"}
 						required
 					/>
 				</fieldset>
 				<Button
 					loading={isLoading}
-					disabled={!email || !password}
+					// disabled={!email || !password}
 					type={"submit"}
 					className={"max-w-[20rem] mx-auto relative"}
 				>

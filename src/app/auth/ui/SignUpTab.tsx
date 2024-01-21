@@ -3,19 +3,22 @@ import React from "react"
 import { Button, DatePicker, Input, Loader, Popover } from "~/shared"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
-import { startOfToday, subYears } from "date-fns"
+import { format } from "date-fns"
+import { TabContentProps } from "~/app/auth/page"
 
-type SignUpTabContent = {
-	isLoading?: boolean
-	tabName: string
-	onSubmit: (e: React.FormEvent) => void
+type SignUpTabContent = TabContentProps
+
+export enum SignUpFormEnum {
+	NAME = "name",
+	EMAIL = "email",
+	PASSWORD = "password",
+	CONFIRM_PASSWORD = "confirmPassword",
+	BIRTHDAY = "birthday",
 }
 
 export function SignUpTab(props: SignUpTabContent) {
 	const { isLoading, tabName, onSubmit } = props
-	const [email, setEmail] = React.useState("")
-	const [password, setPassword] = React.useState("")
-	const [birthday, setBirthday] = React.useState<Date>(subYears(startOfToday(), 5))
+	const [birthday, setBirthday] = React.useState<Date>()
 
 	return (
 		<RadixTabs.Content className="bg-transparent  outline-none" value={tabName}>
@@ -27,10 +30,9 @@ export function SignUpTab(props: SignUpTabContent) {
 					<Input
 						placeholder={"Введите почту..."}
 						className={"mt-2 mb-4"}
-						value={email}
-						onChange={(e) => setEmail(e.currentTarget.value)}
-						id={"email"}
+						id={SignUpFormEnum.EMAIL}
 						autoComplete={"username"}
+						name={SignUpFormEnum.EMAIL}
 						required
 					/>
 				</fieldset>
@@ -40,10 +42,9 @@ export function SignUpTab(props: SignUpTabContent) {
 					</label>
 					<Input
 						placeholder={"Введите имя..."}
+						name={SignUpFormEnum.NAME}
 						className={"mt-2 mb-4"}
-						value={email}
-						onChange={(e) => setEmail(e.currentTarget.value)}
-						id={"name"}
+						id={SignUpFormEnum.NAME}
 						required
 						autoComplete={"name"}
 					/>
@@ -55,9 +56,8 @@ export function SignUpTab(props: SignUpTabContent) {
 					<PasswordInput
 						className={"mt-2 mb-4"}
 						placeholder={"Введите пароль..."}
-						value={password}
-						onChange={(e) => setPassword(e.currentTarget.value)}
-						id={"password"}
+						id={SignUpFormEnum.PASSWORD}
+						name={SignUpFormEnum.PASSWORD}
 						autoComplete={"new-password"}
 						required
 					/>
@@ -69,19 +69,26 @@ export function SignUpTab(props: SignUpTabContent) {
 					<PasswordInput
 						className={"mt-2 mb-4"}
 						placeholder={"Подтвердите пароль..."}
-						value={password}
-						onChange={(e) => setPassword(e.currentTarget.value)}
-						id={"confirm-password"}
+						id={SignUpFormEnum.CONFIRM_PASSWORD}
+						name={SignUpFormEnum.CONFIRM_PASSWORD}
 						autoComplete={"new-password"}
 						required
 					/>
 				</fieldset>
 
+				<input
+					className={"hidden"}
+					value={birthday?.toString()}
+					type={"date"}
+					name={SignUpFormEnum.BIRTHDAY}
+					onChange={() => {}}
+				/>
+
 				<Popover
 					side={"left"}
 					trigger={
 						<Button variant={"secondary"} className={"mb-8"}>
-							Выберите дату рождения
+							{!birthday ? "Выберите дату рождения" : format(birthday, "dd-MMMM-yyyy")}
 						</Button>
 					}
 				>
@@ -90,7 +97,7 @@ export function SignUpTab(props: SignUpTabContent) {
 
 				<Button
 					loading={isLoading}
-					disabled={!email || !password}
+					// disabled={!email || !password}
 					type={"submit"}
 					className={"max-w-[20rem] mx-auto relative"}
 				>

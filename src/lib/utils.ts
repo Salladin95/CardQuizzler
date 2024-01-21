@@ -27,3 +27,21 @@ export function calculateProgress(currentValue: number, fullValue: number): numb
 	// Calculate the progress percentage
 	return (clampedCurrentValue / fullValue) * 100
 }
+
+/**
+ * Converts FormData to a plain object.
+ *
+ * @param {FormData} formData - The FormData object to be converted.
+ * @returns {Object.<string, string>} The plain object representation of the FormData.
+ */
+export function formDataToObject(formData: FormData): { [key: string]: string } {
+	const formObject: { [key: string]: string } = {}
+
+	formData.forEach((value, key) => {
+		if (typeof value === "string") {
+			formObject[key] = value
+		}
+	})
+
+	return formObject
+}

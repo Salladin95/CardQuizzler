@@ -1,34 +1,27 @@
 import React from "react"
-import { cn, createOption } from "~/lib"
+import { calculatePreviousYearStartDate, cn, createOption, getListOfMonths, getListOfYears } from "~/lib"
 import { ArrowLeft, ArrowRight } from "~/features/splideCarousel/icons"
-import {
-	add,
-	eachDayOfInterval,
-	endOfMonth,
-	format,
-	getDay,
-	isEqual,
-	isSameMonth,
-	parse,
-	startOfToday,
-	startOfYear,
-	subYears,
-} from "date-fns"
+import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isSameMonth, parse } from "date-fns"
 import { Select } from "~/shared"
 
 type DatePickerProps = {
-	value: Date
+	value?: Date
 	onChange: (v: Date) => void
 }
+const MIN_YEAR = new Date(1930, 0, 1)
+const MAX_YEAR = calculatePreviousYearStartDate(5)
 
 export function DatePicker(props: DatePickerProps) {
-	const { value, onChange } = props
-	const fiveYearsAgo = value || subYears(startOfToday(), 5)
-	const [selectedDay, setSelectedDay] = React.useState(value || fiveYearsAgo)
-	const [currentDate, setCurrentDate] = React.useState(format(fiveYearsAgo, "MMMM-yyyy"))
+	const { value = MAX_YEAR, onChange } = props
+	const [selectedDay, setSelectedDay] = React.useState(value)
+	const [currentDate, setCurrentDate] = React.useState(format(value, "MMMM-yyyy"))
 	const firstDayCurrentMonth = parse(currentDate, "MMMM-yyyy", new Date())
 
 	const [currentMonth, currentYear] = currentDate.split("-")
+
+	// Check if the next and previous months are within the allowed range
+	const isNextMonthDisabled = add(firstDayCurrentMonth, { months: 1 }).getFullYear() > MAX_YEAR.getFullYear()
+	const isPrevMonthDisabled = add(firstDayCurrentMonth, { months: -1 }).getFullYear() < MIN_YEAR.getFullYear()
 
 	const days = eachDayOfInterval({
 		start: firstDayCurrentMonth,
@@ -70,7 +63,14 @@ export function DatePicker(props: DatePickerProps) {
 							<button
 								type="button"
 								onClick={previousMonth}
-								className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+								className={cn(
+									"-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500",
+									{
+										"opacity-30": isPrevMonthDisabled,
+										"pointer-events-none": isPrevMonthDisabled,
+									},
+								)}
+								disabled={isPrevMonthDisabled}
 							>
 								<span className="sr-only">Previous month</span>
 								<ArrowLeft />
@@ -78,7 +78,14 @@ export function DatePicker(props: DatePickerProps) {
 							<button
 								onClick={nextMonth}
 								type="button"
-								className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+								className={cn(
+									"-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500",
+									{
+										"opacity-30": isNextMonthDisabled,
+										"pointer-events-none": isNextMonthDisabled,
+									},
+								)}
+								disabled={isNextMonthDisabled}
 							>
 								<span className="sr-only">Next month</span>
 								<ArrowRight />
@@ -121,22 +128,7 @@ export function DatePicker(props: DatePickerProps) {
 	)
 }
 
-export function getListOfMonths() {
-	return Array.from({ length: 12 }, (_, index) => format(new Date(2000, index, 1), "MMMM"))
-}
-
-export function getListOfYears(startYear = 1930, endYear = new Date().getFullYear() - 5) {
-	const currentYear = new Date().getFullYear()
-	const years = []
-
-	for (let year = startYear; year <= (endYear || currentYear); year++) {
-		years.push(format(startOfYear(new Date(year, 0, 1)), "yyyy"))
-	}
-
-	return years.reverse()
-}
-
 const monthsOptions = getListOfMonths().map((v) => createOption(v, v))
-const yearsOptions = getListOfYears().map((v) => createOption(v, v))
+const yearsOptions = getListOfYears(MIN_YEAR, MAX_YEAR).map((v) => createOption(v, v))
 
 const colStartClasses = ["", "col-start-2", "col-start-3", "col-start-4", "col-start-5", "col-start-6", "col-start-7"]

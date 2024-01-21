@@ -2,6 +2,7 @@
 
 import React from "react"
 import * as Framer from "framer-motion"
+import { MotionProps } from "framer-motion"
 import * as RadixPopover from "@radix-ui/react-popover"
 import { cva, VariantProps } from "class-variance-authority"
 import { fade } from "~/shared/lib/animations"
@@ -83,7 +84,12 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>((props, re
 		[onOpenChange],
 	)
 
-	const animation = fade[props.side || "bottom"]
+	const animation: MotionProps = {
+		...fade[props.side || "bottom"],
+		transition: {
+			duration: 0.3,
+		},
+	}
 
 	React.useEffect(() => {
 		function closePopover() {
