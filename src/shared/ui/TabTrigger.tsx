@@ -6,16 +6,17 @@ import { LineIcon } from "./icons"
 
 type RadixTabTriggerProps = {
 	name: string
+	isActive: boolean
 } & PropsWithClassName &
 	PropsWithChildren &
 	SvgDefaultProps
 
 export function TabTrigger(props: RadixTabTriggerProps) {
-	const { name, className, children, ...rest } = props
+	const { name, className, children, isActive, ...rest } = props
 	return (
-		<RadixTabs.Trigger className={cn("tab-trigger", className)} value={name}>
+		<RadixTabs.Trigger className={cn("tab-trigger relative", className)} value={name}>
 			{children}
-			<LineIcon className={"opacity-0 w-[7.5rem] mx-auto"} {...rest} />
+			{isActive && <LineIcon className={"w-[7.5rem] absolute-x-center -bottom-1"} {...rest} />}
 		</RadixTabs.Trigger>
 	)
 }

@@ -1,11 +1,11 @@
 module.exports = {
 	extends: [
-        "eslint:recommended",
-        "next",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
-        "plugin:storybook/recommended"
-    ],
+		"eslint:recommended",
+		"next",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended",
+		"plugin:storybook/recommended",
+	],
 	parser: "@typescript-eslint/parser",
 	rules: {
 		// Common
@@ -25,6 +25,7 @@ module.exports = {
 		"@typescript-eslint/no-unused-vars": "warn",
 		"@typescript-eslint/no-namespace": "off",
 		"@typescript-eslint/no-explicit-any": "warn",
+		semi: "off",
 	},
 	overrides: [],
 }

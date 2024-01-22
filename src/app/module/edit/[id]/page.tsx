@@ -12,7 +12,7 @@ function EditModule(props: ModuleType) {
 
 	const queryClient = useQueryClient()
 	const updateModule = useUpdateModuleMutation({
-		onSuccess: () => queryClient.invalidateQueries([modulesQueryKey, modulesQueryKey, id]),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [modulesQueryKey, modulesQueryKey, id] }),
 	})
 
 	function handleUpdateModule(updatedTitle: string, updatedTerms: TermType[]) {

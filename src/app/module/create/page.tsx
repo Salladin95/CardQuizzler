@@ -8,7 +8,7 @@ import { modulesQueryKey, useCreateModuleMutation } from "~/api"
 export default function CreateModule() {
 	const queryClient = useQueryClient()
 	const createModule = useCreateModuleMutation({
-		onSuccess: () => queryClient.invalidateQueries([modulesQueryKey]),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [modulesQueryKey] }),
 	})
 
 	function handleCreateModule(title: string, terms: TermType[]) {

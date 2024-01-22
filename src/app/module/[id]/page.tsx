@@ -4,7 +4,7 @@ import { QuizConfettiScreen } from "~/widgets"
 import { Swiper } from "~/features/swiper/Swiper"
 import { WithId, WithParamsId } from "~/app/types"
 import { ModuleType, TermType } from "~/app/models"
-import { getModule, moduleQueryKey, useFetchModule, useProtectedFetchProfile } from "~/api"
+import { getModule, moduleQueryKey, useFetchModule } from "~/api"
 import { cleanSwipedCards, initializeSwiperData } from "../utils"
 import { DataHydration, FlatProgressBar, LoadingDataRenderer } from "~/shared"
 import { getNegativeAnswers, getPositiveAnswers, SwiperData } from "~/features/swiper"
@@ -12,8 +12,6 @@ import { getNegativeAnswers, getPositiveAnswers, SwiperData } from "~/features/s
 function Module(props: ModuleType) {
 	const { terms } = props
 	const [swiperState, setSwiperState] = React.useState<SwiperData<TermType>>(initializeSwiperData(terms))
-
-	useProtectedFetchProfile()
 
 	const negativeAnswers = getNegativeAnswers(swiperState.swipedCards)
 	const positiveAnswers = getPositiveAnswers(swiperState.swipedCards)

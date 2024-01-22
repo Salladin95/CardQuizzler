@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios"
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios"
 import { serialize } from "object-to-formdata"
 import { refresh } from "~/api"
 
@@ -89,47 +89,28 @@ const downloadResponseErrorInterceptor = (result: { response: AxiosResponse }) =
 	throw { ...result, response: { ...result.response, data: json } }
 }
 
-let isRefreshing = false
-let refreshQueue: (() => void)[] = []
-
 /**
  * Axios makes a refresh call when an error with status 401 is received.
  */
-async function makeRefreshCall(res: { response: AxiosResponse }) {
-	const { response } = res
+let hasCalledRefresh = false
 
-	if (response && response.status === 401) {
-		const { config } = response
-		const prevReq = config as InternalAxiosRequestConfig & { sent?: boolean }
-
-		if (!prevReq.sent && !isRefreshing) {
-			prevReq.sent = true
-			try {
-				isRefreshing = true
-				await refresh() // Your refresh function
-				isRefreshing = false
-
-				// Retry the original request with the updated token
-				const newRequest = await axiosInstance(config)
-				return Promise.resolve({ response: newRequest })
-			} catch (refreshError) {
-				console.error("Token refresh failed:", refreshError)
-				return Promise.reject(res)
-			} finally {
-				// Process the queued requests
-				refreshQueue.forEach((resolve) => resolve())
-				refreshQueue = []
-			}
-		} else if (isRefreshing) {
-			// If a refresh is in progress, enqueue the request and wait
-			return new Promise<AxiosResponse>((resolve) => {
-				refreshQueue.push(() => {
-					resolve(axiosInstance(config))
-				})
-			})
+async function makeRefreshCall(error: AxiosError) {
+	const originalRequest = error.config as AxiosRequestConfig
+	// If the error is a 401 try to refresh the JWT token
+	if (error.response?.status === 401 && !hasCalledRefresh) {
+		hasCalledRefresh = true
+		try {
+			await refresh()
+			return axiosInstance(originalRequest)
+		} catch (refreshError) {
+			// If there is an error refreshing the token, log out the user
+			return Promise.reject(refreshError)
+		} finally {
+			hasCalledRefresh = false
 		}
 	}
-	return Promise.reject(res)
+	// Return the original error if we can't handle it
+	return Promise.reject(error)
 }
 
 axiosInstance.interceptors.request.use(requestInterceptor)

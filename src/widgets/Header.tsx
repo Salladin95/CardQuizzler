@@ -1,15 +1,44 @@
+"use client"
 import { cn } from "~/lib"
 import Link from "next/link"
-import { Profile } from "~/api"
+import { Button } from "~/shared"
 import { PropsWithClassName } from "~/app/types"
+import { useQueryClient } from "@tanstack/react-query"
+import { profileQueryKey, signOut, useProfile } from "~/api"
 
-type HeaderProps = { style?: React.CSSProperties; profile?: Profile | null | undefined } & PropsWithClassName
+type HeaderProps = { style?: React.CSSProperties } & PropsWithClassName
 
 export function Header(props: HeaderProps) {
+	const queryClient = useQueryClient()
+	const { data: profile } = useProfile({ staleTime: 0 })
+
+	async function handleSignOut() {
+		await signOut()
+		queryClient.resetQueries({ queryKey: [profileQueryKey], exact: true })
+	}
+
 	return (
-		<header style={props?.style} className={cn("flex justify-between bg-transparent px-8 py-4", props?.className)}>
+		<header
+			style={props?.style}
+			className={cn("flex items-center justify-between bg-transparent px-8 py-4", props?.className)}
+		>
 			<Link href={"/"}>CardQuizzler</Link>
-			<Link href={"/auth"}> {props.profile ? "Личный кабинет" : "Войти"}</Link>
+			{profile ? (
+				<div className={"flex gap-x-4"}>
+					<Link href={"/profile"}>
+						<Button variant={"secondary"}>Личный кабинет</Button>
+					</Link>
+					<Button className={"w-min"} onClick={handleSignOut} variant={"secondary"}>
+						Выйти
+					</Button>
+				</div>
+			) : (
+				<Link href={"/auth"}>
+					<Button className={"w-min"} variant={"secondary"}>
+						Войти
+					</Button>
+				</Link>
+			)}
 		</header>
 	)
 }

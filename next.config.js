@@ -7,6 +7,10 @@ const nextConfig = {
 	async rewrites() {
 		return [
 			{
+				source: "/api/sign-out",
+				destination: `${process.env.NEXT_PUBLIC_APP_URL}/auth/sign-out`,
+			},
+			{
 				source: "/api/:path*",
 				destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`,
 			},

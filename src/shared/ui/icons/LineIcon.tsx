@@ -1,9 +1,19 @@
+import React from "react"
 import { SvgDefaultProps } from "~/app/types"
+import { motion } from "framer-motion"
 
 export function LineIcon(props: SvgDefaultProps) {
+	const pathVariants = {
+		initial: { pathLength: 0, opacity: 0 },
+		animate: { pathLength: 1, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } },
+	}
+
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 350 380 50" {...props}>
-			<path
+			<motion.path
+				variants={pathVariants}
+				initial="initial"
+				animate="animate"
 				fill="none"
 				stroke='url("#a")'
 				strokeLinecap="round"

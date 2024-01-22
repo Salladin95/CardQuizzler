@@ -2,23 +2,22 @@
 import React from "react"
 import Link from "next/link"
 import { FolderType } from "~/app/models"
-import { getFolder } from "~/api"
+import { folderQueryKey, getFolder, useAddModuleToFolderMutation, useFetchFolder } from "~/api"
 import { isModuleInFolder } from "~/app/folder/lib/utils"
 import { WithId, WithParamsId } from "~/app/types"
 import { useQueryClient } from "@tanstack/react-query"
 import { FolderContextMenu, ModuleContextMenu } from "~/entites"
-import { folderQueryKey, useAddModuleToFolderMutation, useFetchFolder } from "~/api"
-import { AddIcon, Button, XMarkIcon, DataHydration, Dialog, FolderIcon, LoadingDataRenderer, TrashIcon } from "~/shared"
+import { AddIcon, Button, DataHydration, Dialog, FolderIcon, LoadingDataRenderer, TrashIcon, XMarkIcon } from "~/shared"
 
 function Folder(folder: FolderType) {
 	const [showDialog, setShowDialog] = React.useState(false)
 	const queryClient = useQueryClient()
 
 	const addModuleToFolder = useAddModuleToFolderMutation({
-		onSuccess: () => queryClient.invalidateQueries([folderQueryKey, folder.id]),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [folderQueryKey, folder.id] }),
 	})
 	const deleteModuleFromFolder = useAddModuleToFolderMutation({
-		onSuccess: () => queryClient.invalidateQueries([folderQueryKey, folder.id]),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [folderQueryKey, folder.id] }),
 	})
 
 	function handleActionButtonClick(moduleId: string) {

@@ -1,10 +1,15 @@
 "use client"
 import React from "react"
-import { Button, DatePicker, Input, Loader, Popover } from "~/shared"
+import { FormField } from "~/entites"
+import { useSignUpMutation } from "~/api"
 import * as RadixTabs from "@radix-ui/react-tabs"
+import { TabContentProps } from "~/app/auth/types"
+import { yupResolver } from "@hookform/resolvers/yup"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
-import { format } from "date-fns"
-import { TabContentProps } from "~/app/auth/page"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { Button, DatePicker, Input, Loader, Popover } from "~/shared"
+import { calculatePreviousYearStartDate, cn, fullDateFormatter } from "~/lib"
+import { SignUpFormType, singUpValidationSchema } from "~/app/auth/validation"
 
 type SignUpTabContent = TabContentProps
 
@@ -16,92 +21,122 @@ export enum SignUpFormEnum {
 	BIRTHDAY = "birthday",
 }
 
-export function SignUpTab(props: SignUpTabContent) {
-	const { isLoading, tabName, onSubmit } = props
-	const [birthday, setBirthday] = React.useState<Date>()
+export function getSignUpFormDefaultValues(): SignUpFormType {
+	return {
+		name: "",
+		email: "",
+		password: "",
+		confirmPassword: "",
+		birthday: calculatePreviousYearStartDate(5),
+	}
+}
 
+export function SignUpTab(props: SignUpTabContent) {
+	const { tabName, onSubmit: onSubmitProp } = props
+
+	const signUp = useSignUpMutation({
+		onSuccess: onSubmitProp,
+	})
+
+	const {
+		handleSubmit,
+		register,
+		control,
+		formState: { errors },
+		watch,
+	} = useForm<SignUpFormType>({
+		defaultValues: getSignUpFormDefaultValues(),
+		resolver: yupResolver(singUpValidationSchema),
+	})
+
+	const birthday = watch(SignUpFormEnum.BIRTHDAY)
+
+	const onSubmit: SubmitHandler<SignUpFormType> = (payload) => {
+		signUp.mutate({
+			...payload,
+			birthday: fullDateFormatter(payload.birthday),
+		})
+	}
 	return (
 		<RadixTabs.Content className="bg-transparent  outline-none" value={tabName}>
-			<form onSubmit={onSubmit}>
-				<fieldset>
-					<label className={"cursor-pointer"} htmlFor="email">
-						Почта
-					</label>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<FormField className={"mb-6"} id={SignUpFormEnum.EMAIL} label={"Почта"} error={errors?.email}>
 					<Input
-						placeholder={"Введите почту..."}
-						className={"mt-2 mb-4"}
+						{...register(SignUpFormEnum.EMAIL)}
 						id={SignUpFormEnum.EMAIL}
+						error={Boolean(errors?.email)}
+						placeholder={"Введите почту..."}
 						autoComplete={"username"}
-						name={SignUpFormEnum.EMAIL}
-						required
 					/>
-				</fieldset>
-				<fieldset>
-					<label className={"cursor-pointer"} htmlFor="name">
-						Имя
-					</label>
+				</FormField>
+				<FormField className={"mt-2 mb-6"} id={SignUpFormEnum.NAME} label={"Имя"} error={errors?.name}>
 					<Input
-						placeholder={"Введите имя..."}
-						name={SignUpFormEnum.NAME}
-						className={"mt-2 mb-4"}
+						{...register(SignUpFormEnum.NAME)}
 						id={SignUpFormEnum.NAME}
-						required
+						error={Boolean(errors?.name)}
+						placeholder={"Введите ваше имя..."}
 						autoComplete={"name"}
 					/>
-				</fieldset>
-				<fieldset>
-					<label className={"cursor-pointer"} htmlFor="password">
-						Пароль
-					</label>
+				</FormField>
+				<FormField className={"mt-2 mb-6"} id={SignUpFormEnum.PASSWORD} label={"Пароль"} error={errors?.password}>
 					<PasswordInput
-						className={"mt-2 mb-4"}
-						placeholder={"Введите пароль..."}
+						{...register(SignUpFormEnum.PASSWORD)}
 						id={SignUpFormEnum.PASSWORD}
-						name={SignUpFormEnum.PASSWORD}
+						error={Boolean(errors?.password)}
+						placeholder={"Введите пароль..."}
 						autoComplete={"new-password"}
-						required
 					/>
-				</fieldset>
-				<fieldset>
-					<label className={"cursor-pointer"} htmlFor="confirem-password">
-						Подтвердите пароль
-					</label>
+				</FormField>
+				<FormField
+					className={"mt-2 mb-10"}
+					id={SignUpFormEnum.CONFIRM_PASSWORD}
+					label={"Подтверждение пароля"}
+					error={errors?.confirmPassword}
+				>
 					<PasswordInput
-						className={"mt-2 mb-4"}
+						{...register(SignUpFormEnum.CONFIRM_PASSWORD)}
+						error={Boolean(errors?.confirmPassword)}
 						placeholder={"Подтвердите пароль..."}
 						id={SignUpFormEnum.CONFIRM_PASSWORD}
 						name={SignUpFormEnum.CONFIRM_PASSWORD}
 						autoComplete={"new-password"}
-						required
 					/>
-				</fieldset>
-
-				<input
-					className={"hidden"}
-					value={birthday?.toString()}
-					type={"date"}
-					name={SignUpFormEnum.BIRTHDAY}
-					onChange={() => {}}
-				/>
+				</FormField>
 
 				<Popover
 					side={"left"}
 					trigger={
-						<Button variant={"secondary"} className={"mb-8"}>
-							{!birthday ? "Выберите дату рождения" : format(birthday, "dd-MMMM-yyyy")}
+						<Button
+							variant={"secondary"}
+							className={cn("mb-2", {
+								"text-red-400": Boolean(errors?.birthday),
+							})}
+						>
+							{fullDateFormatter(birthday)}
 						</Button>
 					}
 				>
-					<DatePicker value={birthday} onChange={setBirthday} />
+					<Controller
+						render={({ field }) => <DatePicker {...field} />}
+						name={SignUpFormEnum.BIRTHDAY}
+						control={control}
+					/>
 				</Popover>
+				<p
+					className={cn("mb-8", {
+						"text-red-400": Boolean(errors?.birthday),
+					})}
+				>
+					Выберите дату рождения
+				</p>
 
 				<Button
-					loading={isLoading}
-					// disabled={!email || !password}
+					loading={signUp.isPending}
+					disabled={Boolean(Object.keys(errors).length)}
 					type={"submit"}
 					className={"max-w-[20rem] mx-auto relative"}
 				>
-					{isLoading && <Loader className={"absolute-center"} variant={"secondary"} />}
+					{signUp.isPending && <Loader className={"absolute-center"} variant={"secondary"} />}
 					Зарегистрироваться
 				</Button>
 			</form>

@@ -12,11 +12,11 @@ export default function AddModuleToTheFolder(props: { params: { folderId: string
 	const queryClient = useQueryClient()
 
 	const createModule = useCreateModuleMutation({
-		onSuccess: () => queryClient.invalidateQueries([modulesQueryKey]),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [modulesQueryKey] }),
 	})
 
 	const addModuleToTheFolder = useAddModuleToFolderMutation({
-		onSuccess: () => queryClient.invalidateQueries([folderQueryKey, folderId]),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [folderQueryKey, folderId] }),
 	})
 
 	async function createModuleAndAddToTheFolder(title: string, terms: TermType[]) {

@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios"
 import axios from "~/app/axios"
 
 export type Profile = {
@@ -10,9 +9,9 @@ export type Profile = {
 	updatedAt: string
 }
 
-export type FetchProfileResponse = AxiosResponse<Profile>
+export type FetchProfileResponse = Profile
 
-export function fetchProfile(): Promise<FetchProfileResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return axios.get("/profile")
+export async function fetchProfile(): Promise<FetchProfileResponse> {
+	const res = await axios.get("/profile")
+	return res.data
 }

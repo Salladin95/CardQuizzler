@@ -1,7 +1,7 @@
 import { mockFolders, mockModules } from "~/lib/mock"
 import { HomePageData } from "~/app/models"
-import { foldersQueryKey } from "./folder"
-import { difficultModulesQueryKey, lastActionsQueryKey, modulesQueryKey } from "./module"
+import { useQuery, UseQueryOptions } from "@tanstack/react-query"
+import { AxiosError } from "axios"
 
 export * from "./auth"
 export * from "./folder"
@@ -17,4 +17,12 @@ export function getHomePageData(): Promise<HomePageData> {
 	return Promise.resolve({ folders, modules, lastActions, difficultModules })
 }
 
-export const homeDataKeys = [foldersQueryKey, modulesQueryKey, lastActionsQueryKey, difficultModulesQueryKey]
+export const useFetchHomePageData = (options?: Omit<UseQueryOptions<HomePageData, AxiosError>, "queryFn">) => {
+	return useQuery({
+		queryKey: [homeDataKey],
+		queryFn: getHomePageData,
+		...options,
+	})
+}
+
+export const homeDataKey = "home-page-date-key"

@@ -5,7 +5,6 @@ import * as Framer from "framer-motion"
 import { MotionProps } from "framer-motion"
 import * as RadixPopover from "@radix-ui/react-popover"
 import { cva, VariantProps } from "class-variance-authority"
-import { fade } from "~/shared/lib/animations"
 import { cn } from "~/lib"
 
 const popoverVariants = cva("popover", {
@@ -84,10 +83,14 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>((props, re
 		[onOpenChange],
 	)
 
+	// const animation: MotionProps = fade[props.side || "bottom"]
+
 	const animation: MotionProps = {
-		...fade[props.side || "bottom"],
+		initial: { opacity: 0, x: "30%" },
+		animate: { opacity: 1, x: 0, pointerEvents: "auto" },
 		transition: {
-			duration: 0.3,
+			duration: 0.2,
+			ease: "easeOut",
 		},
 	}
 

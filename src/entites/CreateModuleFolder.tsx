@@ -16,7 +16,9 @@ export function CreateModuleFolder() {
 	}
 
 	const queryClient = useQueryClient()
-	const createFolder = useCreateFolderMutation({ onSuccess: () => queryClient.invalidateQueries([foldersQueryKey]) })
+	const createFolder = useCreateFolderMutation({
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [foldersQueryKey] }),
+	})
 
 	async function handleFolderCreation(folderName: string) {
 		const folder = await createFolder.mutateAsync(folderName)

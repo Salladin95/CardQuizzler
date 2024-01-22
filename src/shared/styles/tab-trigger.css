@@ -2,13 +2,6 @@
     .tab-trigger {
         @apply text-h2 cursor-pointer h-[3rem] relative;
 
-        &[data-state="active"] {
-           & svg {
-               opacity: 1;
-           };
-
-        }
-
         &:focus {
             @apply outline-0;
         }

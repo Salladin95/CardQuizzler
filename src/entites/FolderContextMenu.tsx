@@ -20,11 +20,11 @@ export function FolderContextMenu(props: FolderSettingsMenuProps) {
 
 	const queryClient = useQueryClient()
 	const updateFolder = useUpdateFolderMutation({
-		onSuccess: (folder) => queryClient.invalidateQueries([foldersQueryKey, folderQueryKey, folder.id]),
+		onSuccess: (folder) => queryClient.invalidateQueries({ queryKey: [foldersQueryKey, folderQueryKey, folder.id] }),
 	})
 
 	const deleteFolder = useDeleteFolderMutation({
-		onSuccess: () => queryClient.invalidateQueries([foldersQueryKey, folderQueryKey, folder.id]),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [foldersQueryKey, folderQueryKey, folder.id] }),
 	})
 
 	function handleUpdateFolder(folderName: string) {

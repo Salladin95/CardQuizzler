@@ -1,57 +1,36 @@
 "use client"
-import React, { FormEvent } from "react"
-import * as RadixTabs from "@radix-ui/react-tabs"
+import React from "react"
+import { TabTrigger } from "~/shared"
 import { SignInTab } from "./ui/SignInTab"
 import { SignUpTab } from "./ui/SignUpTab"
-import { TabTrigger } from "~/shared"
-import { singInValidationSchema, singUpValidationSchema, validateForm } from "~/app/auth/validation"
-
-export type TabContentProps = {
-	isLoading?: boolean
-	tabName: string
-	onSubmit: (e: React.FormEvent) => void
-}
+import { AuthTabsNames } from "~/app/auth/types"
+import * as RadixTabs from "@radix-ui/react-tabs"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function Auth() {
-	function handleSignInSubmit(e: FormEvent) {
-		e.preventDefault()
-		const formData = new FormData(e.currentTarget as HTMLFormElement)
-		validateForm(formData, singInValidationSchema)
-			.then((validData) => {
-				// Form data is valid, do something with it
-				console.log("Valid form data:", validData)
-			})
-			.catch((errors) => {
-				// Form data is invalid, handle errors
-				console.error("Validation errors:", errors.errors)
-			})
-	}
+	const router = useRouter()
+	const searchParams = useSearchParams()
 
-	// Function to handle form submission
-	function handleSignUpSubmit(e: FormEvent) {
-		e.preventDefault()
-		const formData = new FormData(e.currentTarget as HTMLFormElement)
-		validateForm(formData, singUpValidationSchema)
-			.then((validData) => {
-				// Form data is valid, do something with it
-				console.log("Valid form data:", validData)
-			})
-			.catch((errors) => {
-				// Form data is invalid, handle errors
-				console.error("Validation errors:", errors.errors)
-			})
+	const search = searchParams.get("active-tab")
+	const [activeTab, setActiveTab] = React.useState(search || AuthTabsNames.SIGN_IN)
+
+	function handleValueChange(newActiveTab: string) {
+		setActiveTab(newActiveTab)
+		router.push(`?active-tab=${newActiveTab}`)
 	}
 
 	return (
-		<RadixTabs.Root defaultValue="sign-in">
+		<RadixTabs.Root onValueChange={handleValueChange} value={activeTab} className={"text-primary"}>
 			<RadixTabs.List className="flex max-w-640 text-black mb-8" aria-label="Manage your account">
-				<TabTrigger name={"sign-up"} className={"mr-6"}>
+				<TabTrigger isActive={activeTab === AuthTabsNames.SIGN_UP} name={AuthTabsNames.SIGN_UP} className={"mr-6"}>
 					Зарегистрироваться
 				</TabTrigger>
-				<TabTrigger name={"sign-in"}>Войти</TabTrigger>
+				<TabTrigger isActive={activeTab === AuthTabsNames.SIGN_IN} name={AuthTabsNames.SIGN_IN}>
+					Войти
+				</TabTrigger>
 			</RadixTabs.List>
-			<SignInTab onSubmit={handleSignInSubmit} tabName={"sign-in"} />
-			<SignUpTab onSubmit={handleSignUpSubmit} tabName={"sign-up"} />
+			<SignInTab onSubmit={() => router.push("/")} tabName={AuthTabsNames.SIGN_IN} />
+			<SignUpTab onSubmit={() => handleValueChange(AuthTabsNames.SIGN_IN)} tabName={AuthTabsNames.SIGN_UP} />
 		</RadixTabs.Root>
 	)
 }
