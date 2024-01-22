@@ -11,7 +11,7 @@ export type Profile = {
 
 export type FetchProfileResponse = Profile
 
-export async function fetchProfile(): Promise<FetchProfileResponse> {
+export async function getProfile(): Promise<FetchProfileResponse> {
 	const res = await axios.get("/profile")
 	return res.data
 }

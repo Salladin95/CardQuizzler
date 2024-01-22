@@ -22,7 +22,7 @@ export default function Auth() {
 	return (
 		<RadixTabs.Root onValueChange={handleValueChange} value={activeTab} className={"text-primary"}>
 			<RadixTabs.List className="flex max-w-640 text-black mb-8" aria-label="Manage your account">
-				<TabTrigger isActive={activeTab === AuthTabsNames.SIGN_UP} name={AuthTabsNames.SIGN_UP} className={"mr-6"}>
+				<TabTrigger isActive={activeTab === AuthTabsNames.SIGN_UP} name={AuthTabsNames.SIGN_UP} className={"mr-12"}>
 					Зарегистрироваться
 				</TabTrigger>
 				<TabTrigger isActive={activeTab === AuthTabsNames.SIGN_IN} name={AuthTabsNames.SIGN_IN}>

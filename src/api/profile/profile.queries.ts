@@ -1,5 +1,5 @@
 import { AxiosError } from "axios"
-import { fetchProfile, FetchProfileResponse } from "~/api"
+import { getProfile, FetchProfileResponse } from "~/api"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 
@@ -10,7 +10,7 @@ export const useProfile = (
 ) => {
 	return useQuery({
 		queryKey: [profileQueryKey],
-		queryFn: fetchProfile,
+		queryFn: getProfile,
 		...options,
 	})
 }
