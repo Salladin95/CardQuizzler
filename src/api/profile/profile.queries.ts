@@ -1,7 +1,8 @@
 import { AxiosError } from "axios"
-import { getProfile, FetchProfileResponse } from "~/api"
+import { FetchProfileResponse, getProfile } from "~/api"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
+import React from "react"
 
 export const profileQueryKey = "profile-query-key"
 
@@ -17,12 +18,11 @@ export const useProfile = (
 
 export const useProtectedProfile = (options?: Parameters<typeof useProfile>[0]) => {
 	const router = useRouter()
-	const { error, ...rest } = useProfile({
-		...options,
-	})
-
-	if (error) {
-		router.push("/auth")
-	}
-	return rest
+	const { error, isPending, ...rest } = useProfile(options)
+	React.useEffect(() => {
+		if (error && !isPending) {
+			router.push("/auth")
+		}
+	}, [error, isPending, router])
+	return { ...rest, error, isPending }
 }
