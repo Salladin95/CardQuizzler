@@ -3,6 +3,7 @@ const REM = 16
 // Sort colors by numbers: https://elektrobild.org/tools/sort-colors
 const colors = {
 	primary: "#7749F8",
+	"sub-primary": "#B69CFF",
 	gold: "#FFC107",
 	green: "#28A745",
 	info: "#3D8BFD",
@@ -285,6 +286,9 @@ const config = {
 			fontFamily: {
 				noto: ["var(--font-noto)"],
 				inter: ["var(--font-inter)"],
+				"y-touch": ["var(--font-youth-touch)"],
+				"y-power": ["var(--font-youth-power)"],
+				"y-today": ["var(--font-youth-today)"],
 			},
 			/**
 			 * Underline

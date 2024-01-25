@@ -12,7 +12,7 @@
     }
 
     body {
-        @apply flex-1 flex flex-col scroll-smooth text-black;
+        @apply flex-1 flex flex-col scroll-smooth text-black font-inter;
     }
 
     main {
@@ -31,6 +31,18 @@
 }
 
 @layer components {
+    .logo {
+        @apply h1 text-white font-y-touch text-[3rem] tracking-wide font-medium;
+    }
+
+    .separator {
+        @apply relative;
+
+        &::after {
+            @apply content-[''] absolute -bottom-[1rem] left-0 w-full h-1px bg-primary;
+        }
+    }
+
     .page {
         @apply pt-40
     }

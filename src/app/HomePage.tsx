@@ -47,6 +47,6 @@ function Home(props: HomePageData) {
 }
 
 export function HomePage() {
-	const { data, isLoading } = useFetchHomePageData()
-	return LoadingDataRenderer<HomePageData>({ Comp: Home, data, isLoading })
+	const { data, isPending } = useFetchHomePageData()
+	return LoadingDataRenderer<HomePageData>({ Comp: Home, data, isLoading: isPending })
 }

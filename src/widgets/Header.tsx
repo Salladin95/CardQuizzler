@@ -1,7 +1,7 @@
 "use client"
 import { cn } from "~/lib"
 import Link from "next/link"
-import { Button } from "~/shared"
+import { Button, Logo } from "~/shared"
 import { PropsWithClassName } from "~/app/types"
 import { useQueryClient } from "@tanstack/react-query"
 import { profileQueryKey, signOut, useProfile } from "~/api"
@@ -22,7 +22,7 @@ export function Header(props: HeaderProps) {
 			style={props?.style}
 			className={cn("flex items-center justify-between bg-transparent px-8 py-4", props?.className)}
 		>
-			<Link href={"/"}>CardQuizzler</Link>
+			<Logo className={"text-primary inset-0 static"} />
 			{profile ? (
 				<div className={"flex gap-x-4"}>
 					<Link href={"/profile"}>

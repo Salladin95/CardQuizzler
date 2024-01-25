@@ -1,6 +1,6 @@
 @layer components {
     .tab-trigger {
-        @apply text-h2 cursor-pointer h-[3rem] relative;
+        @apply text-h2 cursor-pointer h-[3rem] relative text-primary;
 
         &:focus {
             @apply outline-0;

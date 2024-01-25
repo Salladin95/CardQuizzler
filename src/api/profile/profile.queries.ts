@@ -1,10 +1,19 @@
-import { AxiosError } from "axios"
-import { FetchProfileResponse, getProfile } from "~/api"
-import { useQuery, UseQueryOptions } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
 import React from "react"
+import { AxiosError } from "axios"
+import { useRouter } from "next/navigation"
+import {
+	FetchProfileResponse,
+	getProfile,
+	requestEmailVerification,
+	RequestEmailVerificationResponse,
+	verifyEmail,
+	VerifyEmailPayload,
+	VerifyEmailResponse,
+} from "~/api"
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "@tanstack/react-query"
 
 export const profileQueryKey = "profile-query-key"
+export const requestResetEmailQueryKey = "request-reset-email"
 
 export const useProfile = (
 	options?: Omit<UseQueryOptions<FetchProfileResponse, AxiosError>, "queryFn" | "queryKey">,
@@ -25,4 +34,23 @@ export const useProtectedProfile = (options?: Parameters<typeof useProfile>[0]) 
 		}
 	}, [error, isPending, router])
 	return { ...rest, error, isPending }
+}
+
+export const useRequestEmailVerification = (
+	options?: Omit<UseQueryOptions<RequestEmailVerificationResponse, AxiosError>, "queryFn" | "queryKey">,
+) => {
+	return useQuery({
+		queryKey: [requestResetEmailQueryKey],
+		queryFn: requestEmailVerification,
+		...options,
+	})
+}
+
+export const useVerifyEmail = (
+	options?: Omit<UseMutationOptions<VerifyEmailResponse, AxiosError, VerifyEmailPayload>, "mutationFn">,
+) => {
+	return useMutation({
+		mutationFn: verifyEmail,
+		...options,
+	})
 }

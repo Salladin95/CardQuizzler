@@ -103,12 +103,19 @@ export function SignUpTab(props: SignUpTabContent) {
 					/>
 				</FormField>
 
+				<p
+					className={cn("mb-2", {
+						"text-red-400": Boolean(errors?.birthday),
+					})}
+				>
+					Дата рождения
+				</p>
 				<Popover
 					side={"left"}
 					trigger={
 						<Button
 							variant={"secondary"}
-							className={cn("mb-2", {
+							className={cn("mb-8", {
 								"text-red-400": Boolean(errors?.birthday),
 							})}
 						>
@@ -122,13 +129,6 @@ export function SignUpTab(props: SignUpTabContent) {
 						control={control}
 					/>
 				</Popover>
-				<p
-					className={cn("mb-8", {
-						"text-red-400": Boolean(errors?.birthday),
-					})}
-				>
-					Выберите дату рождения
-				</p>
 
 				<Button
 					loading={signUp.isPending}
