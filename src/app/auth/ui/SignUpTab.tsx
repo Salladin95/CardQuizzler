@@ -1,13 +1,14 @@
 "use client"
 import React from "react"
-import { FormField } from "~/entites"
+import { useWindowSize } from "react-use"
 import { useSignUpMutation } from "~/api"
+import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { TabContentProps } from "~/app/auth/types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
+import { Button, DatePicker, Input, Popover } from "~/shared"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import { Button, DatePicker, Input, Loader, Popover } from "~/shared"
 import { calculatePreviousYearStartDate, cn, fullDateFormatter } from "~/lib"
 import { SignUpFormType, singUpValidationSchema } from "~/app/auth/validation"
 
@@ -57,10 +58,11 @@ export function SignUpTab(props: SignUpTabContent) {
 			birthday: fullDateFormatter(payload.birthday),
 		})
 	}
+	const { width: windowWidth } = useWindowSize()
 	return (
 		<RadixTabs.Content className="bg-transparent  outline-none" value={tabName}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<FormField className={"mb-6"} id={SignUpFormEnum.EMAIL} label={"Почта"} error={errors?.email}>
+				<FormFieldWithLabel className={"mb-6"} id={SignUpFormEnum.EMAIL} label={"Почта"} error={errors?.email}>
 					<Input
 						{...register(SignUpFormEnum.EMAIL)}
 						id={SignUpFormEnum.EMAIL}
@@ -68,8 +70,8 @@ export function SignUpTab(props: SignUpTabContent) {
 						placeholder={"Введите почту..."}
 						autoComplete={"username"}
 					/>
-				</FormField>
-				<FormField className={"mt-2 mb-6"} id={SignUpFormEnum.NAME} label={"Имя"} error={errors?.name}>
+				</FormFieldWithLabel>
+				<FormFieldWithLabel className={"mt-2 mb-6"} id={SignUpFormEnum.NAME} label={"Имя"} error={errors?.name}>
 					<Input
 						{...register(SignUpFormEnum.NAME)}
 						id={SignUpFormEnum.NAME}
@@ -77,8 +79,8 @@ export function SignUpTab(props: SignUpTabContent) {
 						placeholder={"Введите ваше имя..."}
 						autoComplete={"name"}
 					/>
-				</FormField>
-				<FormField className={"mt-2 mb-6"} id={SignUpFormEnum.PASSWORD} label={"Пароль"} error={errors?.password}>
+				</FormFieldWithLabel>
+				<FormFieldWithLabel className={"mt-2 mb-6"} id={SignUpFormEnum.PASSWORD} label={"Пароль"} error={errors?.password}>
 					<PasswordInput
 						{...register(SignUpFormEnum.PASSWORD)}
 						id={SignUpFormEnum.PASSWORD}
@@ -86,8 +88,8 @@ export function SignUpTab(props: SignUpTabContent) {
 						placeholder={"Введите пароль..."}
 						autoComplete={"new-password"}
 					/>
-				</FormField>
-				<FormField
+				</FormFieldWithLabel>
+				<FormFieldWithLabel
 					className={"mt-2 mb-10"}
 					id={SignUpFormEnum.CONFIRM_PASSWORD}
 					label={"Подтверждение пароля"}
@@ -101,7 +103,7 @@ export function SignUpTab(props: SignUpTabContent) {
 						name={SignUpFormEnum.CONFIRM_PASSWORD}
 						autoComplete={"new-password"}
 					/>
-				</FormField>
+				</FormFieldWithLabel>
 
 				<p
 					className={cn("mb-2", {
@@ -111,7 +113,7 @@ export function SignUpTab(props: SignUpTabContent) {
 					Дата рождения
 				</p>
 				<Popover
-					side={"left"}
+					side={windowWidth > 1080 ? "left" : "bottom"}
 					trigger={
 						<Button
 							variant={"secondary"}
@@ -130,15 +132,14 @@ export function SignUpTab(props: SignUpTabContent) {
 					/>
 				</Popover>
 
-				<Button
+				<ActionBtn
 					loading={signUp.isPending}
 					disabled={Boolean(Object.keys(errors).length)}
 					type={"submit"}
-					className={"max-w-[20rem] mx-auto relative"}
+					className={"max-w-[20rem] mx-auto "}
 				>
-					{signUp.isPending && <Loader className={"absolute-center"} variant={"secondary"} />}
 					Зарегистрироваться
-				</Button>
+				</ActionBtn>
 			</form>
 		</RadixTabs.Content>
 	)

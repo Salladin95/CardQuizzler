@@ -86,8 +86,8 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>((props, re
 	// const animation: MotionProps = fade[props.side || "bottom"]
 
 	const animation: MotionProps = {
-		initial: { opacity: 0, x: "30%" },
-		animate: { opacity: 1, x: 0, pointerEvents: "auto" },
+		initial: { opacity: 0 },
+		animate: { opacity: 1, pointerEvents: "auto" },
 		transition: {
 			duration: 0.2,
 			ease: "easeOut",

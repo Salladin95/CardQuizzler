@@ -54,7 +54,7 @@ export const DatePicker = React.forwardRef(
 		return (
 			<div className="max-w-md px-4 mx-auto sm:px-7 md:max-w-4xl md:px-6" ref={ref}>
 				<div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
-					<div className="md:pr-14 w-428 h-[24rem]">
+					<div className="md:pr-14 w-full 640:w-428 h-[24rem]">
 						<div className="flex items-center gap-2">
 							<Select
 								options={monthsOptions}

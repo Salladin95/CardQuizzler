@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
-import { FormField } from "~/entites"
-import { Button, Input, Loader } from "~/shared"
+import { ActionBtn, FormFieldWithLabel } from "~/entites"
+import { Input } from "~/shared"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { TabContentProps } from "~/app/auth/types"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -52,7 +52,7 @@ export function SignInTab(props: SignInTabContent) {
 	return (
 		<RadixTabs.Content className="bg-transparentoutline-none" value={tabName}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<FormField className={"mb-4"} id={SignInFormEnum.EMAIL} label={"Почта"} error={errors?.email}>
+				<FormFieldWithLabel className={"mb-4"} id={SignInFormEnum.EMAIL} label={"Почта"} error={errors?.email}>
 					<Input
 						{...register(SignInFormEnum.EMAIL)}
 						id={SignInFormEnum.EMAIL}
@@ -60,8 +60,8 @@ export function SignInTab(props: SignInTabContent) {
 						placeholder={"Введите почту..."}
 						autoComplete={"username"}
 					/>
-				</FormField>
-				<FormField className={"mt-2 mb-12"} id={SignInFormEnum.PASSWORD} label={"Пароль"} error={errors?.password}>
+				</FormFieldWithLabel>
+				<FormFieldWithLabel className={"mt-2 mb-12"} id={SignInFormEnum.PASSWORD} label={"Пароль"} error={errors?.password}>
 					<PasswordInput
 						{...register(SignInFormEnum.PASSWORD)}
 						id={SignInFormEnum.PASSWORD}
@@ -69,16 +69,15 @@ export function SignInTab(props: SignInTabContent) {
 						placeholder={"Введите пароль..."}
 						autoComplete={"new-password"}
 					/>
-				</FormField>
-				<Button
+				</FormFieldWithLabel>
+				<ActionBtn
 					loading={signIn.isPending}
 					disabled={Boolean(Object.keys(errors).length)}
 					type={"submit"}
-					className={"max-w-[20rem] mx-auto relative"}
+					className={"max-w-[20rem] mx-auto"}
 				>
-					{signIn.isPending && <Loader className={"absolute-center"} variant={"secondary"} />}
 					Войти
-				</Button>
+				</ActionBtn>
 			</form>
 		</RadixTabs.Content>
 	)

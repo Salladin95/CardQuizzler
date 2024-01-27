@@ -16,7 +16,7 @@ export function TabTrigger(props: RadixTabTriggerProps) {
 	return (
 		<RadixTabs.Trigger className={cn("tab-trigger relative", className)} value={name}>
 			{children}
-			{isActive && <LineIcon className={"w-[7.5rem] absolute-x-center -bottom-1"} {...rest} />}
+			{isActive && <LineIcon className={"w-[5rem] 428:w-[7.5rem] absolute-x-center -bottom-1"} {...rest} />}
 		</RadixTabs.Trigger>
 	)
 }
