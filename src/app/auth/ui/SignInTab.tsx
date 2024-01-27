@@ -9,7 +9,6 @@ import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { profileQueryKey, useSignInMutation } from "~/api"
-import { getSignUpFormDefaultValues } from "~/app/auth/ui/SignUpTab"
 import { SignInFormType, singInValidationSchema } from "~/app/auth/validation"
 
 type SignInTabContent = TabContentProps
@@ -17,6 +16,13 @@ type SignInTabContent = TabContentProps
 export enum SignInFormEnum {
 	EMAIL = "email",
 	PASSWORD = "password",
+}
+
+export function getSignInFormDefaultValues(): SignInFormType {
+	return {
+		email: "",
+		password: "",
+	}
 }
 
 export function SignInTab(props: SignInTabContent) {
@@ -35,7 +41,7 @@ export function SignInTab(props: SignInTabContent) {
 		register,
 		formState: { errors },
 	} = useForm<SignInFormType>({
-		defaultValues: getSignUpFormDefaultValues(),
+		defaultValues: getSignInFormDefaultValues(),
 		resolver: yupResolver(singInValidationSchema),
 	})
 

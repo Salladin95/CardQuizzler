@@ -21,19 +21,24 @@ export type RequestEmailVerificationResponse = {
 }
 
 export async function requestEmailVerification(): Promise<RequestEmailVerificationResponse> {
-	const res = await axios.get("/email-request-verification")
+	const res = await axios.get("/request-email-verification")
 	return res.data
 }
 
-export type VerifyEmailResponse = {
-	message: string
+export type UpdateEmailResponse = Profile
+
+export type UpdateEmailPayload = {
+	code: number
+	email: string
 }
 
-export type VerifyEmailPayload = number
-
-export async function verifyEmail(code: VerifyEmailPayload): Promise<RequestEmailVerificationResponse> {
-	const res = await axios.post("/email-verification", {
-		code,
+export async function updateEmail(payload: UpdateEmailPayload): Promise<UpdateEmailResponse> {
+	const res = await axios.patch("/user/update-email", {
+		code: payload.code,
+		email: payload.email,
 	})
 	return res.data
 }
+
+// update-password
+// reset-password

@@ -6,9 +6,9 @@ import {
 	getProfile,
 	requestEmailVerification,
 	RequestEmailVerificationResponse,
-	verifyEmail,
-	VerifyEmailPayload,
-	VerifyEmailResponse,
+	updateEmail,
+	UpdateEmailPayload,
+	UpdateEmailResponse,
 } from "~/api"
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "@tanstack/react-query"
 
@@ -46,11 +46,3 @@ export const useRequestEmailVerification = (
 	})
 }
 
-export const useVerifyEmail = (
-	options?: Omit<UseMutationOptions<VerifyEmailResponse, AxiosError, VerifyEmailPayload>, "mutationFn">,
-) => {
-	return useMutation({
-		mutationFn: verifyEmail,
-		...options,
-	})
-}

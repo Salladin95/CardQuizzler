@@ -1,11 +1,18 @@
 "use client"
-import { Header } from "~/widgets"
-import { Profile, requestResetEmailQueryKey, useProfile, useRequestEmailVerification, useVerifyEmail } from "~/api"
-import { PropsWithClassName } from "~/app/types"
-import { cn } from "~/lib"
-import { Button, Dialog, Input, Loader, useToast } from "~/shared"
 import React from "react"
+import { cn, fullDateFormatter } from "~/lib"
+import { Header } from "~/widgets"
+import {
+	Profile,
+	profileQueryKey,
+	requestResetEmailQueryKey,
+	useProtectedProfile,
+	useRequestEmailVerification,
+	useUpdateEmail,
+} from "~/api"
+import { PropsWithClassName } from "~/app/types"
 import { useQueryClient } from "@tanstack/react-query"
+import { Button, Dialog, Input, Loader, LoadingDataRenderer, useToast } from "~/shared"
 
 function Profile(profile: Profile) {
 	return (
@@ -22,7 +29,7 @@ function Profile(profile: Profile) {
 					<WithLabel label={"Name"} title={profile.name} />
 					<WithLabel label={"Birthday"} title={profile.birthday} />
 					<ResetEmail email={profile.email} />
-					<WithLabel className={"mb-0"} label={"Here since"} title={profile.createdAt} />
+					<WithLabel className={"mb-0"} label={"Here since"} title={fullDateFormatter(profile.createdAt)} />
 				</div>
 			</main>
 		</>
@@ -59,7 +66,7 @@ function ResetEmail(props: ResetEmailProps) {
 
 	const toast = useToast()
 
-	const verifyEmail = useVerifyEmail({
+	const verifyEmail = useUpdateEmail({
 		onSuccess: () => {
 			verifyEmail.reset()
 			reset()
@@ -68,6 +75,7 @@ function ResetEmail(props: ResetEmailProps) {
 				title: "Email is updated",
 				description: "You successfully have updated your email!!!",
 			})
+			queryClient.invalidateQueries({ queryKey: [profileQueryKey] })
 		},
 		onError: (err) => {
 			verifyEmail.reset()
@@ -136,7 +144,12 @@ function ResetEmail(props: ResetEmailProps) {
 									className={"relative"}
 									disabled={!newEmail || !!verifyEmail.error}
 									loading={verifyEmail.isPending}
-									onClick={() => verifyEmail.mutate(+code)}
+									onClick={() =>
+										verifyEmail.mutate({
+											code: +code,
+											email: newEmail,
+										})
+									}
 								>
 									{verifyEmail.isPending && <Loader className={"absolute-center"} variant={"secondary"} />}
 									{!verifyEmail.isPending && "Submit"}
@@ -166,8 +179,6 @@ function WithLabel(props: WithLabelProps) {
 }
 
 export default function ProfilePage() {
-	// const { data: profile, isPending } = useProtectedProfile()
-	const { data: profile, isPending } = useProfile()
-	// return <LoadingDataRenderer Comp={Profile} data={profile} isLoading={isPending} />
-	return <>{!isPending && profile && <Profile {...profile} />}</>
+	const { data: profile, isPending } = useProtectedProfile()
+	return <LoadingDataRenderer Comp={Profile} data={profile} isLoading={isPending} />
 }
