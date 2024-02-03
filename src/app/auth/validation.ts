@@ -2,9 +2,11 @@ import * as Yup from "yup"
 import { InferType } from "yup"
 import { MAX_BIRTHDAY_DATE } from "~/lib"
 
-export const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[.,_])[A-Za-z\d.,_]*$/
+export const mustContainSymbolsRegex = /^(?=.*\d)(?=.*[a-zA-Z]).*$/
+export const allowedSymbolsRegex = /^[0-9a-zA-Z,._]*$/
 
-export const passwordValidationMsg = "Must contain: [a-z], [0-9] and .,_"
+const mustContainSymbolsMsg = "Must contain: [0-9], [a-z]"
+const allowedSymbolsMsg = "Allowed symbols: [0-9], [a-z], [.,_]"
 
 export const emailRequiredMsg = "Email is required"
 export const invalidEmailMsg = "Invalid email address"
@@ -22,13 +24,15 @@ export const singUpValidationSchema = Yup.object({
 	name: Yup.string().required(nameRequiredMsg).min(1, nameMinLengthMsg),
 	password: Yup.string()
 		.required(passwordRequiredMsg)
-		.min(6, passwordMinLengthMsg)
-		.matches(passwordRegEx, passwordValidationMsg),
+		.matches(mustContainSymbolsRegex, mustContainSymbolsMsg)
+		.matches(allowedSymbolsRegex, allowedSymbolsMsg)
+		.min(6, passwordMinLengthMsg),
 	confirmPassword: Yup.string()
 		.required(confirmPasswordRequiredMsg)
-		.min(6, passwordMinLengthMsg)
 		.oneOf([Yup.ref("password"), ""], passwordsMustMatchMsg)
-		.matches(passwordRegEx, passwordValidationMsg),
+		.matches(mustContainSymbolsRegex, mustContainSymbolsMsg)
+		.matches(allowedSymbolsRegex, allowedSymbolsMsg)
+		.min(6, passwordMinLengthMsg),
 	birthday: Yup.date().required(birthdayRequiredMsg).max(MAX_BIRTHDAY_DATE, birthdayMinMsg),
 })
 
@@ -36,7 +40,11 @@ export type SignUpFormType = InferType<typeof singUpValidationSchema>
 
 export const singInValidationSchema = Yup.object({
 	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
-	password: Yup.string().required(passwordRequiredMsg).matches(passwordRegEx, passwordValidationMsg),
+	password: Yup.string()
+		.required(passwordRequiredMsg)
+		// .matches(mustContainSymbolsRegex, mustContainSymbolsMsg)
+		.matches(allowedSymbolsRegex, allowedSymbolsMsg)
+		.min(6, passwordMinLengthMsg),
 })
 
 export type SignInFormType = InferType<typeof singInValidationSchema>

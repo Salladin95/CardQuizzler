@@ -80,7 +80,12 @@ export function SignUpTab(props: SignUpTabContent) {
 						autoComplete={"name"}
 					/>
 				</FormFieldWithLabel>
-				<FormFieldWithLabel className={"mt-2 mb-6"} id={SignUpFormEnum.PASSWORD} label={"Пароль"} error={errors?.password}>
+				<FormFieldWithLabel
+					className={"mt-2 mb-6"}
+					id={SignUpFormEnum.PASSWORD}
+					label={"Пароль"}
+					error={errors?.password}
+				>
 					<PasswordInput
 						{...register(SignUpFormEnum.PASSWORD)}
 						id={SignUpFormEnum.PASSWORD}

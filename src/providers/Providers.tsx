@@ -2,7 +2,7 @@
 import React from "react"
 import { ToastProvider } from "~/shared"
 import { PropsWithChildren } from "~/app/types"
-import { ReactQueryProvider } from "~/providers/ReactQueryProvider"
+import { ReactQueryProvider } from "./ReactQueryProvider"
 
 export function Providers(props: PropsWithChildren) {
 	const { children } = props

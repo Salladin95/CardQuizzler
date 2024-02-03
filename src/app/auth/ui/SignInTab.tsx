@@ -1,15 +1,16 @@
 "use client"
 import React from "react"
-import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { Input } from "~/shared"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { TabContentProps } from "~/app/auth/types"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
-import { profileQueryKey, useSignInMutation } from "~/api"
+import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { SignInFormType, singInValidationSchema } from "~/app/auth/validation"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { auth } from "~/app/firebase"
+import useApiErrorToast from "~/shared/hooks/useApiErrorToast"
 
 type SignInTabContent = TabContentProps
 
@@ -28,13 +29,13 @@ export function getSignInFormDefaultValues(): SignInFormType {
 export function SignInTab(props: SignInTabContent) {
 	const { tabName, onSubmit: onSubmitProp } = props
 
-	const queryClient = useQueryClient()
-	const signIn = useSignInMutation({
-		onSuccess: () => {
-			queryClient.refetchQueries({ queryKey: [profileQueryKey] })
-			onSubmitProp()
-		},
-	})
+	// const queryClient = useQueryClient()
+	// const signIn = useSignInMutation({
+	// 	onSuccess: () => {
+	// 		queryClient.refetchQueries({ queryKey: [profileQueryKey] })
+	// 		onSubmitProp()
+	// 	},
+	// })
 
 	const {
 		handleSubmit,
@@ -45,8 +46,16 @@ export function SignInTab(props: SignInTabContent) {
 		resolver: yupResolver(singInValidationSchema),
 	})
 
-	const onSubmit: SubmitHandler<SignInFormType> = (payload) => {
-		signIn.mutate(payload)
+	const toast = useApiErrorToast()
+
+	const onSubmit: SubmitHandler<SignInFormType> = async (payload) => {
+		// signIn.mutate(payload)
+		try {
+			const res = await signInWithEmailAndPassword(auth, payload.email, payload.password)
+			console.log(res)
+		} catch (e) {
+			toast(e)
+		}
 	}
 
 	return (
@@ -61,7 +70,12 @@ export function SignInTab(props: SignInTabContent) {
 						autoComplete={"username"}
 					/>
 				</FormFieldWithLabel>
-				<FormFieldWithLabel className={"mt-2 mb-12"} id={SignInFormEnum.PASSWORD} label={"Пароль"} error={errors?.password}>
+				<FormFieldWithLabel
+					className={"mt-2 mb-12"}
+					id={SignInFormEnum.PASSWORD}
+					label={"Пароль"}
+					error={errors?.password}
+				>
 					<PasswordInput
 						{...register(SignInFormEnum.PASSWORD)}
 						id={SignInFormEnum.PASSWORD}
@@ -71,7 +85,7 @@ export function SignInTab(props: SignInTabContent) {
 					/>
 				</FormFieldWithLabel>
 				<ActionBtn
-					loading={signIn.isPending}
+					// loading={signIn.isPending}
 					disabled={Boolean(Object.keys(errors).length)}
 					type={"submit"}
 					className={"max-w-[20rem] mx-auto"}
