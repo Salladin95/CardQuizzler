@@ -1,16 +1,16 @@
 "use client"
 import React from "react"
 import { Input } from "~/shared"
+import { useLocalStorage } from "react-use"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { TabContentProps } from "~/app/auth/types"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
+import { profileQueryKey, useSignInMutation } from "~/api"
 import { SignInFormType, singInValidationSchema } from "~/app/auth/validation"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "~/app/firebase"
-import useApiErrorToast from "~/shared/hooks/useApiErrorToast"
 
 type SignInTabContent = TabContentProps
 
@@ -28,14 +28,18 @@ export function getSignInFormDefaultValues(): SignInFormType {
 
 export function SignInTab(props: SignInTabContent) {
 	const { tabName, onSubmit: onSubmitProp } = props
+	const [_, setAccessToken] = useLocalStorage<string | null>("access-token", null)
 
-	// const queryClient = useQueryClient()
-	// const signIn = useSignInMutation({
-	// 	onSuccess: () => {
-	// 		queryClient.refetchQueries({ queryKey: [profileQueryKey] })
-	// 		onSubmitProp()
-	// 	},
-	// })
+	const queryClient = useQueryClient()
+	const signIn = useSignInMutation({
+		onSuccess: (res) => {
+			if (res?.status < 400) {
+				onSubmitProp()
+				setAccessToken(res.data.accessToken)
+				queryClient.refetchQueries({ queryKey: [profileQueryKey] })
+			}
+		},
+	})
 
 	const {
 		handleSubmit,
@@ -45,17 +49,8 @@ export function SignInTab(props: SignInTabContent) {
 		defaultValues: getSignInFormDefaultValues(),
 		resolver: yupResolver(singInValidationSchema),
 	})
-
-	const toast = useApiErrorToast()
-
 	const onSubmit: SubmitHandler<SignInFormType> = async (payload) => {
-		// signIn.mutate(payload)
-		try {
-			const res = await signInWithEmailAndPassword(auth, payload.email, payload.password)
-			console.log(res)
-		} catch (e) {
-			toast(e)
-		}
+		signIn.mutate(payload)
 	}
 
 	return (

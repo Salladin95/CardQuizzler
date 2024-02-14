@@ -8,6 +8,11 @@ export * from "./folder"
 export * from "./module"
 export * from "./profile"
 
+export type JsonResponse<T> = {
+	message: string
+	data: T
+}
+
 export function getHomePageData(): Promise<HomePageData> {
 	// TODO: REPLACE MOCK LOGIC
 	const folders = mockFolders()

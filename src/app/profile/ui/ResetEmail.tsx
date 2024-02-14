@@ -4,11 +4,12 @@ import { Button, Dialog, useToast } from "~/shared"
 import { WithLabel } from "~/app/profile/ui/WithLabel"
 import { useQueryClient } from "@tanstack/react-query"
 import { ResetEmailForm } from "~/app/profile/ui/ResetFormType"
-import { profileQueryKey, requestResetEmailQueryKey, useRequestEmailVerification, useUpdateEmail } from "~/api"
+import { profileQueryKey, useRequestEmailVerification, useUpdateEmail } from "~/api"
 
 type ResetEmailProps = {
 	currentEmail: string
 	triggerTitle?: string
+	id: string
 }
 
 export function ResetEmail(props: ResetEmailProps) {
@@ -16,18 +17,10 @@ export function ResetEmail(props: ResetEmailProps) {
 	const [isOpen, setIsOpen] = React.useState(false)
 
 	const queryClient = useQueryClient()
-	const {
-		isFetching: isCodeFetching,
-		isSuccess: codeHasFetched,
-		refetch: refetchCode,
-	} = useRequestEmailVerification({
-		enabled: false,
-	})
+	const requestEmailVerification = useRequestEmailVerification()
 
 	function reset() {
-		queryClient.removeQueries({
-			queryKey: [requestResetEmailQueryKey],
-		})
+		requestEmailVerification.reset()
 		setIsOpen(false)
 	}
 
@@ -69,19 +62,22 @@ export function ResetEmail(props: ResetEmailProps) {
 					</Button>
 				}
 			>
-				{!codeHasFetched && (
+				{!requestEmailVerification.isSuccess && (
 					<>
 						<p className={"mb-6"}>
 							Your current email is <b className={"bold"}>{currentEmail}</b>. We&apos;ll send a temporary verification
 							code to this email.
 						</p>
-						<ActionBtn loading={isCodeFetching} onClick={() => refetchCode()}>
+						<ActionBtn
+							loading={requestEmailVerification.isPending}
+							onClick={() => requestEmailVerification.mutateAsync({ email: currentEmail })}
+						>
 							Send verification code
 						</ActionBtn>
 					</>
 				)}
 
-				{codeHasFetched && (
+				{requestEmailVerification.isSuccess && (
 					<ResetEmailForm
 						currentEmail={currentEmail}
 						isSubmitting={updateEmail.isPending}
@@ -91,6 +87,7 @@ export function ResetEmail(props: ResetEmailProps) {
 								updateEmail.mutate({
 									code: form.code,
 									email: form.email,
+									id: props.id,
 								})
 						}}
 					/>

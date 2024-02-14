@@ -21,7 +21,7 @@ function Profile(profile: Profile) {
 
 					<WithLabel label={"Name"} title={profile.name} />
 					<WithLabel label={"Birthday"} title={profile.birthday} />
-					<ResetEmail currentEmail={profile.email} />
+					<ResetEmail currentEmail={profile.email} id={profile.id} />
 					<WithLabel className={"mb-0"} label={"Here since"} title={fullDateFormatter(profile.createdAt)} />
 				</div>
 			</main>

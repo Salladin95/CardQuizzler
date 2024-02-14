@@ -7,7 +7,9 @@ export type SignUpPayload = Omit<SignUpFormType, "birthday"> & {
 	birthday: string
 }
 
-export type SignInResult = AxiosResponse<string>
+export type SignInResult = AxiosResponse<{
+	accessToken: string
+}>
 export type SignUpResult = AxiosResponse<string>
 
 export function signIn(payload: SignInPayload): Promise<SignInResult> {
@@ -18,10 +20,11 @@ export function signUp(payload: SignUpPayload): Promise<SignUpResult> {
 	return axios.post("/auth/sign-up", payload)
 }
 
-export function refresh(): Promise<void> {
+export function refresh(): Promise<SignInResult> {
 	return axios.get("/auth/refresh")
 }
 
 export function signOut(): Promise<void> {
+	localStorage.clear()
 	return axios.get("/sign-out")
 }

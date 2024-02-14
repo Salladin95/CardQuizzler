@@ -12,7 +12,7 @@ const resetEmailFormSchema = Yup.object({
 		.typeError("Only digits")
 		.required("Code is required")
 		.nullable()
-		.test("len", "Must be exactly 6 characters", (val) => Boolean(val) && val?.toString().length === 5),
+		.test("len", "Must be exactly 6 characters", (val) => Boolean(val) && val?.toString().length === 6),
 })
 export type ResetEmailFormType = Yup.InferType<typeof resetEmailFormSchema>
 

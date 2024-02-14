@@ -50,18 +50,6 @@ const axiosDownloadInstance = axios.create({
 })
 
 /**
- * Axios request interceptor
- * */
-async function requestInterceptor(request: InternalAxiosRequestConfig) {
-	const isServer = typeof window === "undefined"
-	if (isServer) {
-		// Set proxy for server requests
-		request.url = `${process.env.NEXT_PUBLIC_APP_URL}/api${request.url}`
-	}
-	return request
-}
-
-/**
  * Axios response interceptor
  * */
 function responseInterceptor(response: AxiosResponse) {
@@ -89,21 +77,63 @@ const downloadResponseErrorInterceptor = (result: { response: AxiosResponse }) =
 	throw { ...result, response: { ...result.response, data: json } }
 }
 
+function setBearerToken(conf: AxiosRequestConfig, token: string | null) {
+	// If access token is available, add it to the Authorization header
+	if (!token) return
+	if (conf.headers) {
+		conf.headers.Authorization = "Bearer " + token
+		return
+	}
+	conf.headers = {
+		Authorization: "Bearer " + token,
+	}
+}
+
+/**
+ * Axios request interceptor to handle access token in local storage.
+ * Adds the Bearer token to the Authorization header if available.
+ * Also sets a proxy for server requests if running on the server-side.
+ *
+ * @param request - Axios request configuration
+ * @returns Updated Axios request configuration with added headers or proxy URL
+ */
+function requestInterceptor(request: InternalAxiosRequestConfig) {
+	// Check if the code is running on the server-side
+	const isServer = typeof window === "undefined"
+
+	if (isServer) {
+		// Set a proxy for server requests to the appropriate API endpoint
+		request.url = `${process.env.NEXT_PUBLIC_APP_URL}/api${request.url}`
+	}
+
+	// Retrieve the access token from local storage
+	const accessToken = localStorage.getItem("access-token")
+
+	setBearerToken(request, accessToken)
+
+	return request
+}
+
 /**
  * Axios makes a refresh call when an error with status 401 is received.
  */
 let hasCalledRefresh = false
 
 async function makeRefreshCall(error: AxiosError) {
+	if (!localStorage.getItem("access-token")) return
 	const originalRequest = error.config as AxiosRequestConfig
 	// If the error is a 401 try to refresh the JWT token
 	if (error.response?.status === 401 && !hasCalledRefresh) {
 		hasCalledRefresh = true
 		try {
-			await refresh()
+			const res = await refresh()
+			const accessToken = res.data.accessToken
+			localStorage.setItem("access-token", accessToken)
+			setBearerToken(originalRequest, accessToken)
 			return axiosInstance(originalRequest)
 		} catch (refreshError) {
 			// If there is an error refreshing the token, log out the user
+			localStorage.clear()
 			return Promise.reject(refreshError)
 		} finally {
 			hasCalledRefresh = false

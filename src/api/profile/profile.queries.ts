@@ -1,19 +1,17 @@
 import React from "react"
 import { AxiosError } from "axios"
+import { useLocalStorage } from "react-use"
 import { useRouter } from "next/navigation"
 import {
 	FetchProfileResponse,
 	getProfile,
 	requestEmailVerification,
+	RequestEmailVerificationPayload,
 	RequestEmailVerificationResponse,
-	updateEmail,
-	UpdateEmailPayload,
-	UpdateEmailResponse,
 } from "~/api"
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "@tanstack/react-query"
 
 export const profileQueryKey = "profile-query-key"
-export const requestResetEmailQueryKey = "request-reset-email"
 
 export const useProfile = (
 	options?: Omit<UseQueryOptions<FetchProfileResponse, AxiosError>, "queryFn" | "queryKey">,
@@ -27,7 +25,11 @@ export const useProfile = (
 
 export const useProtectedProfile = (options?: Parameters<typeof useProfile>[0]) => {
 	const router = useRouter()
-	const { error, isPending, ...rest } = useProfile(options)
+	const [accessToken] = useLocalStorage<string | null>("access-token", null)
+	const { error, isPending, ...rest } = useProfile({
+		...options,
+		enabled: Boolean(accessToken),
+	})
 	React.useEffect(() => {
 		if (error && !isPending) {
 			router.push("/auth")
@@ -37,11 +39,13 @@ export const useProtectedProfile = (options?: Parameters<typeof useProfile>[0]) 
 }
 
 export const useRequestEmailVerification = (
-	options?: Omit<UseQueryOptions<RequestEmailVerificationResponse, AxiosError>, "queryFn" | "queryKey">,
+	options?: Omit<
+		UseMutationOptions<RequestEmailVerificationResponse, AxiosError, RequestEmailVerificationPayload>,
+		"mutationFn"
+	>,
 ) => {
-	return useQuery({
-		queryKey: [requestResetEmailQueryKey],
-		queryFn: requestEmailVerification,
+	return useMutation({
+		mutationFn: requestEmailVerification,
 		...options,
 	})
 }
