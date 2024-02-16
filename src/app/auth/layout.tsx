@@ -5,6 +5,7 @@ import { Logo } from "~/shared"
 import { cn } from "~/lib"
 import { PropsWithChildren } from "~/app/types"
 import BG from "~/../public/assets/images/purple-items.png"
+import { RequestEmailVerificationCtxProvider } from "~/providers/RequestEmailVerificationCtxProvider"
 
 const style: React.CSSProperties = {
 	backgroundImage: `url(${BG.src})`,
@@ -20,7 +21,9 @@ export default function AuthLayout({ children }: PropsWithChildren) {
 				</p>
 				<Logo className={"absolute bottom-4 left-4"} />
 			</section>
-			<section className={"bg-white pt-[6rem] w-full 768:w-[60%] 1180:w-[45%] flex justify-center"}>{children}</section>
+			<section className={"bg-white pt-[6rem] w-full 768:w-[60%] 1180:w-[45%] flex justify-center"}>
+				<RequestEmailVerificationCtxProvider>{children}</RequestEmailVerificationCtxProvider>
+			</section>
 		</main>
 	)
 }

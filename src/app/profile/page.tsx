@@ -3,13 +3,17 @@ import React from "react"
 import { Header } from "~/widgets"
 import { fullDateFormatter } from "~/lib"
 import { ResetEmail } from "./ui/ResetEmail"
-import { LoadingDataRenderer } from "~/shared"
 import { Profile, useProtectedProfile } from "~/api"
+import { UpdatePassword } from "./ui/UpdatePassowrd"
+import { Button, LoadingDataRenderer } from "~/shared"
 import { WithLabel } from "~/app/profile/ui/WithLabel"
+import { ResetPassword } from "~/features/resetPassword"
+import { RequestEmailVerificationCtxProvider } from "~/providers/RequestEmailVerificationCtxProvider"
+import { RequestEmailVerification } from "~/features/requestEmailVerification"
 
 function Profile(profile: Profile) {
 	return (
-		<>
+		<RequestEmailVerificationCtxProvider>
 			<Header />
 			<main className={"container text-primary"}>
 				<div>
@@ -22,10 +26,24 @@ function Profile(profile: Profile) {
 					<WithLabel label={"Name"} title={profile.name} />
 					<WithLabel label={"Birthday"} title={profile.birthday} />
 					<ResetEmail currentEmail={profile.email} id={profile.id} />
+					<div className={"flex justify-between"}>
+						<p>Password</p>
+						<div className={"flex gap-x-4"}>
+							<ResetPassword
+								requestEmailVerification={<RequestEmailVerification />}
+								trigger={
+									<Button variant={"secondary"} className={"max-w-[12rem]"}>
+										Reset password
+									</Button>
+								}
+							/>
+							<UpdatePassword profile={profile} />
+						</div>
+					</div>
 					<WithLabel className={"mb-0"} label={"Here since"} title={fullDateFormatter(profile.createdAt)} />
 				</div>
 			</main>
-		</>
+		</RequestEmailVerificationCtxProvider>
 	)
 }
 

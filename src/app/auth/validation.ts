@@ -5,8 +5,8 @@ import { MAX_BIRTHDAY_DATE } from "~/lib"
 export const mustContainSymbolsRegex = /^(?=.*\d)(?=.*[a-zA-Z]).*$/
 export const allowedSymbolsRegex = /^[0-9a-zA-Z,._]*$/
 
-const mustContainSymbolsMsg = "Must contain: [0-9], [a-z]"
-const allowedSymbolsMsg = "Allowed symbols: [0-9], [a-z], [.,_]"
+export const mustContainSymbolsMsg = "Must contain: [0-9], [a-z]"
+export const allowedSymbolsMsg = "Allowed symbols: [0-9], [a-z], [.,_]"
 
 export const emailRequiredMsg = "Email is required"
 export const invalidEmailMsg = "Invalid email address"

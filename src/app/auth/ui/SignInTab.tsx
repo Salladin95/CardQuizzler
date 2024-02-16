@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { Input } from "~/shared"
+import { Button, Input } from "~/shared"
 import { useLocalStorage } from "react-use"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { TabContentProps } from "~/app/auth/types"
@@ -11,6 +11,8 @@ import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { profileQueryKey, useSignInMutation } from "~/api"
 import { SignInFormType, singInValidationSchema } from "~/app/auth/validation"
+import { ResetPassword } from "~/features/resetPassword"
+import { RequestEmailVerification } from "~/features/requestEmailVerification"
 
 type SignInTabContent = TabContentProps
 
@@ -65,8 +67,9 @@ export function SignInTab(props: SignInTabContent) {
 						autoComplete={"username"}
 					/>
 				</FormFieldWithLabel>
+
 				<FormFieldWithLabel
-					className={"mt-2 mb-12"}
+					className={"mt-2 mb-4"}
 					id={SignInFormEnum.PASSWORD}
 					label={"Пароль"}
 					error={errors?.password}
@@ -76,11 +79,11 @@ export function SignInTab(props: SignInTabContent) {
 						id={SignInFormEnum.PASSWORD}
 						error={Boolean(errors?.password)}
 						placeholder={"Введите пароль..."}
-						autoComplete={"new-password"}
+						autoComplete={"current-password"}
 					/>
 				</FormFieldWithLabel>
 				<ActionBtn
-					// loading={signIn.isPending}
+					loading={signIn.isPending}
 					disabled={Boolean(Object.keys(errors).length)}
 					type={"submit"}
 					className={"max-w-[20rem] mx-auto"}
@@ -88,6 +91,14 @@ export function SignInTab(props: SignInTabContent) {
 					Войти
 				</ActionBtn>
 			</form>
+			<ResetPassword
+				requestEmailVerification={<RequestEmailVerification />}
+				trigger={
+					<Button variant={"none"} className={"text-body-2"}>
+						Forgot password?
+					</Button>
+				}
+			/>
 		</RadixTabs.Content>
 	)
 }

@@ -32,18 +32,48 @@ export async function requestEmailVerification(
 	return res.data
 }
 
-export type UpdateEmailResponse = Profile
-
 export type UpdateEmailPayload = {
 	code: number
 	email: string
 	id: string
 }
+export type UpdateEmailResponse = Profile
 
 export async function updateEmail(payload: UpdateEmailPayload): Promise<UpdateEmailResponse> {
 	const res = await axios.patch(`/user/update-email/${payload.id}`, {
 		code: payload.code,
 		email: payload.email,
+	})
+	return res.data
+}
+
+export type UpdatePasswordPayload = {
+	currentPassword: string
+	newPassword: string
+	id: string
+}
+export type UpdatePasswordResponse = Profile
+
+export async function updatePassword(payload: UpdatePasswordPayload): Promise<UpdatePasswordResponse> {
+	const res = await axios.patch(`/user/update-password/${payload.id}`, {
+		currentPassword: payload.currentPassword,
+		newPassword: payload.newPassword,
+	})
+	return res.data
+}
+
+export type ResetPasswordPayload = {
+	code: number
+	newPassword: string
+	email: string
+}
+export type ResetPasswordResponse = Profile
+
+export async function resetPassword(payload: ResetPasswordPayload): Promise<ResetPasswordResponse> {
+	const res = await axios.patch("/user/reset-password", {
+		code: payload.code,
+		email: payload.email,
+		newPassword: payload.newPassword,
 	})
 	return res.data
 }

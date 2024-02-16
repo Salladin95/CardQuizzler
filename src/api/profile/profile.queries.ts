@@ -49,3 +49,5 @@ export const useRequestEmailVerification = (
 		...options,
 	})
 }
+
+export type UseRequestEmailVerification = ReturnType<typeof useRequestEmailVerification>

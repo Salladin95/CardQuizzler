@@ -21,6 +21,7 @@ export function ResetEmail(props: ResetEmailProps) {
 
 	function reset() {
 		requestEmailVerification.reset()
+		updateEmail.reset()
 		setIsOpen(false)
 	}
 
@@ -28,7 +29,6 @@ export function ResetEmail(props: ResetEmailProps) {
 
 	const updateEmail = useUpdateEmail({
 		onSuccess: () => {
-			updateEmail.reset()
 			reset()
 			toast({
 				variant: "primary",
@@ -38,7 +38,6 @@ export function ResetEmail(props: ResetEmailProps) {
 			queryClient.invalidateQueries({ queryKey: [profileQueryKey] })
 		},
 		onError: (err) => {
-			updateEmail.reset()
 			reset()
 			toast({
 				variant: "error",
