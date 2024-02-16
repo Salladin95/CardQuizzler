@@ -53,7 +53,7 @@ const axiosDownloadInstance = axios.create({
  * Axios response interceptor
  * */
 function responseInterceptor(response: AxiosResponse) {
-	return response
+	return Promise.resolve(response)
 }
 
 /**
@@ -120,7 +120,7 @@ function requestInterceptor(request: InternalAxiosRequestConfig) {
 let hasCalledRefresh = false
 
 async function makeRefreshCall(error: AxiosError) {
-	if (!localStorage.getItem("access-token")) return
+	if (!localStorage.getItem("access-token")) return Promise.reject(error)
 	const originalRequest = error.config as AxiosRequestConfig
 	// If the error is a 401 try to refresh the JWT token
 	if (error.response?.status === 401 && !hasCalledRefresh) {
@@ -147,7 +147,6 @@ axiosInstance.interceptors.request.use(requestInterceptor)
 axiosInstance.interceptors.response.use(responseInterceptor, makeRefreshCall)
 
 axiosFormDataInstance.interceptors.request.use(requestInterceptor, formDataRequestInterceptor)
-axiosFormDataInstance.interceptors.response.use(responseInterceptor)
 
 axiosDownloadInstance.interceptors.request.use(requestInterceptor)
 axiosDownloadInstance.interceptors.response.use(responseInterceptor, downloadResponseErrorInterceptor)

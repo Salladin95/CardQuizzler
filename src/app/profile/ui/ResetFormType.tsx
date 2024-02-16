@@ -1,18 +1,14 @@
 import React from "react"
-import * as Yup from "yup"
+import * as Yup from "~/yup"
 import { Button, Input } from "~/shared"
 import { useForm } from "react-hook-form"
 import { ActionBtn, FormField } from "~/entites"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { emailRequiredMsg, invalidEmailMsg } from "~/app/auth/validation"
+import { codeRequiredErrMsg, emailRequiredMsg, invalidEmailMsg } from "~/app/constants"
 
 const resetEmailFormSchema = Yup.object({
 	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
-	code: Yup.number()
-		.typeError("Only digits")
-		.required("Code is required")
-		.nullable()
-		.test("len", "Must be exactly 6 characters", (val) => Boolean(val) && val?.toString().length === 6),
+	code: Yup.number().codeLength().required(codeRequiredErrMsg).nullable(),
 })
 export type ResetEmailFormType = Yup.InferType<typeof resetEmailFormSchema>
 

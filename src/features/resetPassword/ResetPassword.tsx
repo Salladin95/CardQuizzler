@@ -1,42 +1,28 @@
 import React from "react"
 import * as Yup from "yup"
 import { InferType } from "yup"
-import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { Dialog, Input, useToast } from "~/shared"
+import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { profileQueryKey, useResetPassword } from "~/api"
 import {
-	allowedSymbolsMsg,
-	allowedSymbolsRegex,
+	codeRequiredErrMsg,
 	confirmPasswordRequiredMsg,
-	mustContainSymbolsMsg,
-	mustContainSymbolsRegex,
-	passwordMinLengthMsg,
 	passwordRequiredMsg,
 	passwordsMustMatchMsg,
-} from "~/app/auth/validation"
+} from "~/app/constants"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useQueryClient } from "@tanstack/react-query"
 import { useRequestEmailVerificationCtx } from "~/providers/RequestEmailVerificationCtxProvider"
 
 const resetPasswordSchema = Yup.object({
-	newPassword: Yup.string()
-		.required(passwordRequiredMsg)
-		.matches(mustContainSymbolsRegex, mustContainSymbolsMsg)
-		.matches(allowedSymbolsRegex, allowedSymbolsMsg)
-		.min(6, passwordMinLengthMsg),
+	newPassword: Yup.string().required(passwordRequiredMsg).password(),
 	confirmPassword: Yup.string()
 		.required(confirmPasswordRequiredMsg)
 		.oneOf([Yup.ref("newPassword"), ""], passwordsMustMatchMsg)
-		.matches(mustContainSymbolsRegex, mustContainSymbolsMsg)
-		.matches(allowedSymbolsRegex, allowedSymbolsMsg)
-		.min(6, passwordMinLengthMsg),
-	code: Yup.number()
-		.typeError("Only digits")
-		.required("Code is required")
-		.nullable()
-		.test("len", "Must be exactly 6 characters", (val) => Boolean(val) && val?.toString().length === 6),
+		.password(),
+	code: Yup.number().codeLength().required(codeRequiredErrMsg).nullable(),
 })
 export type ResetPasswordFormType = InferType<typeof resetPasswordSchema>
 

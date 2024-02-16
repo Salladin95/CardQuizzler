@@ -5,38 +5,19 @@ import { Profile, profileQueryKey, useUpdatePassword } from "~/api"
 import { ActionBtn, FormField } from "~/entites"
 import { Button, Dialog, useToast } from "~/shared"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
-import {
-	allowedSymbolsMsg,
-	allowedSymbolsRegex,
-	confirmPasswordRequiredMsg,
-	mustContainSymbolsMsg,
-	mustContainSymbolsRegex,
-	passwordMinLengthMsg,
-	passwordRequiredMsg,
-	passwordsMustMatchMsg,
-} from "~/app/auth/validation"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { getSignUpFormDefaultValues } from "~/app/auth/ui/SignUpTab"
+import { getSignUpFormDefaultValues } from "~/features/signUpTab/SignUpTab"
 import { useQueryClient } from "@tanstack/react-query"
+import { confirmPasswordRequiredMsg, passwordRequiredMsg, passwordsMustMatchMsg } from "~/app/constants"
 
 const updatePasswordSchema = Yup.object({
-	currentPassword: Yup.string()
-		.required(passwordRequiredMsg)
-		.matches(mustContainSymbolsRegex, mustContainSymbolsMsg)
-		.matches(allowedSymbolsRegex, allowedSymbolsMsg)
-		.min(6, passwordMinLengthMsg),
-	newPassword: Yup.string()
-		.required(passwordRequiredMsg)
-		.matches(mustContainSymbolsRegex, mustContainSymbolsMsg)
-		.matches(allowedSymbolsRegex, allowedSymbolsMsg)
-		.min(6, passwordMinLengthMsg),
+	currentPassword: Yup.string().required(passwordRequiredMsg).password(),
+	newPassword: Yup.string().required(passwordRequiredMsg).password(),
 	confirmPassword: Yup.string()
 		.required(confirmPasswordRequiredMsg)
 		.oneOf([Yup.ref("newPassword"), ""], passwordsMustMatchMsg)
-		.matches(mustContainSymbolsRegex, mustContainSymbolsMsg)
-		.matches(allowedSymbolsRegex, allowedSymbolsMsg)
-		.min(6, passwordMinLengthMsg),
+		.password(),
 })
 export type UpdatePasswordFormType = InferType<typeof updatePasswordSchema>
 

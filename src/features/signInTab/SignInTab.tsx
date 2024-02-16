@@ -1,6 +1,10 @@
 "use client"
 import React from "react"
-import { Button, Input } from "~/shared"
+import * as Yup from "~/yup"
+import { InferType } from "yup"
+import { Input, useToast } from "~/shared"
+import { profileQueryKey } from "~/api"
+import { useSignInMutation } from "./api"
 import { useLocalStorage } from "react-use"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { TabContentProps } from "~/app/auth/types"
@@ -9,12 +13,18 @@ import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
-import { profileQueryKey, useSignInMutation } from "~/api"
-import { SignInFormType, singInValidationSchema } from "~/app/auth/validation"
-import { ResetPassword } from "~/features/resetPassword"
-import { RequestEmailVerification } from "~/features/requestEmailVerification"
+import { emailRequiredMsg, invalidEmailMsg, passwordRequiredMsg } from "~/app/constants"
 
-type SignInTabContent = TabContentProps
+export const singInValidationSchema = Yup.object({
+	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
+	password: Yup.string().required(passwordRequiredMsg).password(),
+})
+
+export type SignInFormType = InferType<typeof singInValidationSchema>
+
+type SignInTabContentProps = TabContentProps & {
+	resetPassword: React.ReactNode
+}
 
 export enum SignInFormEnum {
 	EMAIL = "email",
@@ -28,17 +38,23 @@ export function getSignInFormDefaultValues(): SignInFormType {
 	}
 }
 
-export function SignInTab(props: SignInTabContent) {
+export function SignInTab(props: SignInTabContentProps) {
 	const { tabName, onSubmit: onSubmitProp } = props
 	const [_, setAccessToken] = useLocalStorage<string | null>("access-token", null)
 
+	const toast = useToast()
 	const queryClient = useQueryClient()
 	const signIn = useSignInMutation({
+		onError: () => {
+			toast({ variant: "error", title: "Error", description: "Failed to sign in" })
+		},
 		onSuccess: (res) => {
 			if (res?.status < 400) {
+				toast({ variant: "primary", title: "Success", description: "You have signed in!" })
 				onSubmitProp()
 				setAccessToken(res.data.accessToken)
 				queryClient.refetchQueries({ queryKey: [profileQueryKey] })
+				return
 			}
 		},
 	})
@@ -67,9 +83,8 @@ export function SignInTab(props: SignInTabContent) {
 						autoComplete={"username"}
 					/>
 				</FormFieldWithLabel>
-
 				<FormFieldWithLabel
-					className={"mt-2 mb-4"}
+					className={"mt-2 mb-8"}
 					id={SignInFormEnum.PASSWORD}
 					label={"Пароль"}
 					error={errors?.password}
@@ -91,14 +106,7 @@ export function SignInTab(props: SignInTabContent) {
 					Войти
 				</ActionBtn>
 			</form>
-			<ResetPassword
-				requestEmailVerification={<RequestEmailVerification />}
-				trigger={
-					<Button variant={"none"} className={"text-body-2"}>
-						Forgot password?
-					</Button>
-				}
-			/>
+			{props.resetPassword}
 		</RadixTabs.Content>
 	)
 }

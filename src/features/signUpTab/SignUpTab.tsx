@@ -1,16 +1,41 @@
 "use client"
 import React from "react"
 import { useWindowSize } from "react-use"
-import { useSignUpMutation } from "~/api"
+import { useSignUpMutation } from "./api"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { TabContentProps } from "~/app/auth/types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
-import { Button, DatePicker, Input, Popover } from "~/shared"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import { calculatePreviousYearStartDate, cn, fullDateFormatter } from "~/lib"
-import { SignUpFormType, singUpValidationSchema } from "~/app/auth/validation"
+import { Button, DatePicker, Input, Popover, useToast } from "~/shared"
+import { calculatePreviousYearStartDate, cn, fullDateFormatter, MAX_BIRTHDAY_DATE } from "~/lib"
+import * as Yup from "yup"
+import { InferType } from "yup"
+import {
+	birthdayMinMsg,
+	birthdayRequiredMsg,
+	confirmPasswordRequiredMsg,
+	emailRequiredMsg,
+	invalidEmailMsg,
+	nameMinLengthMsg,
+	nameRequiredMsg,
+	passwordRequiredMsg,
+	passwordsMustMatchMsg,
+} from "~/app/constants"
+
+export const singUpValidationSchema = Yup.object({
+	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
+	name: Yup.string().required(nameRequiredMsg).min(1, nameMinLengthMsg),
+	password: Yup.string().required(passwordRequiredMsg).password(),
+	confirmPassword: Yup.string()
+		.required(confirmPasswordRequiredMsg)
+		.oneOf([Yup.ref("password"), ""], passwordsMustMatchMsg)
+		.password(),
+	birthday: Yup.date().required(birthdayRequiredMsg).max(MAX_BIRTHDAY_DATE, birthdayMinMsg),
+})
+
+export type SignUpFormType = InferType<typeof singUpValidationSchema>
 
 type SignUpTabContent = TabContentProps
 
@@ -35,8 +60,20 @@ export function getSignUpFormDefaultValues(): SignUpFormType {
 export function SignUpTab(props: SignUpTabContent) {
 	const { tabName, onSubmit: onSubmitProp } = props
 
+	const toast = useToast()
 	const signUp = useSignUpMutation({
-		onSuccess: onSubmitProp,
+		onSuccess: (res) => {
+			if (res?.status < 400) {
+				onSubmitProp()
+				toast({ variant: "primary", title: "Success", description: "You have signed up!" })
+				return
+			}
+			toast({ variant: "error", title: "Error", description: "Failed to sign up" })
+		},
+		onError: (e) => {
+			const message = e.response?.data?.message || "Something went wrong"
+			toast({ variant: "error", title: "Error", description: message })
+		},
 	})
 
 	const {

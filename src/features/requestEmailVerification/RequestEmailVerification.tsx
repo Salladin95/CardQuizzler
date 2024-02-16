@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { Input } from "~/shared"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
-import { emailRequiredMsg, invalidEmailMsg } from "~/app/auth/validation"
+import { emailRequiredMsg, invalidEmailMsg } from "~/app/constants"
 import { useRequestEmailVerificationCtx } from "~/providers/RequestEmailVerificationCtxProvider"
 
 const RequestEmailVerificationSchema = Yup.object({
@@ -45,8 +45,13 @@ export function RequestEmailVerification() {
 		requestEmailVerification.mutate(formData)
 	}
 
+	React.useEffect(() => {
+		if (requestEmailVerification.isSuccess) {
+			requestEmailVerificationCtx.setEmail(email)
+		}
+	}, [email, requestEmailVerification.isSuccess, requestEmailVerificationCtx])
+
 	if (requestEmailVerification.isSuccess) {
-		requestEmailVerificationCtx.setEmail(email)
 		return null
 	}
 

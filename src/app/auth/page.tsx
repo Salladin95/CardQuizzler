@@ -1,11 +1,13 @@
 "use client"
 import React from "react"
-import { TabTrigger } from "~/shared"
-import { SignInTab } from "./ui/SignInTab"
-import { SignUpTab } from "./ui/SignUpTab"
+import { Button, TabTrigger } from "~/shared"
+import { SignInTab } from "~/features/signInTab"
+import { SignUpTab } from "~/features/signUpTab"
 import { AuthTabsNames } from "~/app/auth/types"
 import * as RadixTabs from "@radix-ui/react-tabs"
+import { ResetPassword } from "~/features/resetPassword"
 import { useRouter, useSearchParams } from "next/navigation"
+import { RequestEmailVerification } from "~/features/requestEmailVerification"
 
 export default function Auth() {
 	const router = useRouter()
@@ -33,7 +35,20 @@ export default function Auth() {
 					Войти
 				</TabTrigger>
 			</RadixTabs.List>
-			<SignInTab onSubmit={() => router.push("/")} tabName={AuthTabsNames.SIGN_IN} />
+			<SignInTab
+				resetPassword={
+					<ResetPassword
+						requestEmailVerification={<RequestEmailVerification />}
+						trigger={
+							<Button variant={"none"} className={"text-body-2"}>
+								Forgot password?
+							</Button>
+						}
+					/>
+				}
+				onSubmit={() => router.push("/")}
+				tabName={AuthTabsNames.SIGN_IN}
+			/>
 			<SignUpTab onSubmit={() => handleValueChange(AuthTabsNames.SIGN_IN)} tabName={AuthTabsNames.SIGN_UP} />
 		</RadixTabs.Root>
 	)
