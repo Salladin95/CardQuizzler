@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import * as RadixSelect from "@radix-ui/react-select"
 import * as Framer from "framer-motion"
 import { cva, VariantProps } from "class-variance-authority"

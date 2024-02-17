@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { Button, ButtonProps, Loader } from "~/shared"
 
 export function ActionBtn(props: ButtonProps) {

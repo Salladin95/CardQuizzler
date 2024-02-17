@@ -1,5 +1,5 @@
 import { ModuleType } from "~/app/models"
-import { mockGetModule, mockModule, mockModules } from "~/lib/mock"
+import { mockGetModule, mockModule, mockModules } from "src/shared/lib/mock"
 
 export type GetModulePayload = string
 export type GetModuleResponse = ModuleType

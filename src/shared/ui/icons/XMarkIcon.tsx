@@ -1,4 +1,4 @@
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { SvgDefaultProps } from "~/app/types"
 
 export function XMarkIcon(props: SvgDefaultProps) {

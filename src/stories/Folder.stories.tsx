@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react"
 import { Folder } from "~/entites"
-import { mockFolder } from "~/lib/mock"
+import { mockFolder } from "src/shared/lib/mock"
 
 const meta: Meta<typeof Folder> = {
 	title: "Entities/Folder",

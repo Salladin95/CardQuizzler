@@ -1,6 +1,6 @@
 import React from "react"
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
-import { getQueryClient } from "~/lib"
+import { getQueryClient } from "~/shared/lib"
 
 type WithHydrationProps<DataT> = {
 	children: React.ReactNode

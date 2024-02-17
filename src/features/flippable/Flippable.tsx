@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { PropsWithClassName } from "~/app/types"
 import { FlippableContent } from "~/features/flippable/FlippableContent"
 import { useFlippable } from "~/features/flippable/useFlippable"
-import { cn } from "src/lib"
+import { cn } from "~/shared/lib"
 
 export type FlippableProps = {
 	frontSideContent: React.ReactNode

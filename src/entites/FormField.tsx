@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { FieldError } from "react-hook-form"
 import { PropsWithChildren, PropsWithClassName } from "~/app/types"
 

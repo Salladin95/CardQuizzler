@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 
 import { TermType } from "~/app/models"
 import { SwiperData } from "~/features/swiper"
-import { mockTerms } from "~/lib/mock/mockTerm"
+import { mockTerms } from "~/shared/lib/mock/mockTerm"
 import { Swiper } from "~/features/swiper/Swiper"
 import { initializeSwiperData } from "~/views/module/utils"
 

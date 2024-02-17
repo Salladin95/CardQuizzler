@@ -5,7 +5,7 @@ import * as Framer from "framer-motion"
 import { MotionProps } from "framer-motion"
 import * as RadixPopover from "@radix-ui/react-popover"
 import { cva, VariantProps } from "class-variance-authority"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 
 const popoverVariants = cva("popover", {
 	variants: {

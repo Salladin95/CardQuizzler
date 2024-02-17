@@ -2,7 +2,7 @@
 
 import React from "react"
 import { Input, InputProps } from "./Input"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 
 export type PasswordInputProps = InputProps
 

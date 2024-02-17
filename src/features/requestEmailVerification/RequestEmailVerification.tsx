@@ -1,11 +1,10 @@
 import React from "react"
 import * as Yup from "yup"
-import { Input } from "~/shared"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { emailRequiredMsg, invalidEmailMsg } from "~/app/constants"
-import { useRequestEmailVerificationCtx } from "~/providers/RequestEmailVerificationCtxProvider"
+import { checkEmailFormat, Input, useRequestEmailVerificationCtx } from "~/shared"
 
 const RequestEmailVerificationSchema = Yup.object({
 	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
@@ -34,6 +33,7 @@ export function RequestEmailVerification() {
 	})
 
 	const email = watch(RequestEmailVerificationFormEnum.EMAIL)
+	const isEmailValid = checkEmailFormat(email)
 
 	const requestEmailVerificationCtx = useRequestEmailVerificationCtx()
 
@@ -42,34 +42,26 @@ export function RequestEmailVerification() {
 
 	function onSummit(formData: RequestEmailVerificationFormType) {
 		requestEmailVerification.mutate(formData)
+		requestEmailVerificationCtx.setEmail(email)
 	}
-
-	React.useEffect(() => {
-		if (requestEmailVerification.isSuccess) {
-			requestEmailVerificationCtx.setEmail(email)
-		}
-	}, [email, requestEmailVerification.isSuccess, requestEmailVerificationCtx])
 
 	if (requestEmailVerification.isSuccess) {
 		return null
 	}
 
 	return (
+		// USING FORM SO WE COULD SUBMIT WITH ENTER
 		<form onSubmit={handleSubmit(onSummit)}>
 			<FormFieldWithLabel label={"Email"} id={RequestEmailVerificationFormEnum.EMAIL} error={errors?.email}>
 				<Input
 					{...register(RequestEmailVerificationFormEnum.EMAIL)}
-					id={RequestEmailVerificationFormEnum.EMAIL}
-					error={Boolean(errors?.email)}
 					className={"mb-8"}
+					error={!isEmailValid}
 					placeholder={"Enter your email"}
+					id={RequestEmailVerificationFormEnum.EMAIL}
 				/>
 			</FormFieldWithLabel>
-			<ActionBtn
-				disabled={!email || Boolean(errors?.email)}
-				loading={requestEmailVerification.isPending}
-				type={"submit"}
-			>
+			<ActionBtn disabled={!isEmailValid} loading={requestEmailVerification.isPending} type={"submit"}>
 				Send verification code
 			</ActionBtn>
 		</form>

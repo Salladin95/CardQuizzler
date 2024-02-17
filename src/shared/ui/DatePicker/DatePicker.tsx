@@ -1,5 +1,5 @@
 import React from "react"
-import { cn, createOption, getListOfMonths, getListOfYears, MAX_BIRTHDAY_DATE, MIN_BIRTHDAY_DATE } from "~/lib"
+import { cn, createOption, getListOfMonths, getListOfYears, MAX_BIRTHDAY_DATE, MIN_BIRTHDAY_DATE } from "~/shared/lib"
 import { ArrowLeft, ArrowRight } from "~/features/splideCarousel/icons"
 import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isSameMonth, parse } from "date-fns"
 import { Select } from "~/shared"

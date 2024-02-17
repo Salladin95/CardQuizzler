@@ -1,10 +1,10 @@
 import React from "react"
+import { cn } from "~/shared/lib"
 import { TermType } from "~/app/models"
 import { TermEditor } from "./TermEditor"
 import { AddIcon, Button } from "~/shared"
 import { AnimatePresence, motion } from "framer-motion"
 import { SortableItem, withSortableGroup } from "~/features/sortable"
-import { cn } from "~/lib"
 
 export type TermListProps = {
 	items: TermType[]

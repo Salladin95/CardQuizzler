@@ -1,7 +1,7 @@
 import React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { Select } from "~/shared"
-import { createOptions } from "~/lib"
+import { createOptions } from "~/shared/lib"
 
 const meta: Meta<typeof Select> = {
 	title: "Shared/Select",

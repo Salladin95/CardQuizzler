@@ -1,5 +1,5 @@
 import { SvgDefaultProps } from "~/app/types"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 
 export function ConfettiIcon2(props: SvgDefaultProps) {
 	const { className, ...rest } = props

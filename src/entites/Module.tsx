@@ -1,5 +1,5 @@
 "use client"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { PropsWithClassName } from "~/app/types"
 import { ModuleType } from "~/app/models"
 

@@ -1,6 +1,6 @@
 import React from "react"
 import { FolderCarousel } from "~/widgets"
-import { mockFolders } from "~/lib/mock/mock"
+import { mockFolders } from "~/shared/lib/mock/mock"
 import type { Meta, StoryObj } from "@storybook/react"
 import { withRouter } from "storybook-addon-react-router-v6"
 

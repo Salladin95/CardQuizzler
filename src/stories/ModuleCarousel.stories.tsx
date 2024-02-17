@@ -1,7 +1,7 @@
 import React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { ModuleCarousel } from "~/widgets"
-import { mockModules } from "~/lib/mock/mock"
+import { mockModules } from "~/shared/lib/mock/mock"
 
 const meta: Meta<typeof ModuleCarousel> = {
 	title: "Widgets/ModuleCarousel",

@@ -1,6 +1,6 @@
 import { AxiosError } from "axios"
 import { HomePageData } from "~/app/models"
-import { mockFolders, mockModules } from "~/lib/mock"
+import { mockFolders, mockModules } from "src/shared/lib/mock"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 
 export type JsonResponse<T> = {

@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 
 export function ChevronDown(props: React.SVGAttributes<SVGElement>) {
 	const { className, ...rest } = props

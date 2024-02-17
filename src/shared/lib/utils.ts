@@ -45,3 +45,17 @@ export function formDataToObject(formData: FormData): { [key: string]: string } 
 
 	return formObject
 }
+
+/**
+ * Checks if the given email address conforms to a basic email format.
+ *
+ * @param {string} email - The email address to be checked.
+ * @returns {boolean} True if the email format is valid, False otherwise.
+ */
+export function checkEmailFormat(email: string): boolean {
+	// Regular expression pattern for basic email format
+	const pattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+	// Check if the email matches the pattern
+	return pattern.test(email)
+}

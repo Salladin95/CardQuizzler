@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useQueryClient } from "@tanstack/react-query"
 import { Dialog, Input, profileQueryKey, useToast } from "~/shared"
-import { useRequestEmailVerificationCtx } from "~/providers/RequestEmailVerificationCtxProvider"
+import { useRequestEmailVerificationCtx } from "~/shared/context/RequestEmailVerificationCtxProvider"
 
 const resetPasswordSchema = Yup.object({
 	newPassword: Yup.string().required(passwordRequiredMsg).password(),

@@ -2,7 +2,7 @@
 import React from "react"
 import Link from "next/link"
 
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { PropsWithClassName } from "~/app/types"
 
 export function Logo(props: PropsWithClassName) {

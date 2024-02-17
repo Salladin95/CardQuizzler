@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { Editor } from "@tiptap/react"
 import { ToolbarOption } from "./ToolbarOption"
 import { Button, Radio, Tooltip } from "~/shared"

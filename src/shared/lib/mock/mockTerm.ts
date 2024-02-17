@@ -1,5 +1,5 @@
 import { faker, fakerEN } from "@faker-js/faker"
-import { createArray } from "~/lib/creators"
+import { createArray } from "~/shared/lib/creators"
 import { TermType } from "~/app/models"
 
 export function mockTerm(): TermType {

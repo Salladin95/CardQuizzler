@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { Confetti } from "~/shared"
 import { motion } from "framer-motion"
 import { fade } from "~/shared/lib/animations"

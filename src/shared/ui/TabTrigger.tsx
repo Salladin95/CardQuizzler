@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { PropsWithChildren, PropsWithClassName, SvgDefaultProps } from "~/app/types"
 import { LineIcon } from "./icons"

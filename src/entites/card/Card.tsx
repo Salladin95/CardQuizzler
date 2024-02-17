@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "src/lib"
+import { cn } from "~/shared/lib"
 import { TermType } from "~/app/models"
 import { PropsWithClassName } from "~/app/types"
 

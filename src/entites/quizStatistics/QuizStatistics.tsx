@@ -1,5 +1,5 @@
 import React from "react"
-import { calculateProgress } from "~/lib"
+import { calculateProgress } from "~/shared/lib"
 import { CircularProgressBar } from "~/shared"
 import { QuizStatisticsItem } from "./quizStatisticsItem"
 

@@ -3,7 +3,7 @@ import React from "react"
 import { TermType } from "~/app/models"
 import { Button, Input } from "~/shared"
 import { TermList } from "~/widgets/moduleEditor/TermList"
-import { mockEmptyTerm, mockEmptyTerms } from "~/lib/mock"
+import { mockEmptyTerm, mockEmptyTerms } from "src/shared/lib/mock"
 import useAddClassToTag from "~/shared/hooks/useAddClassToTag"
 
 type ModuleEditorProps = {

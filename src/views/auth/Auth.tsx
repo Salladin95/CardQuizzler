@@ -1,16 +1,15 @@
 "use client"
 import React from "react"
-import { Button, Logo, TabTrigger } from "~/shared"
+import { cn } from "~/shared/lib"
+import { AuthTabsNames } from "./types"
 import { SignInTab } from "~/features/signInTab"
 import { SignUpTab } from "~/features/signUpTab"
-import { AuthTabsNames } from "./types"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { ResetPassword } from "~/features/resetPassword"
+import BG from "~/../public/assets/images/purple-items.png"
 import { useRouter, useSearchParams } from "next/navigation"
 import { RequestEmailVerification } from "~/features/requestEmailVerification"
-import { cn } from "~/lib"
-import { RequestEmailVerificationCtxProvider } from "~/providers/RequestEmailVerificationCtxProvider"
-import BG from "~/../public/assets/images/purple-items.png"
+import { Button, Logo, RequestEmailVerificationCtxProvider, TabTrigger } from "~/shared"
 
 const style: React.CSSProperties = {
 	backgroundImage: `url(${BG.src})`,

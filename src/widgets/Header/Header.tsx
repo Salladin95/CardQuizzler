@@ -1,5 +1,5 @@
 "use client"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import Link from "next/link"
 import { signOut } from "./api"
 import { PropsWithClassName } from "~/app/types"

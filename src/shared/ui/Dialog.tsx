@@ -5,7 +5,7 @@ import * as Framer from "framer-motion"
 import * as RadixDialog from "@radix-ui/react-dialog"
 
 import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 
 const dialogVariants = cva("dialog", {
 	variants: {

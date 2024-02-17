@@ -1,5 +1,5 @@
 import { SvgDefaultProps } from "~/app/types"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 
 export function ItalicSvg(props: SvgDefaultProps) {
 	const { className, ...rest } = props

@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { Button } from "~/shared"
 import { Editor } from "@tiptap/react"
 import { PropsWithChildren } from "~/app/types"

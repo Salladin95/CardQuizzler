@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react"
-import { cn } from "src/lib"
+import { cn } from "~/shared/lib"
 import { SvgDefaultProps } from "~/app/types"
 
 export function getTipTapEditorSvgProps(name: string, editor: Editor | null): SvgDefaultProps {

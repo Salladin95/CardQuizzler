@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { FolderIcon } from "~/shared"
 import { PropsWithClassName } from "~/app/types"
 import { FolderType } from "~/app/models"

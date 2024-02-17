@@ -1,12 +1,11 @@
 import React from "react"
 import { Header } from "~/widgets"
-import { fullDateFormatter } from "~/lib"
+import { fullDateFormatter } from "~/shared/lib"
 import { TextWithLabel } from "~/entites"
 import { Profile as ProfileType } from "~/app/models"
 import { ResetEmail, ResetPassword, UpdatePassword } from "~/features"
 import { RequestEmailVerification } from "~/features/requestEmailVerification"
-import { Button, LoadingDataRenderer, useProtectedProfile } from "~/shared"
-import { RequestEmailVerificationCtxProvider } from "~/providers/RequestEmailVerificationCtxProvider"
+import { Button, LoadingDataRenderer, RequestEmailVerificationCtxProvider, useProtectedProfile } from "~/shared"
 
 function Profile(profile: ProfileType) {
 	return (

@@ -1,5 +1,5 @@
 import { FolderType } from "~/app/models"
-import { mockCreateFolder, mockFolder, mockFolders, mockGetFolder } from "~/lib/mock"
+import { mockCreateFolder, mockFolder, mockFolders, mockGetFolder } from "src/shared/lib/mock"
 
 export type GetFolderPayload = string
 export type GetFolderResponse = FolderType

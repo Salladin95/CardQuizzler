@@ -1,4 +1,4 @@
-import { clampBetween } from "~/lib"
+import { clampBetween } from "~/shared/lib"
 
 export const getSplideDefaultOptions = (value: number) => ({
 	perPage: clampBetween({ min: 1, max: 3, value }),

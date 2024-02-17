@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { calculateProgress, cn } from "src/lib"
+import { calculateProgress, cn } from "~/shared/lib"
 import { Button } from "~/shared"
 import { PropsWithClassName, WithId } from "~/app/types"
 import { TurnLeftIcon } from "~/shared/ui/icons/TurnLeftIcon"

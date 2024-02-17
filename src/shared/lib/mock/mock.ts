@@ -1,7 +1,7 @@
 import { faker, fakerEN } from "@faker-js/faker"
 import { FolderType, ModuleType } from "~/app/models"
-import { createArray } from "~/lib/creators"
-import { mockTerms } from "~/lib/mock/mockTerm"
+import { createArray } from "~/shared/lib/creators"
+import { mockTerms } from "~/shared/lib/mock/mockTerm"
 
 export function mockFolder(): FolderType {
 	return {

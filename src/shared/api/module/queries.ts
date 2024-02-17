@@ -1,6 +1,6 @@
 import { AxiosError } from "axios"
 import { ModuleType } from "~/app/models"
-import { mockModules } from "~/lib/mock"
+import { mockModules } from "src/shared/lib/mock"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import {
 	getDifficultModules,

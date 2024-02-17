@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { CheckboxGroup } from "~/entites"
-import { createOptions } from "~/lib/creators"
+import { createOptions } from "~/shared/lib/creators"
 
 const meta: Meta<typeof CheckboxGroup> = {
 	title: "Entities/CheckboxGroup",

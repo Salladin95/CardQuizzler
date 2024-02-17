@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { ConfettiIcon } from "~/shared"
 import { PropsWithClassName } from "~/app/types"
 import { getRandomInspirationalMessage } from "./inspirationalMessages"

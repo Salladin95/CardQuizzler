@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import { Popover } from "~/shared"
 import { PropsWithClassName } from "~/app/types"
 import { EditorToolBar } from "./EditorToolBar"

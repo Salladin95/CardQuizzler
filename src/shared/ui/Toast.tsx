@@ -5,7 +5,7 @@ import { cva, VariantProps } from "class-variance-authority"
 import * as RadixToast from "@radix-ui/react-toast"
 import * as Framer from "framer-motion"
 import { atom, useAtom } from "jotai"
-import { cn } from "~/lib"
+import { cn } from "~/shared/lib"
 import Motions from "../lib/animations"
 
 const toastVariants = cva("toast", {

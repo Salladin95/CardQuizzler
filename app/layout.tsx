@@ -1,7 +1,7 @@
 import React from "react"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
-import { Providers } from "~/providers"
+import { Providers } from "src/app/providers"
 import { PropsWithChildren } from "~/app/types"
 import { Inter, Noto_Sans } from "next/font/google"
 

@@ -1,5 +1,5 @@
 import React from "react"
-import { clampBetween, cn } from "~/lib"
+import { clampBetween, cn } from "~/shared/lib"
 import { PropsWithClassName } from "~/app/types"
 import { motion, MotionProps } from "framer-motion"
 

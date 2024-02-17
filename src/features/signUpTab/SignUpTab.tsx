@@ -8,7 +8,7 @@ import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { Button, DatePicker, Input, Popover, useToast } from "~/shared"
-import { calculatePreviousYearStartDate, cn, fullDateFormatter, MAX_BIRTHDAY_DATE } from "~/lib"
+import { calculatePreviousYearStartDate, cn, fullDateFormatter, MAX_BIRTHDAY_DATE } from "~/shared/lib"
 import * as Yup from "yup"
 import {
 	birthdayMinMsg,

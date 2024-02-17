@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react"
 import { Module } from "~/entites"
-import { mockModule } from "~/lib/mock"
+import { mockModule } from "src/shared/lib/mock"
 
 const meta: Meta<typeof Module> = {
 	title: "Entities/Module",
