@@ -2,16 +2,14 @@
 import React from "react"
 import { useWindowSize } from "react-use"
 import { useSignUpMutation } from "./api"
-import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import * as RadixTabs from "@radix-ui/react-tabs"
-import { TabContentProps } from "~/app/auth/types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
+import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { Button, DatePicker, Input, Popover, useToast } from "~/shared"
 import { calculatePreviousYearStartDate, cn, fullDateFormatter, MAX_BIRTHDAY_DATE } from "~/lib"
 import * as Yup from "yup"
-import { InferType } from "yup"
 import {
 	birthdayMinMsg,
 	birthdayRequiredMsg,
@@ -35,9 +33,12 @@ export const singUpValidationSchema = Yup.object({
 	birthday: Yup.date().required(birthdayRequiredMsg).max(MAX_BIRTHDAY_DATE, birthdayMinMsg),
 })
 
-export type SignUpFormType = InferType<typeof singUpValidationSchema>
+export type SignUpFormType = Yup.InferType<typeof singUpValidationSchema>
 
-type SignUpTabContent = TabContentProps
+type SignUpProps = {
+	tabName: string
+	onSubmit: () => void
+}
 
 export enum SignUpFormEnum {
 	NAME = "name",
@@ -57,7 +58,7 @@ export function getSignUpFormDefaultValues(): SignUpFormType {
 	}
 }
 
-export function SignUpTab(props: SignUpTabContent) {
+export function SignUpTab(props: SignUpProps) {
 	const { tabName, onSubmit: onSubmitProp } = props
 
 	const toast = useToast()

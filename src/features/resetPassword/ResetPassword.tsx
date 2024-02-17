@@ -1,10 +1,8 @@
 import React from "react"
 import * as Yup from "yup"
-import { InferType } from "yup"
-import { Dialog, Input, useToast } from "~/shared"
+import { useResetPassword } from "./api"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
-import { profileQueryKey, useResetPassword } from "~/api"
 import {
 	codeRequiredErrMsg,
 	confirmPasswordRequiredMsg,
@@ -14,6 +12,7 @@ import {
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useQueryClient } from "@tanstack/react-query"
+import { Dialog, Input, profileQueryKey, useToast } from "~/shared"
 import { useRequestEmailVerificationCtx } from "~/providers/RequestEmailVerificationCtxProvider"
 
 const resetPasswordSchema = Yup.object({
@@ -24,7 +23,7 @@ const resetPasswordSchema = Yup.object({
 		.password(),
 	code: Yup.number().codeLength().required(codeRequiredErrMsg).nullable(),
 })
-export type ResetPasswordFormType = InferType<typeof resetPasswordSchema>
+export type ResetPasswordFormType = Yup.InferType<typeof resetPasswordSchema>
 
 export enum ResetPasswordFormEnum {
 	NEW_PASSWORD = "newPassword",

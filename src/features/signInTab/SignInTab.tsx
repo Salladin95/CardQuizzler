@@ -1,18 +1,15 @@
 "use client"
 import React from "react"
 import * as Yup from "~/yup"
-import { InferType } from "yup"
-import { Input, useToast } from "~/shared"
-import { profileQueryKey } from "~/api"
 import { useSignInMutation } from "./api"
 import { useLocalStorage } from "react-use"
 import * as RadixTabs from "@radix-ui/react-tabs"
-import { TabContentProps } from "~/app/auth/types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
+import { Input, profileQueryKey, useToast } from "~/shared"
 import { emailRequiredMsg, invalidEmailMsg, passwordRequiredMsg } from "~/app/constants"
 
 export const singInValidationSchema = Yup.object({
@@ -20,10 +17,12 @@ export const singInValidationSchema = Yup.object({
 	password: Yup.string().required(passwordRequiredMsg).password(),
 })
 
-export type SignInFormType = InferType<typeof singInValidationSchema>
+export type SignInFormType = Yup.InferType<typeof singInValidationSchema>
 
-type SignInTabContentProps = TabContentProps & {
+type SignInProps = {
 	resetPassword: React.ReactNode
+	tabName: string
+	onSubmit: () => void
 }
 
 export enum SignInFormEnum {
@@ -38,7 +37,7 @@ export function getSignInFormDefaultValues(): SignInFormType {
 	}
 }
 
-export function SignInTab(props: SignInTabContentProps) {
+export function SignInTab(props: SignInProps) {
 	const { tabName, onSubmit: onSubmitProp } = props
 	const [_, setAccessToken] = useLocalStorage<string | null>("access-token", null)
 

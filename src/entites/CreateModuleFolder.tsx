@@ -2,10 +2,9 @@
 import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Button, Popover } from "~/shared"
 import { CreateEditFolder } from "./CreateEditFolder"
-import { foldersQueryKey, useCreateFolderMutation } from "~/api"
 import { useQueryClient } from "@tanstack/react-query"
+import { Button, foldersQueryKey, Popover, useCreateFolderMutation } from "~/shared"
 
 export function CreateModuleFolder() {
 	const router = useRouter()

@@ -5,7 +5,7 @@ import { TermType } from "~/app/models"
 import { SwiperData } from "~/features/swiper"
 import { mockTerms } from "~/lib/mock/mockTerm"
 import { Swiper } from "~/features/swiper/Swiper"
-import { initializeSwiperData } from "~/app/module/utils"
+import { initializeSwiperData } from "~/views/module/utils"
 
 const meta: Meta<typeof Swiper> = {
 	title: "Features/Swiper",

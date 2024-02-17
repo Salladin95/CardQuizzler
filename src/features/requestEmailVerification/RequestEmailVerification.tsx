@@ -1,8 +1,7 @@
 import React from "react"
 import * as Yup from "yup"
-import { InferType } from "yup"
-import { useForm } from "react-hook-form"
 import { Input } from "~/shared"
+import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { emailRequiredMsg, invalidEmailMsg } from "~/app/constants"
@@ -11,7 +10,7 @@ import { useRequestEmailVerificationCtx } from "~/providers/RequestEmailVerifica
 const RequestEmailVerificationSchema = Yup.object({
 	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
 })
-export type RequestEmailVerificationFormType = InferType<typeof RequestEmailVerificationSchema>
+export type RequestEmailVerificationFormType = Yup.InferType<typeof RequestEmailVerificationSchema>
 
 export enum RequestEmailVerificationFormEnum {
 	EMAIL = "email",

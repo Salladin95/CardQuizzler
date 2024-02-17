@@ -3,8 +3,17 @@ import React from "react"
 import { FolderType } from "~/app/models"
 import { CreateEditFolder } from "./CreateEditFolder"
 import { useQueryClient } from "@tanstack/react-query"
-import { AdjustIcon, Button, EllipsisIcon, Popover, TrashIcon } from "~/shared"
-import { folderQueryKey, foldersQueryKey, useDeleteFolderMutation, useUpdateFolderMutation } from "~/api"
+import {
+	AdjustIcon,
+	Button,
+	EllipsisIcon,
+	folderQueryKey,
+	foldersQueryKey,
+	Popover,
+	TrashIcon,
+	useDeleteFolderMutation,
+	useUpdateFolderMutation,
+} from "~/shared"
 
 type FolderSettingsMenuProps = {
 	folder: FolderType

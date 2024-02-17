@@ -1,6 +1,6 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios"
+import { refresh } from "~/shared"
 import { serialize } from "object-to-formdata"
-import { refresh } from "~/api"
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios"
 
 /**
  * Core axios instance

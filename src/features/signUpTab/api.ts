@@ -1,5 +1,5 @@
 import axios from "~/app/axios"
-import { Profile } from "~/api"
+import { Profile } from "~/app/models"
 import { AxiosError, AxiosResponse } from "axios"
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 

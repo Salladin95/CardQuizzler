@@ -1,7 +1,6 @@
 import React from "react"
-import { useToast } from "~/shared"
 import { PropsWithChildren } from "~/app/types"
-import { UseRequestEmailVerification, useRequestEmailVerification } from "~/api"
+import { UseRequestEmailVerification, useRequestEmailVerification, useToast } from "~/shared"
 
 type RequestEmailVerificationCtxType = {
 	resetForm: (() => void) | null

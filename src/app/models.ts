@@ -1,3 +1,12 @@
+export type Profile = {
+	email: string
+	name: string
+	id: string
+	birthday: string
+	createdAt: string
+	updatedAt: string
+}
+
 export type TermType = {
 	id: string
 	title: string
