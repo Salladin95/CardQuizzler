@@ -2,10 +2,10 @@
 import React from "react"
 import Link from "next/link"
 import { WithId } from "~/app/types"
-import { FolderType } from "~/app/models"
-import { isModuleInFolder } from "./utils"
+import { hasFolderTheModule } from "./utils"
+import { FolderType, ModuleType } from "~/app/models"
 import { useQueryClient } from "@tanstack/react-query"
-import { FolderContextMenu, ModuleContextMenu } from "~/entites"
+import { FolderContextMenu, ModuleContextMenu } from "~/features"
 import {
 	AddIcon,
 	Button,
@@ -15,36 +15,50 @@ import {
 	LoadingDataRenderer,
 	TrashIcon,
 	useAddModuleToFolderMutation,
+	useDeleteModuleFromFolderMutation,
 	useFetchFolder,
+	useFetchModules,
 	XMarkIcon,
 } from "~/shared"
 
-function Folder(folder: FolderType) {
+type FolderProps = {
+	folder?: FolderType
+	modules?: ModuleType[]
+}
+
+function Folder(props: FolderProps) {
+	const { folder, modules } = props
 	const [showDialog, setShowDialog] = React.useState(false)
 	const queryClient = useQueryClient()
 
 	const addModuleToFolder = useAddModuleToFolderMutation({
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: [folderQueryKey, folder.id] }),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [folderQueryKey, folder?.id] }),
 	})
-	const deleteModuleFromFolder = useAddModuleToFolderMutation({
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: [folderQueryKey, folder.id] }),
+	const deleteModuleFromFolder = useDeleteModuleFromFolderMutation({
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [folderQueryKey, folder?.id] }),
 	})
-
-	function handleActionButtonClick(moduleId: string) {
-		if (isModuleInFolder(folder, moduleId)) {
-			return deleteModuleFromFolder.mutate({ moduleId, folderId: folder.id })
-		}
-		return addModuleToFolder.mutate({ moduleId, folderId: folder.id })
-	}
 
 	function ActionButton(props: { id: string }) {
 		const { id } = props
+		if (!folder) return null
+		const hasModule = hasFolderTheModule(folder, id)
+
+		function handleActionButtonClick(moduleId: string) {
+			if (!folder) return
+			if (hasModule) {
+				return deleteModuleFromFolder.mutate({ moduleId, folderId: folder.id })
+			}
+			return addModuleToFolder.mutate({ moduleId, folderId: folder.id })
+		}
+
 		return (
 			<Button className={"w-min"} variant={"secondary"} onClick={() => handleActionButtonClick(id)}>
-				{isModuleInFolder(folder, id) ? <AddIcon /> : <TrashIcon />}
+				{hasModule ? <TrashIcon /> : <AddIcon />}
 			</Button>
 		)
 	}
+
+	if (!folder || !modules) return null
 
 	return (
 		<main className={"container"}>
@@ -86,7 +100,7 @@ function Folder(folder: FolderType) {
 				</Button>
 
 				<section className={"flex flex-col gap-y-2 px-6 py-8 "}>
-					{folder.modules.map((module) => (
+					{modules?.map((module) => (
 						<div
 							key={module.id}
 							className={"flex justify-between items-center px-4 py-3 rounded bg-gray-800 text-white"}
@@ -102,6 +116,13 @@ function Folder(folder: FolderType) {
 }
 
 export function FolderPage(props: WithId) {
-	const { data, isLoading } = useFetchFolder(props.id)
-	return <LoadingDataRenderer<FolderType> Comp={Folder} data={data} isLoading={isLoading} />
+	const { data: folder, isPending: isFolderPending } = useFetchFolder(props.id)
+	const { data: userModules, isPending: areUserModulesLoading } = useFetchModules()
+	return (
+		<LoadingDataRenderer<FolderProps>
+			Comp={Folder}
+			data={{ folder: folder, modules: userModules }}
+			isLoading={isFolderPending || areUserModulesLoading}
+		/>
+	)
 }

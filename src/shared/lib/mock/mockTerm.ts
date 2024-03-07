@@ -10,24 +10,12 @@ export function mockTerm(): TermType {
 	}
 }
 
-export function mockEmptyTerm(): TermType {
-	return {
-		id: faker.string.uuid(),
-		title: "",
-		description: "",
-	}
-}
-
 export function asyncMockTerm(): Promise<TermType> {
 	return Promise.resolve(mockTerm())
 }
 
 export function mockTerms(amount = 3): TermType[] {
 	return createArray(amount, mockTerm)
-}
-
-export function mockEmptyTerms(amount = 5): TermType[] {
-	return createArray(amount, mockEmptyTerm)
 }
 
 export function asyncMockTerms(amount = 10): Promise<TermType[]> {

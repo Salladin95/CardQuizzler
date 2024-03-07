@@ -120,27 +120,22 @@ function requestInterceptor(request: InternalAxiosRequestConfig) {
 let hasCalledRefresh = false
 
 async function makeRefreshCall(error: AxiosError) {
-	if (!localStorage.getItem("access-token")) return Promise.reject(error)
+	if (!localStorage.getItem("access-token") || error.status !== 401 || hasCalledRefresh) return Promise.reject(error)
 	const originalRequest = error.config as AxiosRequestConfig
-	// If the error is a 401 try to refresh the JWT token
-	if (error.response?.status === 401 && !hasCalledRefresh) {
-		hasCalledRefresh = true
-		try {
-			const res = await refresh()
-			const accessToken = res.data.accessToken
-			localStorage.setItem("access-token", accessToken)
-			setBearerToken(originalRequest, accessToken)
-			return axiosInstance(originalRequest)
-		} catch (refreshError) {
-			// If there is an error refreshing the token, log out the user
-			localStorage.clear()
-			return Promise.reject(refreshError)
-		} finally {
-			hasCalledRefresh = false
-		}
+	hasCalledRefresh = true
+	try {
+		const res = await refresh()
+		const accessToken = res.data.accessToken
+		localStorage.setItem("access-token", accessToken)
+		setBearerToken(originalRequest, accessToken)
+		return axiosInstance(originalRequest)
+	} catch (refreshError) {
+		// If there is an error refreshing the token, log out the user
+		localStorage.clear()
+		return Promise.reject(refreshError)
+	} finally {
+		hasCalledRefresh = false
 	}
-	// Return the original error if we can't handle it
-	return Promise.reject(error)
 }
 
 axiosInstance.interceptors.request.use(requestInterceptor)

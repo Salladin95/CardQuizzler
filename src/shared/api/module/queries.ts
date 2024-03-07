@@ -1,12 +1,12 @@
 import { AxiosError } from "axios"
 import { ModuleType } from "~/app/models"
-import { mockModules } from "src/shared/lib/mock"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import {
 	getDifficultModules,
 	GetDifficultModulesResponse,
 	getModule,
 	GetModuleResponse,
+	getModules,
 	getRecentOpenedModules,
 	GetRecentOpenedModulesResponse,
 } from "./requests"
@@ -18,7 +18,7 @@ export const difficultModulesQueryKey = "difficult-modules-query-key"
 export const useFetchModules = (options?: Omit<UseQueryOptions<ModuleType[], AxiosError>, "queryFn">) => {
 	return useQuery({
 		queryKey: [modulesQueryKey],
-		queryFn: () => mockModules(),
+		queryFn: getModules,
 		...options,
 	})
 }

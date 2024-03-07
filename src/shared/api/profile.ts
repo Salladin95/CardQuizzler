@@ -34,9 +34,14 @@ export const useProtectedProfile = (options?: Parameters<typeof useProfile>[0]) 
 		enabled: Boolean(accessToken),
 	})
 	React.useEffect(() => {
-		if (error && !isPending) {
-			router.push("/auth")
+		switch (true) {
+			case !accessToken:
+				return router.push("/auth")
+			case !isPending:
+				if (error) {
+					router.push("/auth")
+				}
 		}
-	}, [error, isPending, router])
+	}, [accessToken, error, isPending, router])
 	return { ...rest, error, isPending }
 }

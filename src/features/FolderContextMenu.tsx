@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { FolderType } from "~/app/models"
-import { CreateEditFolder } from "./CreateEditFolder"
+import { CreateEditFolder } from "../entites/CreateEditFolder"
 import { useQueryClient } from "@tanstack/react-query"
 import {
 	AdjustIcon,
@@ -41,7 +41,7 @@ export function FolderContextMenu(props: FolderSettingsMenuProps) {
 		if (folderName === folder.title) {
 			return
 		}
-		updateFolder.mutate({ folderName, id: folder.id })
+		updateFolder.mutate({ title: folderName, id: folder.id })
 	}
 
 	function handleDeleteFolder() {

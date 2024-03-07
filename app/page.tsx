@@ -4,7 +4,6 @@ import { DataHydration, getHomePageData, homeDataKey, useProtectedProfile } from
 
 export default function HomeWithDataHydration() {
 	useProtectedProfile()
-
 	return (
 		<DataHydration getData={getHomePageData} queryKeys={[homeDataKey]}>
 			<HomePage />

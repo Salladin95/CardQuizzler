@@ -2,19 +2,22 @@
 import React from "react"
 import { TermType } from "~/app/models"
 import { Button, Input } from "~/shared"
+import { ActionBtn } from "~/entites"
+import { createEmptyTerm, createEmptyTerms } from "./lib"
 import { TermList } from "~/widgets/moduleEditor/TermList"
-import { mockEmptyTerm, mockEmptyTerms } from "src/shared/lib/mock"
 import useAddClassToTag from "~/shared/hooks/useAddClassToTag"
 
 type ModuleEditorProps = {
 	terms?: TermType[]
 	moduleName?: string
 	onSubmit: (moduleName: string, terms: TermType[]) => void
+	hasSubmitted?: boolean
+	isSubmitting?: boolean
 }
 
 export function ModuleEditor(props: ModuleEditorProps) {
-	const { onSubmit } = props
-	const [terms, setTerms] = React.useState<TermType[]>(props.terms || mockEmptyTerms())
+	const { onSubmit, hasSubmitted, isSubmitting } = props
+	const [terms, setTerms] = React.useState<TermType[]>(props.terms || createEmptyTerms())
 	const [moduleName, setModuleName] = React.useState(props.moduleName || "")
 
 	// Created separated value for error, because I don't want to show input's error state on first render
@@ -43,9 +46,13 @@ export function ModuleEditor(props: ModuleEditorProps) {
 	const submitBtnTitle = !props.terms ? "Создать" : "Сохранить"
 
 	// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
-	const isSubmitDisabled = !terms.length || !moduleName
+	const isSubmitDisabled = !terms.length || !moduleName || hasSubmitted
 
 	useAddClassToTag("hide-scrollbar", "body")
+
+	React.useEffect(() => {
+		console.log(terms)
+	}, [terms])
 
 	return (
 		<section className={"overflow-hidden p-1"}>
@@ -71,14 +78,19 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				onReorder={handleReorder}
 				onUpdate={handleUpdate}
 				onDelete={handleDelete}
-				onAddTerm={(index: number) => insertTerm(mockEmptyTerm(), index)}
+				onAddTerm={(index: number) => insertTerm(createEmptyTerm(), index)}
 			/>
-			<Button className="w-min mx-auto" onClick={() => insertTerm(mockEmptyTerm())}>
+			<Button className="w-min mx-auto" onClick={() => insertTerm(createEmptyTerm())}>
 				Добавить
 			</Button>
-			<Button disabled={isSubmitDisabled} className="w-min ml-auto px-8 py-6" onClick={handleSubmit}>
+			<ActionBtn
+				loading={isSubmitting}
+				disabled={isSubmitDisabled}
+				className="w-min ml-auto px-8 py-6"
+				onClick={handleSubmit}
+			>
 				{submitBtnTitle}
-			</Button>
+			</ActionBtn>
 		</section>
 	)
 }

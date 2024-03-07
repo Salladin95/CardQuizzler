@@ -6,6 +6,7 @@ import { FolderType } from "~/app/models"
  * @param moduleId
  * @return boolean
  */
-export function isModuleInFolder(folder: FolderType, moduleId: string): boolean {
-	return Boolean(folder.modules.find((module) => module.id === moduleId))
+export function hasFolderTheModule(folder: FolderType, moduleId: string): boolean {
+	const modules = new Set(folder.modules.map((module) => module.id))
+	return modules.has(moduleId)
 }

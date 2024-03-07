@@ -54,7 +54,7 @@ export function formDataToObject(formData: FormData): { [key: string]: string } 
  */
 export function checkEmailFormat(email: string): boolean {
 	// Regular expression pattern for basic email format
-	const pattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	const pattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 	// Check if the email matches the pattern
 	return pattern.test(email)

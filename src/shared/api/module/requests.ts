@@ -1,31 +1,34 @@
-import { ModuleType } from "~/app/models"
-import { mockGetModule, mockModule, mockModules } from "src/shared/lib/mock"
+import axios from "~/app/axios"
+import { JsonResponse } from "~/shared"
+import { ModuleType, TermType } from "~/app/models"
+import { mockModules } from "src/shared/lib/mock"
+import { AxiosResponse } from "axios"
 
 export type GetModulePayload = string
 export type GetModuleResponse = ModuleType
 
-export function getModule(id: GetModulePayload): Promise<GetModuleResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockGetModule(id))
+export async function getModule(id: GetModulePayload): Promise<GetModuleResponse> {
+	const res = await axios.get<JsonResponse<GetModuleResponse>>(`module/${id}`)
+	return res.data.data
 }
 
 export type GetModulesResponse = ModuleType[]
 
-export function getModules(): Promise<GetModulesResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockModules())
+export async function getModules(): Promise<GetModulesResponse> {
+	const res = await axios.get<JsonResponse<GetModulesResponse>>("module")
+	return res.data.data
 }
 
 export type GetDifficultModulesResponse = ModuleType[]
 
-export function getDifficultModules(): Promise<GetDifficultModulesResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockModules())
+export async function getDifficultModules(): Promise<GetDifficultModulesResponse> {
+	const res = await axios.get<JsonResponse<GetModulesResponse>>("difficult-modules")
+	return res.data.data
 }
 
 export type GetRecentOpenedModulesResponse = ModuleType[]
 
-export function getRecentOpenedModules(): Promise<GetDifficultModulesResponse> {
+export async function getRecentOpenedModules(): Promise<GetDifficultModulesResponse> {
 	// TODO: REPLACE MOCK LOGIC
 	return Promise.resolve(mockModules())
 }
@@ -33,23 +36,40 @@ export function getRecentOpenedModules(): Promise<GetDifficultModulesResponse> {
 export type CreateModulePayload = Omit<ModuleType, "id">
 export type CreateModuleResponse = ModuleType
 
-export function createModule(module: CreateModulePayload): Promise<CreateModuleResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockModule())
+export async function createModule(payload: CreateModulePayload): Promise<CreateModuleResponse> {
+	const res = await axios.post<JsonResponse<ModuleType>>("module", payload)
+	return res.data.data
 }
 
-export type UpdateModulePayload = ModuleType
+export type CreateModuleInFolderPayload = Omit<ModuleType, "id"> & {
+	folderID: string
+}
+export type CreateModuleInFolderResponse = ModuleType
+
+export async function createModuleInFolder({
+	folderID,
+	...payload
+}: CreateModuleInFolderPayload): Promise<CreateModuleInFolderResponse> {
+	const res = await axios.post<JsonResponse<ModuleType>>(`module/${folderID}`, payload)
+	return res.data.data
+}
+
+export type UpdateModulePayload = {
+	title?: string
+	newTerms?: TermType[]
+	updatedTerms?: TermType[]
+	id: string
+}
 export type UpdateModuleResponse = ModuleType
 
-export function updateModule(payload: UpdateModulePayload): Promise<UpdateModuleResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockModule())
+export async function updateModule({ id, ...payload }: UpdateModulePayload): Promise<UpdateModuleResponse> {
+	const res = await axios.patch<JsonResponse<ModuleType>>(`module/${id}`, payload)
+	return res.data.data
 }
 
 export type DeleteModulePayload = string
-export type DeleteModuleResponse = string
+export type DeleteModuleResponse = AxiosResponse<JsonResponse<null>>
 
-export function deleteModule(id: DeleteModulePayload): Promise<DeleteModuleResponse> {
-	console.log("DELETING ....")
-	return Promise.resolve("SUCCESS")
+export async function deleteModule(id: DeleteModulePayload): Promise<DeleteModuleResponse> {
+	return axios.delete<JsonResponse<null>>(`module/${id}`)
 }

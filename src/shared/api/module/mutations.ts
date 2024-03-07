@@ -1,6 +1,9 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import {
 	createModule,
+	createModuleInFolder,
+	CreateModuleInFolderPayload,
+	CreateModuleInFolderResponse,
 	CreateModulePayload,
 	CreateModuleResponse,
 	deleteModule,
@@ -17,6 +20,18 @@ export function useCreateModuleMutation(
 ) {
 	return useMutation({
 		mutationFn: createModule,
+		...options,
+	})
+}
+
+export function useCreateModuleInFolderMutation(
+	options?: Omit<
+		UseMutationOptions<CreateModuleInFolderResponse, AxiosError, CreateModuleInFolderPayload>,
+		"mutationFn"
+	>,
+) {
+	return useMutation({
+		mutationFn: createModuleInFolder,
 		...options,
 	})
 }

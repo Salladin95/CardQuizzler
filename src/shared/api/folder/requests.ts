@@ -1,60 +1,69 @@
+import axios from "~/app/axios"
+import { JsonResponse } from "~/shared"
 import { FolderType } from "~/app/models"
-import { mockCreateFolder, mockFolder, mockFolders, mockGetFolder } from "src/shared/lib/mock"
 
 export type GetFolderPayload = string
 export type GetFolderResponse = FolderType
 
-export function getFolder(id: GetFolderPayload): Promise<GetFolderResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockGetFolder(id))
+export async function getFolder(id: GetFolderPayload): Promise<GetFolderResponse> {
+	const res = await axios.get<JsonResponse<FolderType>>(`/folder/${id}`)
+	return res.data.data
 }
 
 export type GetFoldersResponse = FolderType[]
 
-export function getFolders(): Promise<GetFoldersResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockFolders())
+export async function getFolders(): Promise<GetFoldersResponse> {
+	const res = await axios.get<JsonResponse<FolderType[]>>("/folder")
+	return res.data.data
 }
 
-export type CreateFolderPayload = string
+export type CreateFolderPayload = {
+	title: string
+}
 export type CreateFolderResponse = FolderType
 
-export function createFolder(folderName: CreateFolderPayload): Promise<CreateFolderResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockCreateFolder(folderName))
+export async function createFolder(payload: CreateFolderPayload): Promise<CreateFolderResponse> {
+	const res = await axios.post<JsonResponse<FolderType>>("/folder", payload)
+	return res.data.data
 }
 
 export type UpdateFolderPayload = {
-	folderName: string
+	title: string
 	id: string
 }
 export type UpdateFolderResponse = FolderType
 
-export function updateFolder(payload: UpdateFolderPayload): Promise<UpdateFolderResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockCreateFolder(payload.folderName))
+export async function updateFolder(payload: UpdateFolderPayload): Promise<UpdateFolderResponse> {
+	const res = await axios.patch<JsonResponse<FolderType>>(`/folder/${payload.id}`, { title: payload.title })
+	return res.data.data
 }
 
 export type DeleteFolderPayload = string
 export type DeleteFolderResponse = string
 
-export function deleteFolder(id: DeleteFolderPayload): Promise<DeleteFolderResponse> {
-	console.log("DELETING FOLDER")
-	return Promise.resolve("SUCCESS")
+export async function deleteFolder(id: DeleteFolderPayload): Promise<DeleteFolderResponse> {
+	const res = await axios.delete<JsonResponse<JsonResponse<null>>>(`/folder/${id}`)
+	return res.data.message
 }
 
 export type AddModuleToFolderPayload = { moduleId: string; folderId: string }
-export type AddModuleToFolderResponse = FolderType
+export type AddModuleToFolderResponse = string
 
-export function addModuleToFolder(payload: AddModuleToFolderPayload): Promise<AddModuleToFolderResponse> {
-	return Promise.resolve(mockFolder())
+export async function addModuleToFolder(payload: AddModuleToFolderPayload): Promise<AddModuleToFolderResponse> {
+	const res = await axios.patch<JsonResponse<null>>(
+		`/add-module-to-folder?moduleID=${payload.moduleId}&folderID=${payload.folderId}`,
+	)
+	return res.data.message
 }
 
 export type DeleteModuleFromFolderPayload = AddModuleToFolderPayload
 export type DeleteModuleFromFolderResponse = string
 
-export function deleteModuleFromFolder(
+export async function deleteModuleFromFolder(
 	payload: DeleteModuleFromFolderPayload,
 ): Promise<DeleteModuleFromFolderResponse> {
-	return Promise.resolve("SUCCESS")
+	const res = await axios.patch<JsonResponse<null>>(
+		`/delete-module-from-folder?moduleID=${payload.moduleId}&folderID=${payload.folderId}`,
+	)
+	return res.data.message
 }

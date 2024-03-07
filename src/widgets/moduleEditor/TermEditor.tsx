@@ -54,7 +54,7 @@ export function TermEditorItem(props: TermEditorItemProps) {
 			<Editor
 				options={{
 					content: initialContent,
-					onBlur({ editor }) {
+					onUpdate({ editor }) {
 						onUpdate(editor.getHTML())
 					},
 				}}

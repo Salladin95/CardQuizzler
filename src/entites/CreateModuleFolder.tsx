@@ -20,7 +20,7 @@ export function CreateModuleFolder() {
 	})
 
 	async function handleFolderCreation(folderName: string) {
-		const folder = await createFolder.mutateAsync(folderName)
+		const folder = await createFolder.mutateAsync({ title: folderName })
 		router.push(`/folder/${folder.id}`)
 	}
 

@@ -1,6 +1,7 @@
 import { AxiosError } from "axios"
+import { getDifficultModules, getFolders, getModules } from "~/shared"
 import { HomePageData } from "~/app/models"
-import { mockFolders, mockModules } from "src/shared/lib/mock"
+import { mockModules } from "src/shared/lib/mock"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 
 export type JsonResponse<T> = {
@@ -8,11 +9,13 @@ export type JsonResponse<T> = {
 	data: T
 }
 
-export function getHomePageData(): Promise<HomePageData> {
+export const homeDataKey = "home-page-date-key"
+
+export async function getHomePageData(): Promise<HomePageData> {
+	const folders = await getFolders()
+	const modules = await getModules()
+	const difficultModules = await getDifficultModules()
 	// TODO: REPLACE MOCK LOGIC
-	const folders = mockFolders()
-	const modules = mockModules()
-	const difficultModules = mockModules()
 	const lastActions = mockModules()
 	return Promise.resolve({ folders, modules, lastActions, difficultModules })
 }
@@ -24,8 +27,6 @@ export const useFetchHomePageData = (options?: Omit<UseQueryOptions<HomePageData
 		...options,
 	})
 }
-
-export const homeDataKey = "home-page-date-key"
 
 export * from "./folder"
 export * from "./module"
