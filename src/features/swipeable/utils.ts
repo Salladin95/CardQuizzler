@@ -13,8 +13,8 @@ export function removeArrLastItem<T>(arr: T[]) {
 	return arr.slice(0, getArrLastIndex(arr))
 }
 
-export function updateSwipedTowards<T>(card: SwiperCard<T>, swipedTowards: SwipeDirection) {
-	return { ...card, swipedTowards }
+export function updateAnswer<T>(card: SwiperCard<T>, answer: boolean) {
+	return { ...card, answer }
 }
 /**
  * Calculates the move distance and target rotation based on the current window width.

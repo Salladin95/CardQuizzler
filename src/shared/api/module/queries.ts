@@ -13,7 +13,7 @@ import {
 
 export const modulesQueryKey = "modules-query-key"
 export const moduleQueryKey = "module-query-key"
-export const lastActionsQueryKey = "last-actions-query-key"
+export const recentActionsQueryKey = "last-actions-query-key"
 export const difficultModulesQueryKey = "difficult-modules-query-key"
 export const useFetchModules = (options?: Omit<UseQueryOptions<ModuleType[], AxiosError>, "queryFn">) => {
 	return useQuery({
@@ -48,7 +48,7 @@ export const useFetchLastActions = (
 	options?: Omit<UseQueryOptions<GetRecentOpenedModulesResponse, AxiosError>, "queryFn">,
 ) => {
 	return useQuery({
-		queryKey: [lastActionsQueryKey],
+		queryKey: [recentActionsQueryKey],
 		queryFn: getRecentOpenedModules,
 		...options,
 	})

@@ -9,8 +9,8 @@ export function initializeSwiperData(terms: SwiperCard<TermType>[]): SwiperData<
 	return {
 		progress: 0,
 		swipedCards: [],
-		leftSwipesCounter: 0,
-		rightSwipesCounter: 0,
+		negativeSwipesCounter: 0,
+		positiveSwipesCounter: 0,
 		originalTerms: terms,
 	}
 }

@@ -1,8 +1,10 @@
-import { AxiosError } from "axios"
-import { getDifficultModules, getFolders, getModules } from "~/shared"
-import { HomePageData } from "~/app/models"
+import axios from "~/app/axios"
+import { SwiperCard } from "~/features"
+import { AxiosError, AxiosResponse } from "axios"
 import { mockModules } from "src/shared/lib/mock"
-import { useQuery, UseQueryOptions } from "@tanstack/react-query"
+import { HomePageData, TermType } from "~/app/models"
+import { DeleteModuleResponse, getDifficultModules, getFolders, getModules } from "~/shared"
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "@tanstack/react-query"
 
 export type JsonResponse<T> = {
 	message: string
@@ -20,10 +22,26 @@ export async function getHomePageData(): Promise<HomePageData> {
 	return Promise.resolve({ folders, modules, lastActions, difficultModules })
 }
 
+export type ProcessQuizResultPayload = { id: string; terms: SwiperCard<TermType>[] }
+export type ProcessQuizResultResponse = AxiosResponse<JsonResponse<null>>
+
+export async function processQuizResult({ id, terms }: ProcessQuizResultPayload): Promise<DeleteModuleResponse> {
+	return axios.patch<JsonResponse<null>>(`process-quiz-result?moduleID=${id}`, { terms })
+}
+
 export const useFetchHomePageData = (options?: Omit<UseQueryOptions<HomePageData, AxiosError>, "queryFn">) => {
 	return useQuery({
 		queryKey: [homeDataKey],
 		queryFn: getHomePageData,
+		...options,
+	})
+}
+
+export function useProcessQuizResult(
+	options?: Omit<UseMutationOptions<ProcessQuizResultResponse, AxiosError, ProcessQuizResultPayload>, "mutationFn">,
+) {
+	return useMutation({
+		mutationFn: processQuizResult,
 		...options,
 	})
 }

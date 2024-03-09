@@ -25,7 +25,7 @@ export function QuizConfettiScreen(props: QuizConfettiScreenProps) {
 			<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.4, delay: 3 } }}>
 				<QuizStatistics progressBarDelay={3} positiveAnswers={positiveAnswers} negativeAnswers={negativeAnswers} />
 			</motion.div>
-			{negativeAnswers && (
+			{Boolean(negativeAnswers) && (
 				<MotionButton
 					motionsProps={{
 						...fade.bottom,

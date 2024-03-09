@@ -1,14 +1,16 @@
 "use client"
 import React from "react"
 import { FolderType } from "~/app/models"
-import { CreateEditFolder } from "../entites/CreateEditFolder"
+import { useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
+import { ActionBtn, CreateEditFolder } from "~/entites"
 import {
 	AdjustIcon,
 	Button,
 	EllipsisIcon,
 	folderQueryKey,
 	foldersQueryKey,
+	homeDataKey,
 	Popover,
 	TrashIcon,
 	useDeleteFolderMutation,
@@ -21,19 +23,30 @@ type FolderSettingsMenuProps = {
 
 export function FolderContextMenu(props: FolderSettingsMenuProps) {
 	const { folder } = props
+	const queryClient = useQueryClient()
+	const router = useRouter()
 	const [showPopover, setShowPopover] = React.useState(false)
 
 	function closePopover() {
 		setShowPopover(false)
 	}
 
-	const queryClient = useQueryClient()
+	async function invalidateQueries() {
+		return Promise.all([
+			queryClient.invalidateQueries({ queryKey: [homeDataKey] }),
+			queryClient.invalidateQueries({ queryKey: [foldersQueryKey] }),
+			queryClient.invalidateQueries({ queryKey: [folderQueryKey, folder.id] }),
+		])
+	}
 	const updateFolder = useUpdateFolderMutation({
-		onSuccess: (folder) => queryClient.invalidateQueries({ queryKey: [foldersQueryKey, folderQueryKey, folder.id] }),
+		onSuccess: invalidateQueries,
 	})
 
 	const deleteFolder = useDeleteFolderMutation({
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: [foldersQueryKey, folderQueryKey, folder.id] }),
+		onSuccess: async () => {
+			await invalidateQueries()
+			router.push("/")
+		},
 	})
 
 	function handleUpdateFolder(folderName: string) {
@@ -62,23 +75,29 @@ export function FolderContextMenu(props: FolderSettingsMenuProps) {
 		>
 			<CreateEditFolder
 				trigger={
-					<Button className={"h4"}>
+					<ActionBtn loading={updateFolder.isPending} className={"h4"}>
 						<span className={"mr-2"}>
 							<AdjustIcon />
 						</span>
 						<span>Редактировать</span>
-					</Button>
+					</ActionBtn>
 				}
 				onSubmit={handleUpdateFolder}
 				folder={folder}
 				title={"Изменить папку"}
 			/>
-			<Button onClick={handleDeleteFolder} className={"h4 justify-start"}>
+			<ActionBtn
+				loading={deleteFolder.isPending}
+				disabled={deleteFolder.isSuccess}
+				onClick={handleDeleteFolder}
+				className={"h4 justify-start"}
+				variant={"danger"}
+			>
 				<span className={"mr-2"}>
 					<TrashIcon />
 				</span>
 				<span>Удалить</span>
-			</Button>
+			</ActionBtn>
 		</Popover>
 	)
 }

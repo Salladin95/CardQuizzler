@@ -50,10 +50,6 @@ export function ModuleEditor(props: ModuleEditorProps) {
 
 	useAddClassToTag("hide-scrollbar", "body")
 
-	React.useEffect(() => {
-		console.log(terms)
-	}, [terms])
-
 	return (
 		<section className={"overflow-hidden p-1"}>
 			<div className="flex justify-between mb-4">

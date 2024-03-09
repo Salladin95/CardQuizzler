@@ -49,7 +49,7 @@ export function ModuleContextMenu(props: ModuleProps) {
 			onOpenChange={setShowPopover}
 			className={"min-w-[10rem] flex-center flex-col gap-y-2"}
 		>
-			<Button className={"justify-start"} asChild>
+			<Button disabled={!props?.terms.length} className={"justify-start"} asChild>
 				<Link href={`/module/${id}`}>
 					<span className={"mr-2"}>
 						<ArrowsPointingOutIcon />

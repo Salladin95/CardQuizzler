@@ -5,21 +5,21 @@ import { TermType } from "~/app/models"
 import { ModuleEditor } from "~/widgets"
 import { useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
-import { homeDataKey, Loader, modulesQueryKey, useFetchModule, useUpdateModuleMutation } from "~/shared"
+import { homeDataKey, Loader, moduleQueryKey, modulesQueryKey, useFetchModule, useUpdateModuleMutation } from "~/shared"
 
 export function EditModulePage(props: WithId) {
 	const { id } = props
 	const router = useRouter()
 	const queryClient = useQueryClient()
 
-	const { data: module, isPending, refetch } = useFetchModule(props.id)
+	const { data: module, isPending } = useFetchModule(props.id)
 
 	const updateModule = useUpdateModuleMutation({
 		onSuccess: async () => {
-			// router.push("/")
-			queryClient.invalidateQueries({ queryKey: [modulesQueryKey] })
+			router.push("/")
 			queryClient.invalidateQueries({ queryKey: [homeDataKey] })
-			refetch()
+			queryClient.invalidateQueries({ queryKey: [modulesQueryKey] })
+			queryClient.invalidateQueries({ queryKey: [moduleQueryKey, id] })
 		},
 	})
 
@@ -35,7 +35,7 @@ export function EditModulePage(props: WithId) {
 	switch (true) {
 		case isPending:
 			return (
-				<main className={"bg-gray-100 flex-center"}>
+				<main className={"bg-gray-50 flex-center"}>
 					<Loader className={"flex-none"} />
 				</main>
 			)

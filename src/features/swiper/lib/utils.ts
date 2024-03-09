@@ -1,9 +1,9 @@
 import { SwiperCard } from "~/features/swiper"
 
 export function getNegativeAnswers<DataT>(cards: SwiperCard<DataT>[]) {
-	return cards.filter((card) => card.swipedTowards === "left")
+	return cards.filter((card) => !card.answer)
 }
 
 export function getPositiveAnswers<DataT>(cards: SwiperCard<DataT>[]) {
-	return cards.filter((card) => card.swipedTowards === "right")
+	return cards.filter((card) => card.answer)
 }

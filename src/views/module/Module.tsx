@@ -3,22 +3,66 @@ import React from "react"
 import { WithId } from "~/app/types"
 import { QuizConfettiScreen } from "~/widgets"
 import { ModuleType, TermType } from "~/app/models"
+import { useQueryClient } from "@tanstack/react-query"
 import { cleanSwipedCards, initializeSwiperData } from "./utils"
-import { FlatProgressBar, LoadingDataRenderer, useFetchModule } from "~/shared"
 import { getNegativeAnswers, getPositiveAnswers, Swiper, SwiperData } from "~/features/swiper"
+import {
+	difficultModulesQueryKey,
+	FlatProgressBar,
+	LoadingDataRenderer,
+	recentActionsQueryKey,
+	useFetchModule,
+	useProcessQuizResult,
+} from "~/shared"
 
 function Module(props: ModuleType) {
 	const { terms } = props
+	const queryClient = useQueryClient()
+
+	const processQuiz = useProcessQuizResult()
 	const [swiperState, setSwiperState] = React.useState<SwiperData<TermType>>(initializeSwiperData(terms))
 
 	const negativeAnswers = getNegativeAnswers(swiperState.swipedCards)
 	const positiveAnswers = getPositiveAnswers(swiperState.swipedCards)
 
 	React.useEffect(() => {
-		if (swiperState.originalTerms.length === negativeAnswers.length + positiveAnswers.length) {
-			console.log("FINISH")
+		// eslint-disable-next-line no-debugger
+		// debugger
+		if (
+			!processQuiz.submittedAt &&
+			swiperState.originalTerms?.length === negativeAnswers?.length + positiveAnswers?.length
+		) {
+			// eslint-disable-next-line no-debugger
+			// debugger
+			processQuiz.mutate(
+				{ id: props.id, terms: swiperState.swipedCards },
+				{
+					onSuccess: () => {
+						queryClient.invalidateQueries({ queryKey: [recentActionsQueryKey] })
+						queryClient.invalidateQueries({ queryKey: [difficultModulesQueryKey] })
+					},
+				},
+			)
 		}
-	}, [negativeAnswers.length, positiveAnswers.length, swiperState.originalTerms.length])
+	}, [
+		negativeAnswers,
+		positiveAnswers,
+		processQuiz,
+		props.id,
+		queryClient,
+		swiperState.originalTerms,
+		swiperState.swipedCards,
+	])
+
+	function handleRestart() {
+		setSwiperState(initializeSwiperData([...terms]))
+		processQuiz.reset()
+	}
+
+	function handleContinue() {
+		setSwiperState(initializeSwiperData(cleanSwipedCards(negativeAnswers)))
+		processQuiz.reset()
+	}
 
 	return (
 		<main className={"flex flex-col relative overflow-hidden"}>
@@ -34,8 +78,8 @@ function Module(props: ModuleType) {
 				<QuizConfettiScreen
 					positiveAnswers={positiveAnswers.length}
 					negativeAnswers={negativeAnswers.length}
-					onContinue={() => setSwiperState(initializeSwiperData(cleanSwipedCards(negativeAnswers)))}
-					onRestart={() => setSwiperState(initializeSwiperData([...terms]))}
+					onContinue={handleContinue}
+					onRestart={handleRestart}
 				/>
 			)}
 		</main>

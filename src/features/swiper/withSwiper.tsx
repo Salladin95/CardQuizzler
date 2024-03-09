@@ -4,20 +4,12 @@ import { calculateProgress, cn } from "~/shared/lib"
 import { Button } from "~/shared"
 import { PropsWithClassName, WithId } from "~/app/types"
 import { TurnLeftIcon } from "~/shared/ui/icons/TurnLeftIcon"
-import {
-	getArrLastIndex,
-	getArrLastItem,
-	removeArrLastItem,
-	Swipeable,
-	SwipedCard,
-	SwipeDirection,
-	updateSwipedTowards,
-} from "../swipeable/"
+import { getArrLastIndex, getArrLastItem, removeArrLastItem, Swipeable, SwipedCard, updateAnswer } from "../swipeable/"
 
 export type SwiperCard<T> = T & SwipedCard & WithId
 export type SwiperData<T> = {
-	rightSwipesCounter: number
-	leftSwipesCounter: number
+	positiveSwipesCounter: number
+	negativeSwipesCounter: number
 	swipedCards: SwiperCard<T>[]
 	originalTerms: SwiperCard<T>[]
 	progress: number
@@ -32,13 +24,13 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 		const { className, onUpdate, swiperData } = props
 		const [currentCards, setCurrentCards] = React.useState<SwiperCard<DataType>[]>(swiperData.originalTerms)
 
-		const handleSwipe = (direction: SwipeDirection) => {
+		const handleSwipe = (answer: boolean) => {
 			// TODO SHOULD THE FIRST ELEMENT
-			const swipedSlide = updateSwipedTowards(currentCards[getArrLastIndex(currentCards)], direction)
+			const swipedSlide = updateAnswer(currentCards[getArrLastIndex(currentCards)], answer)
 			let updatedSwiperData = {
 				...swiperData,
 				progress: calculateProgress(
-					swiperData.rightSwipesCounter + swiperData.leftSwipesCounter + 1,
+					swiperData.positiveSwipesCounter + swiperData.negativeSwipesCounter + 1,
 					swiperData.originalTerms.length,
 				),
 				swipedCards: [...swiperData.swipedCards, swipedSlide],
@@ -46,45 +38,44 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 			// TODO SHOULD THE FIRST ELEMENT
 			setCurrentCards(removeArrLastItem(currentCards))
 
-			updatedSwiperData =
-				direction === "left"
-					? {
-							...updatedSwiperData,
-							leftSwipesCounter: Math.min(swiperData.originalTerms.length, swiperData.leftSwipesCounter + 1),
-					  }
-					: {
-							...updatedSwiperData,
-							rightSwipesCounter: Math.min(swiperData.originalTerms.length, swiperData.rightSwipesCounter + 1),
-					  }
+			updatedSwiperData = !answer
+				? {
+						...updatedSwiperData,
+						negativeSwipesCounter: Math.min(swiperData.originalTerms.length, swiperData.negativeSwipesCounter + 1),
+				  }
+				: {
+						...updatedSwiperData,
+						positiveSwipesCounter: Math.min(swiperData.originalTerms.length, swiperData.positiveSwipesCounter + 1),
+				  }
 
 			onUpdate(updatedSwiperData)
 		}
 
 		const handleBack = () => {
 			const previousCard = getArrLastItem(swiperData.swipedCards)
-			switch (previousCard.swipedTowards) {
-				case "left":
+			switch (previousCard.answer) {
+				case false:
 					onUpdate({
 						...swiperData,
 						progress: calculateProgress(
-							swiperData.rightSwipesCounter + swiperData.leftSwipesCounter - 1,
+							swiperData.positiveSwipesCounter + swiperData.negativeSwipesCounter - 1,
 							swiperData.originalTerms.length,
 						),
-						leftSwipesCounter: Math.max(0, swiperData.leftSwipesCounter - 1),
+						negativeSwipesCounter: Math.max(0, swiperData.negativeSwipesCounter - 1),
 						swipedCards: removeArrLastItem(swiperData.swipedCards),
 					})
 					// TODO SHOULD BE LIKE THAT
 					// setCurrentCards([previousCard, ...currentCards])
 					setCurrentCards([...currentCards, previousCard])
 					break
-				case "right":
+				case true:
 					onUpdate({
 						...swiperData,
 						progress: calculateProgress(
-							swiperData.rightSwipesCounter + swiperData.leftSwipesCounter - 1,
+							swiperData.positiveSwipesCounter + swiperData.negativeSwipesCounter - 1,
 							swiperData.originalTerms.length,
 						),
-						rightSwipesCounter: Math.max(0, swiperData.rightSwipesCounter - 1),
+						positiveSwipesCounter: Math.max(0, swiperData.positiveSwipesCounter - 1),
 						swipedCards: removeArrLastItem(swiperData.swipedCards),
 					})
 					// TODO SHOULD BE LIKE THAT
@@ -95,7 +86,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 		}
 
 		const cleanSwipedStateOnAnimationEnd = () => {
-			const updatedCard = { ...getArrLastItem(currentCards), swipedTowards: null }
+			const updatedCard = { ...getArrLastItem(currentCards), answer: null }
 			const updateCurrentCards = [...removeArrLastItem(currentCards), updatedCard]
 			setCurrentCards(updateCurrentCards)
 		}
@@ -124,7 +115,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 							// TODO SHOULD BE THE FIRST ELEMENT
 							isTheTopCard={index === getArrLastIndex(currentCards)}
 							isAnimating={isAnimating}
-							swipedTowards={card.swipedTowards}
+							answer={card.answer}
 						>
 							<Component
 								{...card}

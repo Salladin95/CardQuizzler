@@ -1,4 +1,5 @@
 import React from "react"
+import { Header } from "~/widgets"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import { Providers } from "src/app/providers"
@@ -54,7 +55,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
 			className={`${youthTouch.variable} ${youthPower.variable} ${youthToday.variable} ${inter.variable} ${notoSans.variable}`}
 		>
 			<body>
-				<Providers>{children}</Providers>
+				<Providers>
+					<div className={"h-[2px] bg-primary"} />
+					{children}
+				</Providers>
 			</body>
 		</html>
 	)

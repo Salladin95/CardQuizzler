@@ -16,7 +16,7 @@ const maxRotateAngle = 25
 
 export type SwipedCard = {
 	// We should add return effect, if it was swiped before
-	swipedTowards?: SwipeDirection
+	answer?: boolean
 }
 
 export const redGradient = "linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)"
@@ -25,7 +25,7 @@ export const greenGradient = "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3
 const swiperBackgroundColors: [string, string, string] = [redGradient, purpleGradient, greenGradient]
 export type SwipeableProps = SwipedCard & {
 	children?: React.ReactNode
-	onSwipe: (direction: SwipeDirection) => void
+	onSwipe: (answer: boolean) => void
 	isAnimating?: boolean
 	onAnimationStart?: () => void
 	onAnimationComplete?: () => void
@@ -51,7 +51,7 @@ export type SwipeableProps = SwipedCard & {
 
 export function Swipeable(props: SwipeableProps) {
 	const {
-		swipedTowards,
+		answer,
 		onSwipe,
 		onAnimationStart,
 		onAnimationComplete,
@@ -96,12 +96,12 @@ export function Swipeable(props: SwipeableProps) {
 		switch (true) {
 			case rotate.get() >= maxRotateAngle:
 				await rotateAndMoveSmoothly(moveDistance, targetRotation, controls)
-				onSwipe("right")
+				onSwipe(true)
 				break
 
 			case rotate.get() <= -maxRotateAngle:
 				await rotateAndMoveSmoothly(-moveDistance, -targetRotation, controls)
-				onSwipe("left")
+				onSwipe(false)
 				break
 
 			default:
@@ -113,19 +113,19 @@ export function Swipeable(props: SwipeableProps) {
 
 	React.useEffect(() => {
 		// animates return
-		if (!swipedTowards) return
+		if (answer === undefined) return
 		;(async () => {
 			const { moveDistance, targetRotation } = calculateMoveParameters()
-			switch (swipedTowards) {
-				case "left":
+			switch (answer) {
+				case false:
 					await animateOntoScreen(controls, -moveDistance, -targetRotation)
 					break
-				case "right":
+				case true:
 					await animateOntoScreen(controls, moveDistance, targetRotation)
 					break
 			}
 		})()
-	}, [swipedTowards, controls])
+	}, [answer, controls])
 
 	function handleOnClick(_e: React.SyntheticEvent) {
 		// When we try to click the card that is not on its original position we return it back
@@ -155,7 +155,7 @@ export function Swipeable(props: SwipeableProps) {
 					rotate,
 					x,
 					// when we are animating the return animation, we want to apply the default color
-					background: !swipedTowards ? background : backgroundColors[1],
+					background: !answer ? background : backgroundColors[1],
 				}}
 				animate={controls}
 				dragConstraints={{ left: 0, right: 0 }}

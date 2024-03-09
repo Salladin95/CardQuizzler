@@ -98,7 +98,7 @@ export function SignInTab(props: SignInProps) {
 				</FormFieldWithLabel>
 				<ActionBtn
 					loading={signIn.isPending}
-					disabled={Boolean(Object.keys(errors).length)}
+					disabled={Boolean(Object.keys(errors).length) || signIn.isSuccess}
 					type={"submit"}
 					className={"max-w-[20rem] mx-auto"}
 				>
