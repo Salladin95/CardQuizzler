@@ -1,7 +1,6 @@
 import React from "react"
-import { Header } from "~/widgets"
-import { fullDateFormatter } from "~/shared/lib"
 import { TextWithLabel } from "~/entites"
+import { fullDateFormatter } from "~/shared/lib"
 import { Profile as ProfileType } from "~/app/models"
 import { ResetEmail, ResetPassword, UpdatePassword } from "~/features"
 import { RequestEmailVerification } from "~/features/requestEmailVerification"
@@ -10,7 +9,6 @@ import { Button, LoadingDataRenderer, RequestEmailVerificationCtxProvider, usePr
 function Profile(profile: ProfileType) {
 	return (
 		<RequestEmailVerificationCtxProvider>
-			<Header />
 			<main className={"container text-primary"}>
 				<div>
 					<h1 className={"h3 separator mb-8"}>My profile</h1>

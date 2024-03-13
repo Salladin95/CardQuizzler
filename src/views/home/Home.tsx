@@ -4,8 +4,8 @@ import Link from "next/link"
 import { faker } from "@faker-js/faker"
 import { HomePageData } from "~/app/models"
 import { CreateModuleFolder } from "~/entites"
-import { FolderCarousel, ModuleCarousel } from "~/widgets"
 import { Button, LoadingDataRenderer, useFetchHomePageData } from "~/shared"
+import { FolderCarousel, ModulesCarousel, DifficultModulesCarousel } from "~/widgets"
 
 export function Home(props: HomePageData) {
 	const { lastActions, modules, difficultModules, folders } = props
@@ -14,27 +14,27 @@ export function Home(props: HomePageData) {
 		<main className={"container overflow-hidden"}>
 			<section className="mb-4">
 				<h1>Последние действия</h1>
-				<ModuleCarousel data={lastActions} className={"h-[11rem]"} />
+				<ModulesCarousel data={lastActions} className={"h-[11rem]"} />
 			</section>
 
-			{Boolean(difficultModules.length) && (
+			{Boolean(difficultModules?.length) && (
 				<section className="">
 					<h3>Сложные модули</h3>
-					<ModuleCarousel data={difficultModules} className={"h-[11rem]"} />
+					<DifficultModulesCarousel data={difficultModules} className={"h-[11rem]"} />
 				</section>
 			)}
 
-			{Boolean(folders.length) && (
+			{Boolean(folders?.length) && (
 				<section className="mb-4">
 					<h2>Мои папки</h2>
 					<FolderCarousel data={folders} className={"h-[9rem]"} />
 				</section>
 			)}
 
-			{Boolean(modules.length) && (
+			{Boolean(modules?.length) && (
 				<section className="mb-12">
 					<h3>Мои модули</h3>
-					<ModuleCarousel data={modules} className={"h-[11rem]"} />
+					<ModulesCarousel data={modules} className={"h-[11rem]"} />
 				</section>
 			)}
 

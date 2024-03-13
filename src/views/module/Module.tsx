@@ -11,6 +11,7 @@ import {
 	FlatProgressBar,
 	LoadingDataRenderer,
 	recentActionsQueryKey,
+	useFetchDifficultModules,
 	useFetchModule,
 	useProcessQuizResult,
 } from "~/shared"
@@ -26,14 +27,10 @@ function Module(props: ModuleType) {
 	const positiveAnswers = getPositiveAnswers(swiperState.swipedCards)
 
 	React.useEffect(() => {
-		// eslint-disable-next-line no-debugger
-		// debugger
 		if (
 			!processQuiz.submittedAt &&
 			swiperState.originalTerms?.length === negativeAnswers?.length + positiveAnswers?.length
 		) {
-			// eslint-disable-next-line no-debugger
-			// debugger
 			processQuiz.mutate(
 				{ id: props.id, terms: swiperState.swipedCards },
 				{
@@ -89,4 +86,17 @@ function Module(props: ModuleType) {
 export function ModulePage(props: WithId) {
 	const { data, isLoading } = useFetchModule(props.id)
 	return LoadingDataRenderer<ModuleType>({ Comp: Module, data, isLoading })
+}
+
+export function DifficultModulePage(props: { title: string }) {
+	const { data, isLoading } = useFetchDifficultModules()
+	const [module, setModule] = React.useState<ModuleType | null>(null)
+
+	React.useEffect(() => {
+		if (!isLoading && data) {
+			const targetModule = data.find((m) => m.title === props.title)
+			targetModule && setModule(targetModule)
+		}
+	}, [data, isLoading, props.title])
+	return LoadingDataRenderer<ModuleType>({ Comp: Module, data: module, isLoading })
 }
