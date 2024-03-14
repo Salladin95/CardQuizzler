@@ -81,7 +81,7 @@ export function UpdatePassword(props: UpdatePasswordProps) {
 	return (
 		<div className={"flex items-center justify-between"}>
 			<Dialog
-				className={"p-8 max-w-428"}
+				className={"p-8 w-[90%]"}
 				open={isOpen}
 				onOpenChange={setIsOpen}
 				onOverlayClick={reset}

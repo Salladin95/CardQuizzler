@@ -94,7 +94,7 @@ export function ResetPassword(props: ResetPasswordProps) {
 	return (
 		<div className={"flex items-center justify-between"}>
 			<Dialog
-				className={"p-8 max-w-428 640:w-428 py-12"}
+				className={"p-8 w-[90%] py-12"}
 				open={isOpen}
 				onOpenChange={setIsOpen}
 				onOverlayClick={() => {

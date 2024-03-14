@@ -1,10 +1,20 @@
 "use client"
 import React from "react"
+import { useAnimate } from "framer-motion"
 import { calculateProgress, cn } from "~/shared/lib"
-import { Button } from "~/shared"
+import { ArrowLeft, ArrowRight, Button } from "~/shared"
 import { PropsWithClassName, WithId } from "~/app/types"
 import { TurnLeftIcon } from "~/shared/ui/icons/TurnLeftIcon"
-import { getArrLastIndex, getArrLastItem, removeArrLastItem, Swipeable, SwipedCard, updateAnswer } from "../swipeable/"
+// TODO: SHOULDN'T USE MODULES FROM THE SAME LEVEL
+import {
+	calculateMoveParameters,
+	getArrLastIndex,
+	getArrLastItem,
+	removeArrLastItem,
+	Swipeable,
+	SwipedCard,
+	updateAnswer,
+} from "../swipeable/"
 
 export type SwiperCard<T> = T & SwipedCard & WithId
 export type SwiperData<T> = {
@@ -102,9 +112,31 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 			setCurrentCards(swiperData.originalTerms)
 		}, [swiperData.originalTerms])
 
+		const [scope, animate] = useAnimate()
+
+		async function swipeManually(answer: boolean) {
+			const { moveDistance, targetRotation } = calculateMoveParameters()
+			const elements = scope.current.querySelectorAll(".swipeable")
+			// TODO: SHOULD BE THE FIRST ELEMENT
+			const target = elements[elements.length - 1]
+			if (!target) {
+				return
+			}
+			switch (answer) {
+				case true:
+					// TODO: EXTRACT TO A FUNCTION
+					await animate(target, { rotate: targetRotation, x: moveDistance }, { duration: 0.5 })
+					return handleSwipe(answer)
+				default:
+					// TODO: EXTRACT TO A FUNCTION
+					await animate(target, { rotate: -targetRotation, x: -moveDistance }, { duration: 0.5 })
+					return handleSwipe(answer)
+			}
+		}
+
 		return (
-			<section className={"container flex-center"}>
-				<div className={cn("w-360 h-428 640:w-428 768:w-640 768:h-640 1024:w-768 relative ", className)}>
+			<section className={"container flex-center mt-12 428:mt-0"}>
+				<div ref={scope} className={cn("w-360 h-428 640:w-428 768:w-640 768:h-640 1024:w-768 relative ", className)}>
 					{currentCards?.map((card, index) => (
 						<Swipeable
 							className={"absolute rounded-12px"}
@@ -124,16 +156,24 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 							/>
 						</Swipeable>
 					))}
-					<Button
-						variant={"none"}
-						disabled={swiperData.originalTerms.length === currentCards.length || isAnimating}
-						className={cn("absolute-x-center -bottom-[15%] 768:-bottom-[10%] text-black cursor-pointer w-min", {
-							"opacity-30": swiperData.originalTerms.length === currentCards.length || isAnimating,
-						})}
-						onClick={handleBack}
-					>
-						<TurnLeftIcon />
-					</Button>
+					<div className={"w-full px-4 absolute -bottom-[15%] 768:-bottom-[10%] flex justify-between"}>
+						<Button onClick={() => swipeManually(false)} variant={"none"} className={"w-min"}>
+							<ArrowLeft className={"text-primary hover:text-green transition-colors"} />
+						</Button>
+						<Button
+							variant={"none"}
+							disabled={swiperData.originalTerms.length === currentCards.length || isAnimating}
+							className={cn("absolute-x-center  text-black cursor-pointer w-min", {
+								"opacity-30": swiperData.originalTerms.length === currentCards.length || isAnimating,
+							})}
+							onClick={handleBack}
+						>
+							<TurnLeftIcon className={"text-primary"} />
+						</Button>
+						<Button onClick={() => swipeManually(true)} variant={"none"} className={"w-min"}>
+							<ArrowRight className={"text-primary hover:text-green transition-colors"} />
+						</Button>
+					</div>
 				</div>
 			</section>
 		)

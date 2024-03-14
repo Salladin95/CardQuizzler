@@ -16,7 +16,9 @@ import {
 	useProcessQuizResult,
 } from "~/shared"
 
-function Module(props: ModuleType) {
+type ModuleProps = ModuleType & { moduleID?: string }
+
+function Module(props: ModuleProps) {
 	const { terms } = props
 	const queryClient = useQueryClient()
 
@@ -32,7 +34,7 @@ function Module(props: ModuleType) {
 			swiperState.originalTerms?.length === negativeAnswers?.length + positiveAnswers?.length
 		) {
 			processQuiz.mutate(
-				{ id: props.id, terms: swiperState.swipedCards },
+				{ terms: swiperState.swipedCards, moduleID: props.moduleID },
 				{
 					onSuccess: () => {
 						queryClient.invalidateQueries({ queryKey: [recentActionsQueryKey] })
@@ -65,11 +67,7 @@ function Module(props: ModuleType) {
 		<main className={"flex flex-col relative overflow-hidden"}>
 			<FlatProgressBar progress={swiperState.progress} className={"absolute inset-0 w-full"} />
 			{swiperState.progress !== 100 && (
-				<Swiper
-					swiperData={swiperState}
-					className={"mt-12 container"}
-					onUpdate={(swiperData) => setSwiperState(swiperData)}
-				/>
+				<Swiper swiperData={swiperState} className={"mt-12"} onUpdate={(swiperData) => setSwiperState(swiperData)} />
 			)}
 			{swiperState.progress === 100 && (
 				<QuizConfettiScreen
@@ -85,7 +83,7 @@ function Module(props: ModuleType) {
 
 export function ModulePage(props: WithId) {
 	const { data, isLoading } = useFetchModule(props.id)
-	return LoadingDataRenderer<ModuleType>({ Comp: Module, data, isLoading })
+	return LoadingDataRenderer<ModuleProps>({ Comp: Module, data, isLoading, moduleID: props.id })
 }
 
 export function DifficultModulePage(props: { title: string }) {

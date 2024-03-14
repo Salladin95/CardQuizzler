@@ -1,9 +1,9 @@
 "use client"
 import React from "react"
 import { PropsWithClassName, WithId } from "~/app/types"
+import { Options, Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
 import { CarouselControllers } from "~/features/splideCarousel/CarouselControllers"
 import { getSplideDefaultOptions } from "~/features/splideCarousel/lib/getSplideDefaultOptions"
-import { Options, Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
 
 import "@splidejs/react-splide/css/core"
 

@@ -1,5 +1,4 @@
 import { AxiosError } from "axios"
-import { ModuleType } from "~/app/models"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import {
 	getDifficultModules,
@@ -7,18 +6,17 @@ import {
 	getModule,
 	GetModuleResponse,
 	getModules,
-	getRecentOpenedModules,
-	GetRecentOpenedModulesResponse,
+	GetModulesResponse,
 } from "./requests"
 
 export const modulesQueryKey = "modules-query-key"
 export const moduleQueryKey = "module-query-key"
 export const recentActionsQueryKey = "last-actions-query-key"
 export const difficultModulesQueryKey = "difficult-modules-query-key"
-export const useFetchModules = (options?: Omit<UseQueryOptions<ModuleType[], AxiosError>, "queryFn">) => {
+export const useFetchModules = (options?: Omit<UseQueryOptions<GetModulesResponse, AxiosError>, "queryFn">) => {
 	return useQuery({
 		queryKey: [modulesQueryKey],
-		queryFn: getModules,
+		queryFn: () => getModules(),
 		...options,
 	})
 }
@@ -44,12 +42,10 @@ export const useFetchDifficultModules = (
 	})
 }
 
-export const useFetchLastActions = (
-	options?: Omit<UseQueryOptions<GetRecentOpenedModulesResponse, AxiosError>, "queryFn">,
-) => {
+export const useFetchLastActions = (options?: Omit<UseQueryOptions<GetModulesResponse, AxiosError>, "queryFn">) => {
 	return useQuery({
 		queryKey: [recentActionsQueryKey],
-		queryFn: getRecentOpenedModules,
+		queryFn: () => getModules({ sortBy: "updated_at-" }),
 		...options,
 	})
 }

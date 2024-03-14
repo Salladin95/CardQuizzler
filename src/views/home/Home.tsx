@@ -1,11 +1,10 @@
 "use client"
 import React from "react"
 import Link from "next/link"
-import { faker } from "@faker-js/faker"
 import { HomePageData } from "~/app/models"
 import { CreateModuleFolder } from "~/entites"
-import { Button, LoadingDataRenderer, useFetchHomePageData } from "~/shared"
-import { FolderCarousel, ModulesCarousel, DifficultModulesCarousel } from "~/widgets"
+import { Button, getRandomArrEl, LoadingDataRenderer, useFetchHomePageData } from "~/shared"
+import { DifficultModulesCarousel, FolderCarousel, ModulesCarousel } from "~/widgets"
 
 export function Home(props: HomePageData) {
 	const { lastActions, modules, difficultModules, folders } = props
@@ -40,9 +39,8 @@ export function Home(props: HomePageData) {
 
 			<div className={"flex gap-x-4"}>
 				<CreateModuleFolder />
-				<Button className={"mb-4"}>
-					{/*TODO: ADD LOGIC FOR EXTRACTING ID OF RANDOM MODULE*/}
-					<Link href={`/module/${faker.string.uuid()}`}>Открыть рандомный модуль</Link>
+				<Button disabled={!modules.length} className={"mb-4"}>
+					<Link href={`/module/${getRandomArrEl(modules)?.id}`}>Рандомный модуль</Link>
 				</Button>
 			</div>
 		</main>

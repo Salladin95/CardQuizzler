@@ -1,5 +1,5 @@
 export * from "./Header"
+export * from "./moduleEditor"
 export * from "./FolderCarousel"
 export * from "./ModuleCarousel"
-export * from "./moduleEditor"
 export * from "./QuizConfettiScreen"

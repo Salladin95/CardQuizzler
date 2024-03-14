@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight } from "~/features/splideCarousel/icons"
+import { ArrowLeft, ArrowRight } from "~/shared"
 
 export function CarouselControllers() {
 	return (

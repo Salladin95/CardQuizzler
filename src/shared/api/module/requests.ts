@@ -1,11 +1,12 @@
 import axios from "~/app/axios"
-import { JsonResponse } from "~/shared"
+import { JsonResponse, SortOptions } from "~/shared"
 import { ModuleType, TermType } from "~/app/models"
-import { mockModules } from "src/shared/lib/mock"
 import { AxiosResponse } from "axios"
 
 export type GetModulePayload = string
 export type GetModuleResponse = ModuleType
+
+const modulesDefaultLimit = 25
 
 export async function getModule(id: GetModulePayload): Promise<GetModuleResponse> {
 	const res = await axios.get<JsonResponse<GetModuleResponse>>(`module/${id}`)
@@ -14,8 +15,15 @@ export async function getModule(id: GetModulePayload): Promise<GetModuleResponse
 
 export type GetModulesResponse = ModuleType[]
 
-export async function getModules(): Promise<GetModulesResponse> {
-	const res = await axios.get<JsonResponse<GetModulesResponse>>("module")
+export async function getModules(sortOptions?: SortOptions): Promise<GetModulesResponse> {
+	const parsedOptions = {
+		limit: sortOptions?.limit || modulesDefaultLimit,
+		page: sortOptions?.page || 1,
+		sortBy: sortOptions?.sortBy || "created_at-",
+	}
+	const res = await axios.get<JsonResponse<GetModulesResponse>>(
+		`module?page=${parsedOptions.page}&limit=${parsedOptions.limit}&sortBy=${parsedOptions.sortBy}`,
+	)
 	return res.data.data
 }
 
@@ -24,13 +32,6 @@ export type GetDifficultModulesResponse = ModuleType[]
 export async function getDifficultModules(): Promise<GetDifficultModulesResponse> {
 	const res = await axios.get<JsonResponse<GetModulesResponse>>("difficult-modules")
 	return res.data.data
-}
-
-export type GetRecentOpenedModulesResponse = ModuleType[]
-
-export async function getRecentOpenedModules(): Promise<GetDifficultModulesResponse> {
-	// TODO: REPLACE MOCK LOGIC
-	return Promise.resolve(mockModules())
 }
 
 export type CreateModulePayload = Omit<ModuleType, "id">

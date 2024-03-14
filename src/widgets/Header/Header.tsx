@@ -1,21 +1,13 @@
 "use client"
 import { cn } from "~/shared/lib"
 import Link from "next/link"
-import { signOut } from "./api"
 import { PropsWithClassName } from "~/app/types"
-import { useQueryClient } from "@tanstack/react-query"
-import { Button, Logo, profileQueryKey, useProfile } from "~/shared"
+import { Button, Logo, useProfile, UserIcon } from "~/shared"
 
 type HeaderProps = { style?: React.CSSProperties } & PropsWithClassName
 
 export function Header(props: HeaderProps) {
-	const queryClient = useQueryClient()
 	const { data: profile } = useProfile({ staleTime: 0 })
-
-	async function handleSignOut() {
-		await signOut()
-		queryClient.resetQueries({ queryKey: [profileQueryKey], exact: true })
-	}
 
 	return (
 		<header
@@ -26,11 +18,11 @@ export function Header(props: HeaderProps) {
 			{profile ? (
 				<div className={"flex gap-x-4"}>
 					<Link href={"/profile"}>
-						<Button variant={"secondary"}>Личный кабинет</Button>
+						<Button variant={"secondary"}>
+							<UserIcon className={""} />
+							<span className={"hidden 428:block ml-2"}>Личный кабинет</span>
+						</Button>
 					</Link>
-					<Button className={"w-min"} onClick={handleSignOut} variant={"secondary"}>
-						Выйти
-					</Button>
 				</div>
 			) : (
 				<Link href={"/auth"}>

@@ -4,9 +4,23 @@ import { fullDateFormatter } from "~/shared/lib"
 import { Profile as ProfileType } from "~/app/models"
 import { ResetEmail, ResetPassword, UpdatePassword } from "~/features"
 import { RequestEmailVerification } from "~/features/requestEmailVerification"
-import { Button, LoadingDataRenderer, RequestEmailVerificationCtxProvider, useProtectedProfile } from "~/shared"
+import {
+	Button,
+	LoadingDataRenderer,
+	profileQueryKey,
+	RequestEmailVerificationCtxProvider,
+	signOut,
+	useProtectedProfile,
+} from "~/shared"
+import { useQueryClient } from "@tanstack/react-query"
 
 function Profile(profile: ProfileType) {
+	const queryClient = useQueryClient()
+
+	async function handleSignOut() {
+		await signOut()
+		queryClient.resetQueries({ queryKey: [profileQueryKey], exact: true })
+	}
 	return (
 		<RequestEmailVerificationCtxProvider>
 			<main className={"container text-primary"}>
@@ -19,22 +33,20 @@ function Profile(profile: ProfileType) {
 
 					<TextWithLabel label={"Name"} title={profile.name} />
 					<TextWithLabel label={"Birthday"} title={profile.birthday} />
+					<TextWithLabel className={"mb-4"} label={"Here since"} title={fullDateFormatter(profile.createdAt)} />
 					<ResetEmail currentEmail={profile.email} id={profile.id} />
-					<div className={"flex justify-between"}>
-						<p>Password</p>
-						<div className={"flex gap-x-4"}>
-							<ResetPassword
-								requestEmailVerification={<RequestEmailVerification />}
-								trigger={
-									<Button variant={"secondary"} className={"max-w-[12rem]"}>
-										Reset password
-									</Button>
-								}
-							/>
-							<UpdatePassword profile={profile} />
-						</div>
-					</div>
-					<TextWithLabel className={"mb-0"} label={"Here since"} title={fullDateFormatter(profile.createdAt)} />
+					<ResetPassword
+						requestEmailVerification={<RequestEmailVerification />}
+						trigger={
+							<Button variant={"secondary"} className={"mb-2 max-w-[12rem]"}>
+								Reset password
+							</Button>
+						}
+					/>
+					<UpdatePassword profile={profile} />
+					<Button className={"mt-8 w-min"} onClick={handleSignOut}>
+						Выйти
+					</Button>
 				</div>
 			</main>
 		</RequestEmailVerificationCtxProvider>

@@ -59,3 +59,12 @@ export function checkEmailFormat(email: string): boolean {
 	// Check if the email matches the pattern
 	return pattern.test(email)
 }
+
+/**
+ * Retrieves random item of the given array
+ * @param {unknown[]} arr
+ * @returns {unknown}
+ */
+export function getRandomArrEl<T>(arr: T[]): T {
+	return arr[Math.floor(Math.random() * arr.length)]
+}

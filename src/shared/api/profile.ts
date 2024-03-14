@@ -9,6 +9,11 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 
 export type FetchProfileResponse = Profile
 
+export function signOut(): Promise<void> {
+	localStorage.clear()
+	return axios.get("/sign-out")
+}
+
 export async function getProfile(): Promise<FetchProfileResponse> {
 	const res = await axios.get<JsonResponse<Profile>>("/user/profile")
 	return res.data.data

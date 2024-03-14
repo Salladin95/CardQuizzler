@@ -1,14 +1,14 @@
 import React from "react"
 import { Loader } from "~/shared"
 
-type LoadingDataRendererProps<DataT> = {
+type LoadingDataRendererProps<DataT> = Record<string, unknown> & {
 	Comp: React.ComponentType<DataT>
 	data: DataT | null | undefined
 	isLoading: boolean
 }
 
 export function LoadingDataRenderer<DataT>(props: LoadingDataRendererProps<DataT>) {
-	const { Comp, data, isLoading } = props
+	const { Comp, data, isLoading, ...rest } = props
 	switch (true) {
 		case isLoading:
 			return (
@@ -18,7 +18,7 @@ export function LoadingDataRenderer<DataT>(props: LoadingDataRendererProps<DataT
 			)
 		default:
 			if (data) {
-				return <Comp {...data} />
+				return <Comp {...data} {...rest} />
 			}
 			return null
 	}

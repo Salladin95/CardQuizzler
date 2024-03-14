@@ -4,7 +4,6 @@ import { cn } from "~/shared/lib"
 import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "framer-motion"
 import { animateOntoScreen, moveCardToItsInitialPosition, rotateAndMoveSmoothly } from "../animations"
 import { calculateMoveParameters } from "../utils"
-import { SwipeDirection } from "~/features/swipeable"
 import { DataAttributesProps, PropsWithClassName } from "~/app/types"
 
 type StartPoint = {
@@ -12,7 +11,7 @@ type StartPoint = {
 	y: number
 } | null
 
-const maxRotateAngle = 25
+const maxRotateAngle = 8
 
 export type SwipedCard = {
 	// We should add return effect, if it was swiped before
@@ -49,7 +48,7 @@ export type SwipeableProps = SwipedCard & {
 } & PropsWithClassName &
 	DataAttributesProps
 
-export function Swipeable(props: SwipeableProps) {
+export const Swipeable = React.forwardRef<HTMLDivElement, SwipeableProps>((props: SwipeableProps, ref) => {
 	const {
 		answer,
 		onSwipe,
@@ -138,6 +137,7 @@ export function Swipeable(props: SwipeableProps) {
 	return (
 		<div className={cn("perspective-1000 w-[100%] h-[100%] text-white", className)} {...rest}>
 			<motion.div
+				ref={ref}
 				className={cn(
 					"swipeable w-[100%] h-[100%] rounded-12px flex-center transform-style-3d relative before:absolute before:content-[''] before:inset-[1.5rem] before:border-3px",
 					{
@@ -168,4 +168,4 @@ export function Swipeable(props: SwipeableProps) {
 			</motion.div>
 		</div>
 	)
-}
+})

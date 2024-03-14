@@ -50,7 +50,7 @@ export function ResetEmail(props: ResetEmailProps) {
 		<div className={"flex items-center justify-between"}>
 			<TextWithLabel label={"Email"} title={currentEmail} />
 			<Dialog
-				className={"p-8 max-w-428"}
+				className={"p-8 w-[90%]"}
 				open={isOpen}
 				onOpenChange={setIsOpen}
 				onOverlayClick={reset}

@@ -1,8 +1,7 @@
 import React from "react"
-import { cn, createOption, getListOfMonths, getListOfYears, MAX_BIRTHDAY_DATE, MIN_BIRTHDAY_DATE } from "~/shared/lib"
-import { ArrowLeft, ArrowRight } from "~/features/splideCarousel/icons"
+import { ArrowLeft, ArrowRight, Select } from "~/shared"
 import { add, eachDayOfInterval, endOfMonth, format, getDay, isEqual, isSameMonth, parse } from "date-fns"
-import { Select } from "~/shared"
+import { cn, createOption, getListOfMonths, getListOfYears, MAX_BIRTHDAY_DATE, MIN_BIRTHDAY_DATE } from "~/shared/lib"
 
 type DatePickerProps = {
 	value?: Date | string
