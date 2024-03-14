@@ -48,6 +48,7 @@ function Module(props: ModuleProps) {
 		positiveAnswers,
 		processQuiz,
 		props.id,
+		props.moduleID,
 		queryClient,
 		swiperState.originalTerms,
 		swiperState.swipedCards,
