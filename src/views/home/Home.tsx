@@ -11,10 +11,12 @@ export function Home(props: HomePageData) {
 
 	return (
 		<main className={"container overflow-hidden"}>
-			<section className="mb-4">
-				<h1>Последние действия</h1>
-				<ModulesCarousel data={lastActions} className={"h-[11rem]"} />
-			</section>
+			{Boolean(lastActions?.length) && (
+				<section className="mb-4">
+					<h1>Последние действия</h1>
+					<ModulesCarousel data={lastActions} className={"h-[11rem]"} />
+				</section>
+			)}
 
 			{Boolean(difficultModules?.length) && (
 				<section className="">

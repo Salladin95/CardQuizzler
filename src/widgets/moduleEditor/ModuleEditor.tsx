@@ -76,7 +76,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				onDelete={handleDelete}
 				onAddTerm={(index: number) => insertTerm(createEmptyTerm(), index)}
 			/>
-			<Button className="w-min mx-auto" onClick={() => insertTerm(createEmptyTerm())}>
+			<Button className="w-min mx-auto mb-12" onClick={() => insertTerm(createEmptyTerm())}>
 				Добавить
 			</Button>
 			<ActionBtn
