@@ -21,7 +21,7 @@ export function TermEditor(props: CreateModuleEditorProps) {
 	}
 
 	return (
-		<div className={cn("rounded bg-gray-800 px-8 pt-4 pb-10 text-white cursor-grab", className)}>
+		<div className={cn("rounded bg-gray-800 px-4 428:px-8 pt-4 pb-10 text-white cursor-grab", className)}>
 			<div className={"flex justify-between"}>
 				<span data-no-dnd="true">{index + 1}</span>
 				<Button data-no-dnd="true" variant={"none"} className={"w-min"} onClick={() => onDelete(index)}>

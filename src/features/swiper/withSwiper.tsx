@@ -135,7 +135,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 		}
 
 		return (
-			<section className={"container flex-center mt-12 428:mt-0"}>
+			<section className={"container flex-center mt-4 428:mt-0"}>
 				<div ref={scope} className={cn("w-360 h-428 640:w-428 768:w-640 768:h-640 1024:w-768 relative ", className)}>
 					{currentCards?.map((card, index) => (
 						<Swipeable

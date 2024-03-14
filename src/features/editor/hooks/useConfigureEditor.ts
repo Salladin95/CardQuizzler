@@ -18,7 +18,7 @@ export function useConfigureEditor(props: Partial<EditorOptions>) {
 		],
 		editorProps: {
 			attributes: {
-				class: "input input-primary input-size-default w-full h-full min-w-[20rem]",
+				class: "input input-primary input-size-default w-full h-full",
 			},
 		},
 		...props,
