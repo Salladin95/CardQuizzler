@@ -2,18 +2,20 @@
 import React from "react"
 import Link from "next/link"
 import { HomePageData } from "~/app/models"
+import { useTranslations } from "next-intl"
 import { CreateModuleFolder } from "~/entites"
 import { Button, getRandomArrEl, LoadingDataRenderer, useFetchHomePageData } from "~/shared"
 import { DifficultModulesCarousel, FolderCarousel, ModulesCarousel } from "~/widgets"
 
 export function Home(props: HomePageData) {
 	const { lastActions, modules, difficultModules, folders } = props
+	const t = useTranslations("Index")
 
 	return (
 		<main className={"container overflow-hidden"}>
 			{Boolean(lastActions?.length) && (
 				<section className="mb-4">
-					<h1>Последние действия</h1>
+					<h1>{t("title")}</h1>
 					<ModulesCarousel data={lastActions} className={"h-[11rem]"} />
 				</section>
 			)}

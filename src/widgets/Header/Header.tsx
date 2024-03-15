@@ -31,6 +31,7 @@ export function Header(props: HeaderProps) {
 					</Button>
 				</Link>
 			)}
+			{/*<div className={"h-[2px] bg-primary"} />*/}
 		</header>
 	)
 }
