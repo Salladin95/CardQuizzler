@@ -1,5 +1,4 @@
 import React from "react"
-import { Header } from "~/widgets"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import { Providers } from "src/app/providers"
@@ -9,7 +8,7 @@ import { Inter, Noto_Sans } from "next/font/google"
 import "~/globals.css"
 
 export const metadata: Metadata = {
-	title: "CardQuizzer",
+	title: "CardQuizzler",
 	description: "App for learning languages with cards",
 }
 

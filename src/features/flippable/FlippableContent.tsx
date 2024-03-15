@@ -13,9 +13,9 @@ export function FlippableContent(props: FlippableContentProps) {
 
 	return (
 		<>
-			<div className={cn("w-[100%] h-[100%] absolute backface-hidden", className)}>{frontSideContent}</div>
+			<div className={cn("w-[100%] h-[100%] absolute backface-hidden px-6", className)}>{frontSideContent}</div>
 			<div
-				className={cn("w-[100%] h-[100%] absolute backface-hidden", className)}
+				className={cn("w-[100%] h-[100%] absolute backface-hidden px-6", className)}
 				style={{
 					transform: `rotateY(180deg)`,
 				}}

@@ -1,1 +1,1 @@
-export * from "./getSplideDefaultOptions"
+export * from "./getSplideOptions"
