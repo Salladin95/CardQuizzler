@@ -1,13 +1,13 @@
 import React from "react"
-import * as Yup from "yup"
+import * as Yup from "~/yup"
 import { useForm } from "react-hook-form"
+import { useTranslations } from "~/app/i18n"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
-import { emailRequiredMsg, invalidEmailMsg } from "~/app/constants"
-import { checkEmailFormat, Input, useRequestEmailVerificationCtx } from "~/shared"
+import { checkEmailFormat, cn, Input, useRequestEmailVerificationCtx, useTranslatedFieldErrorMessages } from "~/shared"
 
 const RequestEmailVerificationSchema = Yup.object({
-	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
+	email: Yup.string().required().email(),
 })
 export type RequestEmailVerificationFormType = Yup.InferType<typeof RequestEmailVerificationSchema>
 
@@ -20,20 +20,23 @@ function getFormDefaultValues() {
 }
 
 export function RequestEmailVerification() {
+	const t = useTranslations()
+
 	const {
 		handleSubmit,
 		register,
-		formState: { errors },
+		formState: { errors, isDirty },
 		reset: resetForm,
 		watch,
 	} = useForm<RequestEmailVerificationFormType>({
 		defaultValues: getFormDefaultValues(),
 		resolver: yupResolver(RequestEmailVerificationSchema),
-		mode: "onTouched",
+		mode: "onChange",
 	})
+	const translatedErrorMessages = useTranslatedFieldErrorMessages(errors)
 
 	const email = watch(RequestEmailVerificationFormEnum.EMAIL)
-	const isEmailValid = checkEmailFormat(email)
+	const isEmailValid = isDirty && checkEmailFormat(email)
 
 	const requestEmailVerificationCtx = useRequestEmailVerificationCtx()
 
@@ -51,18 +54,23 @@ export function RequestEmailVerification() {
 
 	return (
 		// USING FORM SO WE COULD SUBMIT WITH ENTER
-		<form onSubmit={handleSubmit(onSummit)}>
-			<FormFieldWithLabel label={"Email"} id={RequestEmailVerificationFormEnum.EMAIL} error={errors?.email}>
+		<form onSubmit={handleSubmit(onSummit)} className={""}>
+			<FormFieldWithLabel
+				label={t("Labels.email")}
+				id={RequestEmailVerificationFormEnum.EMAIL}
+				error={translatedErrorMessages.get(RequestEmailVerificationFormEnum.EMAIL)}
+				className={cn({ "text-red-400": !isEmailValid && isDirty })}
+			>
 				<Input
 					{...register(RequestEmailVerificationFormEnum.EMAIL)}
 					className={"mb-8"}
-					error={!isEmailValid}
-					placeholder={"Enter your email"}
+					error={isDirty && !isEmailValid}
+					placeholder={t("Placeholders.email")}
 					id={RequestEmailVerificationFormEnum.EMAIL}
 				/>
 			</FormFieldWithLabel>
 			<ActionBtn disabled={!isEmailValid} loading={requestEmailVerification.isPending} type={"submit"}>
-				Send verification code
+				{t("Features.requestCode")}
 			</ActionBtn>
 		</form>
 	)

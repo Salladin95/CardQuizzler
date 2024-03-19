@@ -11,7 +11,11 @@ const messages = { en, ru }
 export function NextIntlProvider(props: { children: React.ReactNode; locale: Locale }) {
 	const { children, locale } = props
 	return (
-		<NextIntlClientProvider locale={locale} messages={messages[locale] as Record<never, never>}>
+		<NextIntlClientProvider
+			timeZone={"Europe/Moscow"}
+			locale={locale}
+			messages={messages[locale] as Record<never, never>}
+		>
 			{children}
 		</NextIntlClientProvider>
 	)

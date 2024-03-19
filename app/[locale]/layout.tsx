@@ -1,7 +1,7 @@
 import React from "react"
 import localFont from "next/font/local"
-import { Locale, locales } from "~/app/i18n/i18n"
 import { Providers } from "src/app/providers"
+import { Locale, locales } from "~/app/i18n/i18n"
 import { Inter, Noto_Sans } from "next/font/google"
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server"
 

@@ -7,4 +7,12 @@ declare module "yup" {
 	interface NumberSchema {
 		codeLength(): this
 	}
+	interface MessageParams {
+		path: string
+		value: any
+		originalValue: any
+		label: string
+		type: string
+		spec: SchemaSpec<any> & Record<string, unknown>
+	}
 }

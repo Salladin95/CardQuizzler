@@ -2,8 +2,9 @@
 import React from "react"
 import { cn } from "~/shared/lib"
 import { TermType } from "~/app/models"
-import { Button, XMarkIcon } from "~/shared"
 import { Editor } from "~/features/editor"
+import { useTranslations } from "~/app/i18n"
+import { Button, XMarkIcon } from "~/shared"
 import { PropsWithClassName } from "~/app/types"
 
 type CreateModuleEditorProps = {
@@ -15,6 +16,7 @@ type CreateModuleEditorProps = {
 
 export function TermEditor(props: CreateModuleEditorProps) {
 	const { onUpdate, onDelete, index, term, className } = props
+	const t = useTranslations()
 
 	const handleUpdate = (updatedValues: Partial<TermType>) => {
 		onUpdate({ ...term, ...updatedValues }, index)
@@ -29,10 +31,14 @@ export function TermEditor(props: CreateModuleEditorProps) {
 				</Button>
 			</div>
 			<div className={"flex flex-col 768:flex-row gap-4 cursor-default"} data-no-dnd="true">
-				<TermEditorItem onUpdate={(title) => handleUpdate({ title })} title={"Термин"} initialContent={term.title} />
+				<TermEditorItem
+					onUpdate={(title) => handleUpdate({ title })}
+					title={t("Labels.term")}
+					initialContent={term.title}
+				/>
 				<TermEditorItem
 					onUpdate={(description) => handleUpdate({ description })}
-					title={"Определение"}
+					title={t("Labels.definition")}
 					initialContent={term.description}
 				/>
 			</div>

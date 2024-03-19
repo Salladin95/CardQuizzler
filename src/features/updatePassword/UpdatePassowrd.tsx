@@ -3,18 +3,18 @@ import * as Yup from "yup"
 import { Profile } from "~/app/models"
 import { useUpdatePassword } from "./api"
 import { useForm } from "react-hook-form"
+import { useTranslations } from "~/app/i18n"
 import { ActionBtn, FormField } from "~/entites"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useQueryClient } from "@tanstack/react-query"
-import { Button, Dialog, PasswordInput, profileQueryKey, useToast } from "~/shared"
-import { confirmPasswordRequiredMsg, passwordRequiredMsg, passwordsMustMatchMsg } from "~/app/constants"
+import { Button, Dialog, PasswordInput, profileQueryKey, useToast, useTranslatedFieldErrorMessages } from "~/shared"
 
 const updatePasswordSchema = Yup.object({
-	currentPassword: Yup.string().required(passwordRequiredMsg).password(),
-	newPassword: Yup.string().required(passwordRequiredMsg).password(),
+	currentPassword: Yup.string().required().password(),
+	newPassword: Yup.string().required().password(),
 	confirmPassword: Yup.string()
-		.required(confirmPasswordRequiredMsg)
-		.oneOf([Yup.ref("newPassword"), ""], passwordsMustMatchMsg)
+		.required()
+		.oneOf([Yup.ref("newPassword"), ""])
 		.password(),
 })
 export type UpdatePasswordFormType = Yup.InferType<typeof updatePasswordSchema>
@@ -38,6 +38,7 @@ function getFormDefaultValues() {
 }
 
 export function UpdatePassword(props: UpdatePasswordProps) {
+	const t = useTranslations()
 	const [isOpen, setIsOpen] = React.useState(false)
 
 	const {
@@ -49,6 +50,7 @@ export function UpdatePassword(props: UpdatePasswordProps) {
 		defaultValues: getFormDefaultValues(),
 		resolver: yupResolver(updatePasswordSchema),
 	})
+	const translatedErrorMessages = useTranslatedFieldErrorMessages(errors)
 
 	function reset() {
 		resetForm()
@@ -62,11 +64,15 @@ export function UpdatePassword(props: UpdatePasswordProps) {
 			reset()
 			setIsOpen(false)
 			queryClient.invalidateQueries({ queryKey: [profileQueryKey] })
-			toast({ variant: "primary", title: "Success", description: "Password has been updated" })
+			toast({
+				variant: "primary",
+				title: t("Generics.success"),
+				description: t("Features.messages.updatePasswordSuccess"),
+			})
 		},
 		onError: () => {
 			reset()
-			toast({ variant: "error", title: "Failure", description: "Failed to update password" })
+			toast({ variant: "error", title: t("Generics.error"), description: t("Features.messages.updatePasswordFailure") })
 		},
 	})
 
@@ -79,48 +85,48 @@ export function UpdatePassword(props: UpdatePasswordProps) {
 	}
 
 	return (
-		<div className={"flex items-center justify-between"}>
+		<div className={"flex items-center justify-between text-primary"}>
 			<Dialog
-				className={"p-8 w-[90%]"}
+				className={"p-8 w-[90%] 768:w-[55%] 1024:w-[40%]"}
 				open={isOpen}
 				onOpenChange={setIsOpen}
 				onOverlayClick={reset}
 				trigger={
 					<Button className={"w-[12rem]"} variant={"secondary"}>
-						Update password
+						{t("Features.updatePassword")}
 					</Button>
 				}
 			>
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<FormField error={errors?.currentPassword}>
+					<FormField error={translatedErrorMessages.get(UpdatePasswordFormEnum.CURRENT_PASSWORD)}>
 						<PasswordInput
 							{...register(UpdatePasswordFormEnum.CURRENT_PASSWORD)}
 							error={Boolean(errors?.currentPassword)}
 							className={"mb-8"}
-							placeholder={"Enter current password"}
+							placeholder={t("Placeholders.currentPassword")}
 							autoComplete={"current-password"}
 						/>
 					</FormField>
-					<FormField error={errors?.newPassword}>
+					<FormField error={translatedErrorMessages.get(UpdatePasswordFormEnum.NEW_PASSWORD)}>
 						<PasswordInput
 							{...register(UpdatePasswordFormEnum.NEW_PASSWORD)}
 							error={Boolean(errors?.newPassword)}
 							className={"mb-8"}
-							placeholder={"Enter new password"}
+							placeholder={t("Placeholders.newPassword")}
 							autoComplete={"new-password"}
 						/>
 					</FormField>
-					<FormField error={errors?.confirmPassword}>
+					<FormField error={translatedErrorMessages.get(UpdatePasswordFormEnum.CONFIRM_PASSWORD)}>
 						<PasswordInput
 							{...register(UpdatePasswordFormEnum.CONFIRM_PASSWORD)}
 							error={Boolean(errors?.confirmPassword)}
 							className={"mb-8"}
-							placeholder={"Enter password again"}
+							placeholder={t("Placeholders.confirmPassword")}
 							autoComplete={"new-password"}
 						/>
 					</FormField>
 					<ActionBtn disabled={Boolean(Object.keys(errors).length)} loading={updatePassword.isPending} type={"submit"}>
-						Update password
+						{t("Features.updatePassword")}
 					</ActionBtn>
 				</form>
 			</Dialog>

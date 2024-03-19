@@ -1,6 +1,7 @@
 "use client"
 import React from "react"
 import { FolderType } from "~/app/models"
+import { useTranslations } from "~/app/i18n"
 import { Button, Dialog, Input } from "~/shared"
 
 type CreateFolderProps = {
@@ -11,6 +12,7 @@ type CreateFolderProps = {
 }
 
 export function CreateEditFolder(props: CreateFolderProps) {
+	const t = useTranslations()
 	const { onSubmit, title, trigger, folder } = props
 	const [folderName, setFolderName] = React.useState(folder?.title || "")
 	const [showDialog, setShowDialog] = React.useState(false)
@@ -29,9 +31,9 @@ export function CreateEditFolder(props: CreateFolderProps) {
 	return (
 		<Dialog open={showDialog} trigger={trigger} className={"w-360 640:w-428 768:w-640 h-[20rem] py-12 px-8"}>
 			<div className={"relative w-full h-full"}>
-				<h1 className={"mb-6 h2 640:h1 text-center"}>{title}</h1>
+				<h1 className={"mb-6 h2 640:h1 text-center text-primary"}>{title}</h1>
 				<Input
-					placeholder={"Введите название папки, например: 'граммитика'"}
+					placeholder={t("Placeholders.folder")}
 					value={folderName}
 					error={hasError}
 					onChange={(e) => {
@@ -48,7 +50,7 @@ export function CreateEditFolder(props: CreateFolderProps) {
 					// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
 					disabled={!folderName}
 				>
-					Сохранить
+					{t("Generics.save")}
 				</Button>
 			</div>
 		</Dialog>

@@ -1,4 +1,4 @@
-import { locales } from "~/app/i18n/i18n"
+import { Locale, locales } from "~/app/i18n/i18n"
 import createMiddleware from "next-intl/middleware"
 
 export default createMiddleware({
@@ -6,7 +6,7 @@ export default createMiddleware({
 	locales,
 
 	// Used when no locale matches
-	defaultLocale: "en",
+	defaultLocale: Locale.EN,
 })
 
 export const config = {

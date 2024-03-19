@@ -1,7 +1,9 @@
 import React from "react"
 import { TextWithLabel } from "~/entites"
+import { useTranslations } from "~/app/i18n"
 import { fullDateFormatter } from "~/shared/lib"
 import { Profile as ProfileType } from "~/app/models"
+import { useQueryClient } from "@tanstack/react-query"
 import { ResetEmail, ResetPassword, UpdatePassword } from "~/features"
 import { RequestEmailVerification } from "~/features/requestEmailVerification"
 import {
@@ -12,10 +14,10 @@ import {
 	signOut,
 	useProtectedProfile,
 } from "~/shared"
-import { useQueryClient } from "@tanstack/react-query"
 
 function Profile(profile: ProfileType) {
 	const queryClient = useQueryClient()
+	const t = useTranslations()
 
 	async function handleSignOut() {
 		await signOut()
@@ -25,27 +27,31 @@ function Profile(profile: ProfileType) {
 		<RequestEmailVerificationCtxProvider>
 			<main className={"container text-primary"}>
 				<div>
-					<h1 className={"h3 separator mb-8"}>My profile</h1>
+					<h1 className={"h3 separator mb-8"}>{t("Profile.title")}</h1>
 					{/* TODO: ADD AVATAR COMPONENT */}
 					<div className={"mb-4 w-4 h-4 p-4 border-1.5px border-primary rounded-full flex-center"}>
 						{profile.name.substring(0, 2)}
 					</div>
 
-					<TextWithLabel label={"Name"} title={profile.name} />
-					<TextWithLabel label={"Birthday"} title={profile.birthday} />
-					<TextWithLabel className={"mb-4"} label={"Here since"} title={fullDateFormatter(profile.createdAt)} />
+					<TextWithLabel label={t("Labels.name")} title={profile.name} />
+					<TextWithLabel label={t("Labels.birthday")} title={profile.birthday} />
+					<TextWithLabel
+						className={"mb-4"}
+						label={t("Labels.createdAt")}
+						title={fullDateFormatter(profile.createdAt)}
+					/>
 					<ResetEmail currentEmail={profile.email} id={profile.id} />
 					<ResetPassword
 						requestEmailVerification={<RequestEmailVerification />}
 						trigger={
 							<Button variant={"secondary"} className={"mb-2 max-w-[12rem]"}>
-								Reset password
+								{t("Profile.resetPassword")}
 							</Button>
 						}
 					/>
 					<UpdatePassword profile={profile} />
-					<Button className={"mt-8 w-min"} onClick={handleSignOut}>
-						Выйти
+					<Button className={"mt-8 max-w-[10rem]"} onClick={handleSignOut}>
+						{t("Auth.signOut")}
 					</Button>
 				</div>
 			</main>

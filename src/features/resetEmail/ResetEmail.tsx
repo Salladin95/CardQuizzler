@@ -4,6 +4,7 @@ import { ActionBtn, TextWithLabel } from "~/entites"
 import { ResetEmailForm } from "./ResetEmailFormType"
 import { useQueryClient } from "@tanstack/react-query"
 import { Button, Dialog, profileQueryKey, useRequestEmailVerification, useToast } from "~/shared"
+import { useTranslations } from "~/app/i18n"
 
 type ResetEmailProps = {
 	currentEmail: string
@@ -12,7 +13,8 @@ type ResetEmailProps = {
 }
 
 export function ResetEmail(props: ResetEmailProps) {
-	const { currentEmail, triggerTitle = "Update email" } = props
+	const t = useTranslations()
+	const { currentEmail, triggerTitle = t("Features.updateEmail.title") } = props
 	const [isOpen, setIsOpen] = React.useState(false)
 
 	const queryClient = useQueryClient()
@@ -31,8 +33,8 @@ export function ResetEmail(props: ResetEmailProps) {
 			reset()
 			toast({
 				variant: "primary",
-				title: "Email is updated",
-				description: "You successfully have updated your email!!!",
+				title: t("Generics.success"),
+				description: t("Features.messages.updateEmailSuccess"),
 			})
 			queryClient.invalidateQueries({ queryKey: [profileQueryKey] })
 		},
@@ -40,7 +42,7 @@ export function ResetEmail(props: ResetEmailProps) {
 			reset()
 			toast({
 				variant: "error",
-				title: "Failed to update the email",
+				title: t("Generics.error"),
 				description: JSON.stringify(err.response?.data) || err.message,
 			})
 		},
@@ -48,29 +50,26 @@ export function ResetEmail(props: ResetEmailProps) {
 
 	return (
 		<div className={"flex items-center justify-between"}>
-			<TextWithLabel label={"Email"} title={currentEmail} />
+			<TextWithLabel label={t("Labels.email")} title={currentEmail} />
 			<Dialog
 				className={"p-8 w-[90%]"}
 				open={isOpen}
 				onOpenChange={setIsOpen}
 				onOverlayClick={reset}
 				trigger={
-					<Button className={"w-[9rem]"} variant={"secondary"}>
+					<Button className={"max-w-[12rem]"} variant={"secondary"}>
 						{triggerTitle}
 					</Button>
 				}
 			>
 				{!requestEmailVerification.isSuccess && (
 					<>
-						<p className={"mb-6"}>
-							Your current email is <b className={"bold"}>{currentEmail}</b>. We&apos;ll send a temporary verification
-							code to this email.
-						</p>
+						<p className={"mb-6"}>{t("Features.updateEmail.mailVerificationMessage", { currentEmail })}</p>
 						<ActionBtn
 							loading={requestEmailVerification.isPending}
 							onClick={() => requestEmailVerification.mutateAsync({ email: currentEmail })}
 						>
-							Send verification code
+							{t("Features.requestCode")}
 						</ActionBtn>
 					</>
 				)}

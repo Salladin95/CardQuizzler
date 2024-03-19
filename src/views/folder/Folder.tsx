@@ -3,6 +3,7 @@ import React from "react"
 import Link from "next/link"
 import { WithId } from "~/app/types"
 import { hasFolderTheModule } from "./utils"
+import { useTranslations } from "~/app/i18n"
 import { FolderType, ModuleType } from "~/app/models"
 import { useQueryClient } from "@tanstack/react-query"
 import { FolderContextMenu, ModuleContextMenu } from "~/features"
@@ -27,6 +28,7 @@ type FolderProps = {
 }
 
 function Folder(props: FolderProps) {
+	const t = useTranslations()
 	const { folder, modules } = props
 	const [showDialog, setShowDialog] = React.useState(false)
 	const queryClient = useQueryClient()
@@ -63,7 +65,7 @@ function Folder(props: FolderProps) {
 	return (
 		<main className={"container"}>
 			<section className={"mb-4 flex items-center justify-between"}>
-				<p className={"h4"}>Всего модулей - {folder.modules.length}</p>
+				<p className={"h4"}>{t("Folder.numberOfModules", { number: folder.modules.length })}</p>
 				<div className={"flex gap-x-2"}>
 					<Button onClick={() => setShowDialog(true)} variant={"secondary"} className={"max-w-[3rem] h2"}>
 						<AddIcon />
@@ -81,7 +83,7 @@ function Folder(props: FolderProps) {
 				))}
 			</section>
 			<Button onClick={() => setShowDialog(true)} variant={"primary"} className={"max-w-[20rem] h3 mx-auto"}>
-				Добавить модуль
+				{t("Features.addModule")}
 			</Button>
 			<Dialog
 				open={showDialog}
@@ -89,14 +91,14 @@ function Folder(props: FolderProps) {
 				className={"w-360 640:w-428 1024:w-768 overflow-y-scroll h-[90vh] p-0 rounded-none"}
 			>
 				<div className={"flex justify-between items-center mb-8 bg-gray-800 text-white px-4 py-6"}>
-					<h1 className={"h2"}>Добавить модуль</h1>
+					<h1 className={"h2"}>{t("Features.addModule")}</h1>
 					<Button variant={"gray"} className={"w-min"} onClick={() => setShowDialog(false)}>
 						<XMarkIcon />
 					</Button>
 				</div>
 
 				<Button asChild variant={"secondary"} className={"h3 mb-4 mx-auto w-[90%]"}>
-					<Link href={`/module/create/${folder.id}`}>Создать новый модуль</Link>
+					<Link href={`/module/create/${folder.id}`}>{t("Features.createNewModule")}</Link>
 				</Button>
 
 				<section className={"flex flex-col gap-y-2 px-6 py-8 "}>

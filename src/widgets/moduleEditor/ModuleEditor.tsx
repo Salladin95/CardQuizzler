@@ -6,6 +6,7 @@ import { ActionBtn } from "~/entites"
 import { createEmptyTerm, createEmptyTerms } from "./lib"
 import { TermList } from "~/widgets/moduleEditor/TermList"
 import useAddClassToTag from "~/shared/hooks/useAddClassToTag"
+import { useTranslations } from "~/app/i18n"
 
 type ModuleEditorProps = {
 	terms?: TermType[]
@@ -16,6 +17,7 @@ type ModuleEditorProps = {
 }
 
 export function ModuleEditor(props: ModuleEditorProps) {
+	const t = useTranslations()
 	const { onSubmit, hasSubmitted, isSubmitting } = props
 	const [terms, setTerms] = React.useState<TermType[]>(props.terms || createEmptyTerms())
 	const [moduleName, setModuleName] = React.useState(props.moduleName || "")
@@ -42,8 +44,8 @@ export function ModuleEditor(props: ModuleEditorProps) {
 	}
 
 	const handleSubmit = () => onSubmit(moduleName, terms)
-	const title = !props.terms ? "Создать новый модуль" : "Обновить модуль"
-	const submitBtnTitle = !props.terms ? "Создать" : "Сохранить"
+	const title = !props.terms ? t("Widgets.createNewModule") : t("Widgets.updateModule")
+	const submitBtnTitle = !props.terms ? t("Generics.create") : t("Generics.save")
 
 	// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
 	const isSubmitDisabled = !terms.length || !moduleName || hasSubmitted
@@ -53,7 +55,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 	return (
 		<section className={"overflow-hidden p-1"}>
 			<div className="flex justify-between mb-4">
-				<h1 className="h2">{title}</h1>
+				<h1 className="h2 text-primary">{title}</h1>
 				<Button disabled={isSubmitDisabled} className="w-min" onClick={handleSubmit}>
 					{submitBtnTitle}
 				</Button>
@@ -65,7 +67,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 					setModuleName(value)
 					setHasError(!value)
 				}}
-				placeholder={"Введите название молуя"}
+				placeholder={t("Placeholders.module")}
 				className={"mb-8"}
 				error={hasError}
 			/>
@@ -77,7 +79,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				onAddTerm={(index: number) => insertTerm(createEmptyTerm(), index)}
 			/>
 			<Button className="w-min mx-auto mb-12" onClick={() => insertTerm(createEmptyTerm())}>
-				Добавить
+				{t("Generics.add")}
 			</Button>
 			<ActionBtn
 				loading={isSubmitting}

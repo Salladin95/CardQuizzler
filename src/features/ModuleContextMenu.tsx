@@ -1,6 +1,8 @@
 "use client"
 import React from "react"
 import Link from "next/link"
+import { useTranslations } from "~/app/i18n"
+import { useQueryClient } from "@tanstack/react-query"
 import { ActionBtn, Module, ModuleProps } from "~/entites"
 import {
 	AdjustIcon,
@@ -14,9 +16,9 @@ import {
 	useDeleteModuleMutation,
 	useToast,
 } from "~/shared"
-import { useQueryClient } from "@tanstack/react-query"
 
 export function ModuleContextMenu(props: ModuleProps) {
+	const t = useTranslations()
 	const { id } = props
 	const [showPopover, setShowPopover] = React.useState(false)
 
@@ -25,7 +27,11 @@ export function ModuleContextMenu(props: ModuleProps) {
 
 	const deleteModule = useDeleteModuleMutation({
 		onSuccess: () => {
-			toast({ variant: "primary", title: "Success", description: "Module has been deleted" })
+			toast({
+				variant: "primary",
+				title: t("Generics.success"),
+				description: t("Features.messages.deleteModuleSuccess"),
+			})
 			queryClient.invalidateQueries({ queryKey: [homeDataKey] })
 			queryClient.invalidateQueries({ queryKey: [modulesQueryKey] })
 			queryClient.invalidateQueries({ queryKey: [moduleQueryKey, id] })
@@ -47,14 +53,14 @@ export function ModuleContextMenu(props: ModuleProps) {
 			}
 			open={showPopover}
 			onOpenChange={setShowPopover}
-			className={"min-w-[10rem] flex-center flex-col gap-y-2"}
+			className={"min-w-[20rem] flex-center flex-col gap-y-2"}
 		>
 			<Button disabled={!props?.terms.length} className={"justify-start"} asChild>
 				<Link href={`/module/${id}`}>
 					<span className={"mr-2"}>
 						<ArrowsPointingOutIcon />
 					</span>
-					<span>Открыть</span>
+					<span>{t("Features.open")}</span>
 				</Link>
 			</Button>
 			<Button className={"justify-start"} asChild>
@@ -62,7 +68,7 @@ export function ModuleContextMenu(props: ModuleProps) {
 					<span className={"mr-2"}>
 						<AdjustIcon />
 					</span>
-					<span>Редактировать</span>
+					<span>{t("Features.edit")}</span>
 				</Link>
 			</Button>
 			{/*TODO: EXTRACT TO SEPARATE FUNCTION ADD CONFIRM MODULE*/}
@@ -76,7 +82,7 @@ export function ModuleContextMenu(props: ModuleProps) {
 				<span className={"mr-2"}>
 					<TrashIcon />
 				</span>
-				<span>Удалить</span>
+				<span>{t("Features.delete")}</span>
 			</ActionBtn>
 		</Popover>
 	)

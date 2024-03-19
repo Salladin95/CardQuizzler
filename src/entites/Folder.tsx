@@ -1,15 +1,17 @@
 "use client"
-import { useRouter } from "next/navigation"
 import { cn } from "~/shared/lib"
 import { FolderIcon } from "~/shared"
-import { PropsWithClassName } from "~/app/types"
 import { FolderType } from "~/app/models"
+import { useRouter } from "next/navigation"
+import { useTranslations } from "~/app/i18n"
+import { PropsWithClassName } from "~/app/types"
 
 type FolderProps = FolderType & PropsWithClassName
 
 export function Folder(props: FolderProps) {
 	const { title, modules, className, id } = props
 	const router = useRouter()
+	const t = useTranslations("Folder")
 	return (
 		<div
 			onClick={() => router.push(`/folder/${id}`)}
@@ -20,7 +22,7 @@ export function Folder(props: FolderProps) {
 			)}
 		>
 			<p className={"mb-1 text-body-2"}>
-				Всего модулей: <span className={"italic"}>{modules.length}</span>
+				{t("numberOfModules")}: <span className={"italic"}>{modules.length}</span>
 			</p>
 			<div className="flex items-center gap-x-2">
 				<FolderIcon />

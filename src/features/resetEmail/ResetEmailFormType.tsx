@@ -1,14 +1,14 @@
 import React from "react"
 import * as Yup from "~/yup"
-import { Button, Input } from "~/shared"
+import { Button, Input, useTranslatedFieldErrorMessages } from "~/shared"
 import { useForm } from "react-hook-form"
+import { useTranslations } from "~/app/i18n"
 import { ActionBtn, FormField } from "~/entites"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { codeRequiredErrMsg, emailRequiredMsg, invalidEmailMsg } from "~/app/constants"
 
 const resetEmailFormSchema = Yup.object({
-	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
-	code: Yup.number().codeLength().required(codeRequiredErrMsg).nullable(),
+	email: Yup.string().required().email(),
+	code: Yup.number().codeLength().required().nullable(),
 })
 export type ResetEmailFormType = Yup.InferType<typeof resetEmailFormSchema>
 
@@ -32,7 +32,8 @@ type ResetEmailFormProps = {
 }
 
 export function ResetEmailForm(props: ResetEmailFormProps) {
-	const { currentEmail, isSubmitting, hasSubmitError, onSubmit: onSubmitProp } = props
+	const t = useTranslations()
+	const { isSubmitting, hasSubmitError, onSubmit: onSubmitProp } = props
 
 	const [showEmailField, setShowEmailField] = React.useState(false)
 
@@ -56,36 +57,32 @@ export function ResetEmailForm(props: ResetEmailFormProps) {
 		onSubmitProp(form)
 	}
 
+	const translatedErrors = useTranslatedFieldErrorMessages(errors)
+
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<p className={"mb-6"}>
-				Your current email is <b className={"bold"}>{currentEmail}</b>. We&apos;ve sent a temporary verification code to
-				this email.
-			</p>
-			<FormField error={errors?.code}>
+		<form onSubmit={handleSubmit(onSubmit)} className={"text-primary"}>
+			<FormField error={translatedErrors.get(ResetEmailFormEnum.CODE)}>
 				<Input
 					{...register(ResetEmailFormEnum.CODE)}
 					error={Boolean(errors?.code)}
 					className={"mb-8"}
-					placeholder={"Enter verification code"}
+					placeholder={t("Placeholders.code")}
 				/>
 			</FormField>
 			{!showEmailField && (
 				<Button disabled={Boolean(errors?.code) || !code} onClick={() => setShowEmailField(true)}>
-					Continue
+					{t("Generics.continue")}
 				</Button>
 			)}
 			{showEmailField && (
 				<>
-					<p className={"mb-4 text-body-2 italic"}>
-						Please enter new email and submit it and if you typed valid code we will update your email.
-					</p>
-					<FormField error={errors?.email}>
+					<p className={"mb-4 text-body-2 italic"}>{t("Labels.email")}</p>
+					<FormField error={translatedErrors.get(ResetEmailFormEnum.EMAIL)}>
 						<Input
 							{...register(ResetEmailFormEnum.EMAIL)}
 							error={Boolean(errors?.email)}
 							className={"mb-8"}
-							placeholder={"Enter new email"}
+							placeholder={t("Placeholders.email")}
 						/>
 					</FormField>
 
@@ -94,7 +91,7 @@ export function ResetEmailForm(props: ResetEmailFormProps) {
 						loading={isSubmitting}
 						type={"submit"}
 					>
-						Submit
+						{t("Generics.submit")}
 					</ActionBtn>
 				</>
 			)}

@@ -1,11 +1,158 @@
 {
-  "Index": {
-    "title": "Hello world!"
+  "Pages": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "module": "Module",
+    "folder": "Folder",
+    "profile": "Profile"
+  },
+  "Auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "forgotPassword": "Forgot password?",
+    "messages": {
+      "welcomeMessage": "Embark on a language journey with us – where every word learned is a step towards a world of possibilities!",
+      "signInFailure": "Failed to sign in",
+      "signInSuccess": "You have signed in",
+      "signUpFailure": "Failed to sign up",
+      "signUpSuccess": "You have signed up"
+    }
+  },
+  "Home": {
+    "lastActions": "Last actions",
+    "difficultModules": "Difficult modules",
+    "myFolders": "My folders",
+    "myModules": "My modules",
+    "randomModule": "Random module"
+  },
+  "Folder": {
+    "numberOfModules": "Number of modules - {number}"
+  },
+  "Module": {
+    "numberOfTerms": "Number of terms - {number}"
+  },
+  "Profile": {
+    "resetPassword": "Reset password",
+    "title": "My profile"
+  },
+  "Widgets": {
+    "createNewModule": "Create new module",
+    "updateModule": "Update the module",
+    "confettiScreen": {
+      "continueLearning": "Continue learning - {count, plural, =1 {# term} other {# terms}} left",
+      "restart": "Restart",
+      "finished": "Finished",
+      "inProgress": "Still learning",
+      "inspirationalMessages": {
+        "0": "Great job! You're simply a master of flashcards! Keep up the good work!",
+        "1": "Well done! You breezed through this module. Keep it up and keep moving forward!",
+        "2": "Bravo! You're like a true pro at studying flashcards. Keep it up, and you'll become a real expert!",
+        "3": "Wow! You just conquered this module! Your efforts haven't gone unnoticed. Keep it up, and onwards to new heights!",
+        "4": "Wow! You're a star at studying flashcards. Congratulations on successfully completing this module!",
+        "5": "Great work! Your knowledge is growing rapidly. Keep moving forward – you're on the right track!",
+        "6": "Well done! You're absolutely fantastic. Remember, every module completed brings you closer to mastery!",
+        "7": "Congratulations! You've successfully completed this stage. Now you're even closer to your goal. Keep it up!",
+        "8": "Oh wow! You're a real champion. Keep it up, and you'll become a true expert in studying flashcards!",
+        "9": "Bravo! You're simply unstoppable! Your determination and diligence are truly impressive. Keep it up!"
+      }
+    }
+  },
+  "Features": {
+    "createModule": "Create module",
+    "createFolder": "Create folder",
+    "createNewFolder": "Create new folder",
+    "createNewModule": "Create new module",
+    "updatePassword": "Update password",
+    "resetPassword": "Reset password",
+    "addModule": "Add module",
+    "create": "Create",
+    "update": "Update",
+    "open": "Open",
+    "edit": "Edit",
+    "delete": "Delete",
+    "requestCode": "Request verification code",
+    "updateEmail": {
+      "title": "Update email",
+      "mailVerificationMessage": "Your current email is {currentEmail}. We'll send a temporary verification code to this email."
+    },
+    "messages": {
+      "updatePasswordSuccess": "Password has been updated",
+      "updatePasswordFailure": "Failed to update password",
+      "updateEmailSuccess": "Email has been updated",
+      "updateEmailFailure": "Failed to update email",
+      "deleteModuleSuccess": "Module has been deleted"
+    }
+  },
+  "Placeholders": {
+    "folder": "Enter name for the folder, like: 'grammar'...",
+    "module": "Enter name for the module, like: 'grammar'...",
+    "email": "Enter your email",
+    "password": "Enter your password",
+    "confirmPassword": "Enter your password again",
+    "currentPassword": "Enter current password",
+    "newPassword": "Enter new password",
+    "name": "Enter your name",
+    "code": "Enter code"
+  },
+  "Labels": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "name": "Name",
+    "birthday": "Birthday",
+    "createdAt": "Here since",
+    "term": "Term",
+    "definition": "Definition"
+  },
+  "Validation": {
+    "required": {
+      "password": "Password is required",
+      "confirmPassword": "Confirm password is required",
+      "currentPassword": "Current password is required",
+      "newPassword": "New password is required",
+      "email": "Email is required",
+      "name": "Name is required",
+      "birthday": "Birthday is required"
+    },
+    "min": {
+      "newPassword": "At least {min, plural, =1 {# character} other {# characters}}",
+      "currentPassword": "At least {min, plural, =1 {# character} other {# characters}}",
+      "password": "At least {min, plural, =1 {# character} other {# characters}}",
+      "name": "At least {min, plural, =1 {# character} other {# characters}}",
+      "birthday": "Must be at least {min, plural, =1 {# year} other {# years}} old"
+    },
+    "password": {
+      "mustContainSymbols": "Must contain: [0-9], [a-z]",
+      "allowedSymbols": "Allowed symbols: [0-9], [a-z], [.,_]"
+    },
+    "length": {
+      "code": "Must be exactly {length, plural, =1 {# character} other {# characters}}"
+    },
+    "typeError": {
+      "code": "Only digits"
+    },
+    "oneOf": {
+      "confirmPassword": "Passwords must match"
+    },
+    "matches": {
+      "email": "Must be a valid email"
+    }
+  },
+  "Generics": {
+    "save": "Save",
+    "add": "Add",
+    "error": "Error",
+    "success": "Success",
+    "create": "Create",
+    "update": "Update",
+    "continue": "Continue",
+    "submit": "Submit"
   },
   "Metadata": {
     "Home": {
-      "title": "Hello world!",
-      "description": "Hello world!"
+      "title": "CardQuizzler",
+      "description": "A language learning app with cards"
     }
   }
 }

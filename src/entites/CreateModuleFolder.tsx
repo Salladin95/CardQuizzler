@@ -2,6 +2,7 @@
 import React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useTranslations } from "~/app/i18n"
 import { CreateEditFolder } from "./CreateEditFolder"
 import { useQueryClient } from "@tanstack/react-query"
 import { Button, foldersQueryKey, Popover, useCreateFolderMutation } from "~/shared"
@@ -9,6 +10,7 @@ import { Button, foldersQueryKey, Popover, useCreateFolderMutation } from "~/sha
 export function CreateModuleFolder() {
 	const router = useRouter()
 	const [showPopover, setShowPopover] = React.useState(false)
+	const t = useTranslations("Features")
 
 	function closePopover() {
 		setShowPopover(false)
@@ -25,14 +27,14 @@ export function CreateModuleFolder() {
 	}
 
 	return (
-		<Popover onOpenChange={setShowPopover} open={showPopover} side={"top"} trigger={<Button>Создать</Button>}>
+		<Popover onOpenChange={setShowPopover} open={showPopover} side={"top"} trigger={<Button>{t("create")}</Button>}>
 			<div className={"px-4 py-2"}>
 				<Button className={"mb-4"} variant={"secondary"} onClick={closePopover}>
-					<Link href={"/module/create"}>Создать модуль</Link>
+					<Link href={"/module/create"}>{t("createModule")}</Link>
 				</Button>
 				<CreateEditFolder
-					trigger={<Button variant={"secondary"}>Создать папку</Button>}
-					title={"Создать новую папку"}
+					trigger={<Button variant={"secondary"}>{t("createFolder")}</Button>}
+					title={t("createNewFolder")}
 					onSubmit={handleFolderCreation}
 				/>
 			</div>

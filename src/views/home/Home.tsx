@@ -2,41 +2,41 @@
 import React from "react"
 import Link from "next/link"
 import { HomePageData } from "~/app/models"
-import { useTranslations } from "next-intl"
+import { useTranslations } from "~/app/i18n"
 import { CreateModuleFolder } from "~/entites"
-import { Button, getRandomArrEl, LoadingDataRenderer, useFetchHomePageData } from "~/shared"
 import { DifficultModulesCarousel, FolderCarousel, ModulesCarousel } from "~/widgets"
+import { Button, getRandomArrEl, LoadingDataRenderer, useFetchHomePageData } from "~/shared"
 
 export function Home(props: HomePageData) {
 	const { lastActions, modules, difficultModules, folders } = props
-	const t = useTranslations("Index")
+	const t = useTranslations("Home")
 
 	return (
 		<main className={"container overflow-hidden"}>
 			{Boolean(lastActions?.length) && (
 				<section className="mb-4">
-					<h1>{t("title")}</h1>
+					<h1>{t("lastActions")}</h1>
 					<ModulesCarousel data={lastActions} className={"h-[11rem]"} />
 				</section>
 			)}
 
 			{Boolean(difficultModules?.length) && (
 				<section className="">
-					<h3>Сложные модули</h3>
+					<h3>{t("difficultModules")}</h3>
 					<DifficultModulesCarousel data={difficultModules} className={"h-[11rem]"} />
 				</section>
 			)}
 
 			{Boolean(folders?.length) && (
 				<section className="mb-4">
-					<h2>Мои папки</h2>
+					<h2>{t("myFolders")}</h2>
 					<FolderCarousel data={folders} className={"h-[9rem]"} />
 				</section>
 			)}
 
 			{Boolean(modules?.length) && (
 				<section className="mb-12">
-					<h3>Мои модули</h3>
+					{t("myModules")}
 					<ModulesCarousel data={modules} className={"h-[11rem]"} />
 				</section>
 			)}
@@ -44,7 +44,7 @@ export function Home(props: HomePageData) {
 			<div className={"flex gap-x-4"}>
 				<CreateModuleFolder />
 				<Button disabled={!modules.length} className={"mb-4"}>
-					<Link href={`/module/${getRandomArrEl(modules)?.id}`}>Рандомный модуль</Link>
+					<Link href={`/module/${getRandomArrEl(modules)?.id}`}>{t("randomModule")}</Link>
 				</Button>
 			</div>
 		</main>

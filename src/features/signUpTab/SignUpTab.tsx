@@ -1,36 +1,26 @@
 "use client"
 import React from "react"
+import * as Yup from "yup"
 import { useWindowSize } from "react-use"
 import { useSignUpMutation } from "./api"
+import { useTranslations } from "~/app/i18n"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import { Button, DatePicker, Input, Popover, useToast } from "~/shared"
+import { Button, DatePicker, Input, Popover, useToast, useTranslatedFieldErrorMessages } from "~/shared"
 import { calculatePreviousYearStartDate, cn, fullDateFormatter, MAX_BIRTHDAY_DATE } from "~/shared/lib"
-import * as Yup from "yup"
-import {
-	birthdayMinMsg,
-	birthdayRequiredMsg,
-	confirmPasswordRequiredMsg,
-	emailRequiredMsg,
-	invalidEmailMsg,
-	nameMinLengthMsg,
-	nameRequiredMsg,
-	passwordRequiredMsg,
-	passwordsMustMatchMsg,
-} from "~/app/constants"
 
 export const singUpValidationSchema = Yup.object({
-	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
-	name: Yup.string().required(nameRequiredMsg).min(1, nameMinLengthMsg),
-	password: Yup.string().required(passwordRequiredMsg).password(),
+	email: Yup.string().required().email(),
+	name: Yup.string().required().min(1),
+	password: Yup.string().required().password(),
 	confirmPassword: Yup.string()
-		.required(confirmPasswordRequiredMsg)
-		.oneOf([Yup.ref("password"), ""], passwordsMustMatchMsg)
+		.required()
+		.oneOf([Yup.ref("password"), ""])
 		.password(),
-	birthday: Yup.date().required(birthdayRequiredMsg).max(MAX_BIRTHDAY_DATE, birthdayMinMsg),
+	birthday: Yup.date().required().max(MAX_BIRTHDAY_DATE),
 })
 
 export type SignUpFormType = Yup.InferType<typeof singUpValidationSchema>
@@ -60,20 +50,16 @@ export function getSignUpFormDefaultValues(): SignUpFormType {
 
 export function SignUpTab(props: SignUpProps) {
 	const { tabName, onSubmit: onSubmitProp } = props
+	const t = useTranslations()
 
 	const toast = useToast()
 	const signUp = useSignUpMutation({
-		onSuccess: (res) => {
-			if (res?.status < 400) {
-				onSubmitProp()
-				toast({ variant: "primary", title: "Success", description: "You have signed up!" })
-				return
-			}
-			toast({ variant: "error", title: "Error", description: "Failed to sign up" })
+		onSuccess: () => {
+			onSubmitProp()
+			toast({ variant: "primary", title: t("Generics.success"), description: t("Auth.messages.signUpSuccess") })
 		},
-		onError: (e) => {
-			const message = e.response?.data?.message || "Something went wrong"
-			toast({ variant: "error", title: "Error", description: message })
+		onError: () => {
+			toast({ variant: "error", title: t("Generics.error"), description: t("Auth.messages.signUpFailure") })
 		},
 	})
 
@@ -87,6 +73,7 @@ export function SignUpTab(props: SignUpProps) {
 		defaultValues: getSignUpFormDefaultValues(),
 		resolver: yupResolver(singUpValidationSchema),
 	})
+	const translatedErrorMessages = useTranslatedFieldErrorMessages(errors)
 
 	const birthday = watch(SignUpFormEnum.BIRTHDAY)
 
@@ -97,51 +84,62 @@ export function SignUpTab(props: SignUpProps) {
 		})
 	}
 	const { width: windowWidth } = useWindowSize()
+	const [isCalendarOpen, setIsCalendarOpen] = React.useState(false)
 	return (
 		<RadixTabs.Content className="bg-transparent  outline-none" value={tabName}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<FormFieldWithLabel className={"mb-6"} id={SignUpFormEnum.EMAIL} label={"Почта"} error={errors?.email}>
+				<FormFieldWithLabel
+					className={"mb-6"}
+					id={SignUpFormEnum.EMAIL}
+					label={t("Labels.email")}
+					error={translatedErrorMessages.get(SignUpFormEnum.EMAIL)}
+				>
 					<Input
 						{...register(SignUpFormEnum.EMAIL)}
 						id={SignUpFormEnum.EMAIL}
 						error={Boolean(errors?.email)}
-						placeholder={"Введите почту..."}
+						placeholder={t("Placeholders.email")}
 						autoComplete={"username"}
 					/>
 				</FormFieldWithLabel>
-				<FormFieldWithLabel className={"mt-2 mb-6"} id={SignUpFormEnum.NAME} label={"Имя"} error={errors?.name}>
+				<FormFieldWithLabel
+					className={"mt-2 mb-6"}
+					id={SignUpFormEnum.NAME}
+					label={t("Labels.name")}
+					error={translatedErrorMessages.get(SignUpFormEnum.NAME)}
+				>
 					<Input
 						{...register(SignUpFormEnum.NAME)}
 						id={SignUpFormEnum.NAME}
 						error={Boolean(errors?.name)}
-						placeholder={"Введите ваше имя..."}
+						placeholder={t("Placeholders.name")}
 						autoComplete={"name"}
 					/>
 				</FormFieldWithLabel>
 				<FormFieldWithLabel
 					className={"mt-2 mb-6"}
 					id={SignUpFormEnum.PASSWORD}
-					label={"Пароль"}
-					error={errors?.password}
+					label={t("Labels.password")}
+					error={translatedErrorMessages.get(SignUpFormEnum.PASSWORD)}
 				>
 					<PasswordInput
 						{...register(SignUpFormEnum.PASSWORD)}
 						id={SignUpFormEnum.PASSWORD}
 						error={Boolean(errors?.password)}
-						placeholder={"Введите пароль..."}
+						placeholder={t("Placeholders.password")}
 						autoComplete={"new-password"}
 					/>
 				</FormFieldWithLabel>
 				<FormFieldWithLabel
 					className={"mt-2 mb-10"}
 					id={SignUpFormEnum.CONFIRM_PASSWORD}
-					label={"Подтверждение пароля"}
-					error={errors?.confirmPassword}
+					label={t("Labels.confirmPassword")}
+					error={translatedErrorMessages.get(SignUpFormEnum.CONFIRM_PASSWORD)}
 				>
 					<PasswordInput
 						{...register(SignUpFormEnum.CONFIRM_PASSWORD)}
 						error={Boolean(errors?.confirmPassword)}
-						placeholder={"Подтвердите пароль..."}
+						placeholder={t("Placeholders.confirmPassword")}
 						id={SignUpFormEnum.CONFIRM_PASSWORD}
 						name={SignUpFormEnum.CONFIRM_PASSWORD}
 						autoComplete={"new-password"}
@@ -152,11 +150,14 @@ export function SignUpTab(props: SignUpProps) {
 					className={cn("mb-2", {
 						"text-red-400": Boolean(errors?.birthday),
 					})}
+					onClick={() => setIsCalendarOpen(true)}
 				>
-					Дата рождения
+					{t("Labels.birthday")}
 				</p>
 				<Popover
 					side={windowWidth > 1080 ? "left" : "bottom"}
+					open={isCalendarOpen}
+					onOpenChange={setIsCalendarOpen}
 					trigger={
 						<Button
 							variant={"secondary"}
@@ -181,7 +182,7 @@ export function SignUpTab(props: SignUpProps) {
 					type={"submit"}
 					className={"max-w-[20rem] mx-auto "}
 				>
-					Зарегистрироваться
+					{t("Auth.signUp")}
 				</ActionBtn>
 			</form>
 		</RadixTabs.Content>

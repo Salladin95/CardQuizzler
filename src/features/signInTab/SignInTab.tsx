@@ -3,18 +3,18 @@ import React from "react"
 import * as Yup from "~/yup"
 import { useSignInMutation } from "./api"
 import { useLocalStorage } from "react-use"
+import { useTranslations } from "~/app/i18n"
 import * as RadixTabs from "@radix-ui/react-tabs"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
-import { Input, profileQueryKey, useToast } from "~/shared"
-import { emailRequiredMsg, invalidEmailMsg, passwordRequiredMsg } from "~/app/constants"
+import { Input, profileQueryKey, useToast, useTranslatedFieldErrorMessages } from "~/shared"
 
 export const singInValidationSchema = Yup.object({
-	email: Yup.string().required(emailRequiredMsg).email(invalidEmailMsg),
-	password: Yup.string().required(passwordRequiredMsg).password(),
+	email: Yup.string().required().email(),
+	password: Yup.string().required().password(),
 })
 
 export type SignInFormType = Yup.InferType<typeof singInValidationSchema>
@@ -38,6 +38,7 @@ export function getSignInFormDefaultValues(): SignInFormType {
 }
 
 export function SignInTab(props: SignInProps) {
+	const t = useTranslations()
 	const { tabName, onSubmit: onSubmitProp } = props
 	const [_, setAccessToken] = useLocalStorage<string | null>("access-token", null)
 
@@ -45,16 +46,13 @@ export function SignInTab(props: SignInProps) {
 	const queryClient = useQueryClient()
 	const signIn = useSignInMutation({
 		onError: () => {
-			toast({ variant: "error", title: "Error", description: "Failed to sign in" })
+			toast({ variant: "error", title: t("Generics.error"), description: t("Auth.messages.signInFailure") })
 		},
 		onSuccess: (res) => {
-			if (res?.status < 400) {
-				toast({ variant: "primary", title: "Success", description: "You have signed in!" })
-				onSubmitProp()
-				setAccessToken(res.data.accessToken)
-				queryClient.refetchQueries({ queryKey: [profileQueryKey] })
-				return
-			}
+			toast({ variant: "primary", title: t("Generics.success"), description: t("Auth.messages.signInSuccess") })
+			onSubmitProp()
+			setAccessToken(res.data.accessToken)
+			queryClient.refetchQueries({ queryKey: [profileQueryKey] })
 		},
 	})
 
@@ -66,6 +64,7 @@ export function SignInTab(props: SignInProps) {
 		defaultValues: getSignInFormDefaultValues(),
 		resolver: yupResolver(singInValidationSchema),
 	})
+	const translatedErrorMessages = useTranslatedFieldErrorMessages(errors)
 	const onSubmit: SubmitHandler<SignInFormType> = async (payload) => {
 		signIn.mutate(payload)
 	}
@@ -73,26 +72,31 @@ export function SignInTab(props: SignInProps) {
 	return (
 		<RadixTabs.Content className="bg-transparentoutline-none" value={tabName}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<FormFieldWithLabel className={"mb-4"} id={SignInFormEnum.EMAIL} label={"Почта"} error={errors?.email}>
+				<FormFieldWithLabel
+					className={"mb-4"}
+					id={SignInFormEnum.EMAIL}
+					label={t("Labels.email")}
+					error={translatedErrorMessages.get(SignInFormEnum.EMAIL)}
+				>
 					<Input
 						{...register(SignInFormEnum.EMAIL)}
 						id={SignInFormEnum.EMAIL}
 						error={Boolean(errors?.email)}
-						placeholder={"Введите почту..."}
+						placeholder={t("Placeholders.email")}
 						autoComplete={"username"}
 					/>
 				</FormFieldWithLabel>
 				<FormFieldWithLabel
 					className={"mt-2 mb-8"}
 					id={SignInFormEnum.PASSWORD}
-					label={"Пароль"}
-					error={errors?.password}
+					label={t("Labels.password")}
+					error={translatedErrorMessages.get(SignInFormEnum.PASSWORD)}
 				>
 					<PasswordInput
 						{...register(SignInFormEnum.PASSWORD)}
 						id={SignInFormEnum.PASSWORD}
 						error={Boolean(errors?.password)}
-						placeholder={"Введите пароль..."}
+						placeholder={t("Placeholders.password")}
 						autoComplete={"current-password"}
 					/>
 				</FormFieldWithLabel>
@@ -102,7 +106,7 @@ export function SignInTab(props: SignInProps) {
 					type={"submit"}
 					className={"max-w-[20rem] mx-auto"}
 				>
-					Войти
+					{t("Auth.signIn")}
 				</ActionBtn>
 			</form>
 			{props.resetPassword}

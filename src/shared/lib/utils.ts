@@ -46,6 +46,8 @@ export function formDataToObject(formData: FormData): { [key: string]: string } 
 	return formObject
 }
 
+// Regular expression pattern for basic email format
+export const emailRegexp: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 /**
  * Checks if the given email address conforms to a basic email format.
  *
@@ -53,11 +55,8 @@ export function formDataToObject(formData: FormData): { [key: string]: string } 
  * @returns {boolean} True if the email format is valid, False otherwise.
  */
 export function checkEmailFormat(email: string): boolean {
-	// Regular expression pattern for basic email format
-	const pattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-
 	// Check if the email matches the pattern
-	return pattern.test(email)
+	return emailRegexp.test(email)
 }
 
 /**
@@ -67,4 +66,8 @@ export function checkEmailFormat(email: string): boolean {
  */
 export function getRandomArrEl<T>(arr: T[]): T {
 	return arr[Math.floor(Math.random() * arr.length)]
+}
+
+export function getRandomInt(max: number) {
+	return Math.floor(Math.random() * max)
 }

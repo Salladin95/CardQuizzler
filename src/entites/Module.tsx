@@ -1,6 +1,7 @@
 "use client"
 import { cn } from "~/shared/lib"
 import { ModuleType } from "~/app/models"
+import { useTranslations } from "~/app/i18n"
 import { PropsWithClassName } from "~/app/types"
 
 export type ModuleProps = ModuleType &
@@ -9,6 +10,7 @@ export type ModuleProps = ModuleType &
 	}
 
 export function Module(props: ModuleProps) {
+	const t = useTranslations("Module")
 	const { title, terms, className, onClick } = props
 
 	function handleClick() {
@@ -23,9 +25,7 @@ export function Module(props: ModuleProps) {
 				className,
 			)}
 		>
-			<p className={"mb-1 text-body-2"}>
-				Всего терминов: <span className={"italic"}>{terms.length}</span>
-			</p>
+			<p className={"mb-1 text-body-2"}>{t("numberOfTerms", { number: terms.length })}</p>
 			<h1 className={"h3"}>{title}</h1>
 		</div>
 	)

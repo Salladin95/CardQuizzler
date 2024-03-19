@@ -1,4 +1,6 @@
 export * from "./useAwayClick"
 export * from "./useBreakpoint"
+export * from "./useSwitchLocale"
 export * from "./useApiErrorToast"
 export * from "./useAddClassToTag"
+export * from "./useTranslatedFieldErrorMessages"
