@@ -10,6 +10,9 @@ jobs:
   push_to_registry:
     name: Build & Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_APP_URL: ${{ secrets.APP_URL }}
+      NEXT_PUBLIC_API_URL: ${{ secrets.API_URL }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
