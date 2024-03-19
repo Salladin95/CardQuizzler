@@ -26,11 +26,19 @@ jobs:
         with:
           images: khalid95/card-quizzler-frontend
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - name: Build Docker image
+        id: build-image
+        run: |
+          docker build -t khalid95/card-quizzler-frontend:latest .
+          docker run khalid95/card-quizzler-frontend:latest pnpm run build
+
+      - name: Capture build logs
+        if: ${{ steps.build-image.outcome != 'success' }}
+        run: |
+          echo "Build failed, capturing logs..."
+          docker logs $(docker ps -q --filter ancestor=khalid95/card-quizzler-frontend:latest)
+
+      - name: Push Docker image
+        if: ${{ steps.build-image.outcome == 'success' }}
+        run: |
+          docker push khalid95/card-quizzler-frontend:latest
