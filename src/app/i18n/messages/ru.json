@@ -27,10 +27,10 @@
     "randomModule": "Случайный модуль"
   },
   "Folder": {
-    "numberOfModules": "Количество модулей - {number}"
+    "numberOfModules": "{number, plural, =1 {# модуль} other {# модулей}} в папке"
   },
   "Module": {
-    "numberOfTerms": "Количество терминов - {number}"
+    "numberOfTerms": "{number, plural, =1 {# термин} other {# терминов}} в модуле"
   },
   "Profile": {
     "resetPassword": "Сбросить пароль",
@@ -61,6 +61,7 @@
   "Features": {
     "createModule": "Создать модуль",
     "createFolder": "Создать папку",
+    "editFolder": "Изменить папку",
     "createNewFolder": "Создать новую папку",
     "createNewModule": "Создать новый модуль",
     "updatePassword": "Обновить пароль",

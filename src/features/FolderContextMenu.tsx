@@ -2,6 +2,7 @@
 import React from "react"
 import { FolderType } from "~/app/models"
 import { useRouter } from "next/navigation"
+import { useTranslations } from "~/app/i18n"
 import { useQueryClient } from "@tanstack/react-query"
 import { ActionBtn, CreateEditFolder } from "~/entites"
 import {
@@ -22,6 +23,7 @@ type FolderSettingsMenuProps = {
 }
 
 export function FolderContextMenu(props: FolderSettingsMenuProps) {
+	const t = useTranslations()
 	const { folder } = props
 	const queryClient = useQueryClient()
 	const router = useRouter()
@@ -79,12 +81,12 @@ export function FolderContextMenu(props: FolderSettingsMenuProps) {
 						<span className={"mr-2"}>
 							<AdjustIcon />
 						</span>
-						<span>Редактировать</span>
+						<span>{t("Features.edit")}</span>
 					</ActionBtn>
 				}
 				onSubmit={handleUpdateFolder}
 				folder={folder}
-				title={"Изменить папку"}
+				title={t("Features.editFolder")}
 			/>
 			<ActionBtn
 				loading={deleteFolder.isPending}
@@ -96,7 +98,7 @@ export function FolderContextMenu(props: FolderSettingsMenuProps) {
 				<span className={"mr-2"}>
 					<TrashIcon />
 				</span>
-				<span>Удалить</span>
+				<span>{t("Features.delete")}</span>
 			</ActionBtn>
 		</Popover>
 	)

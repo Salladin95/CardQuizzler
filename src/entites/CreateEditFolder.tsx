@@ -9,11 +9,12 @@ type CreateFolderProps = {
 	title?: string
 	trigger?: React.ReactNode
 	folder?: FolderType
+	hasSubmitted?: boolean
 }
 
 export function CreateEditFolder(props: CreateFolderProps) {
 	const t = useTranslations()
-	const { onSubmit, title, trigger, folder } = props
+	const { onSubmit, title, hasSubmitted, trigger, folder } = props
 	const [folderName, setFolderName] = React.useState(folder?.title || "")
 	const [showDialog, setShowDialog] = React.useState(false)
 
@@ -48,7 +49,7 @@ export function CreateEditFolder(props: CreateFolderProps) {
 					variant={"primary"}
 					onClick={handleSubmit}
 					// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
-					disabled={!folderName}
+					disabled={!folderName || Boolean(hasSubmitted)}
 				>
 					{t("Generics.save")}
 				</Button>

@@ -21,9 +21,7 @@ export function Folder(props: FolderProps) {
 				className,
 			)}
 		>
-			<p className={"mb-1 text-body-2"}>
-				{t("numberOfModules")}: <span className={"italic"}>{modules.length}</span>
-			</p>
+			<p className={"mb-1 text-body-2"}>{t("numberOfModules", { number: modules.length })}</p>
 			<div className="flex items-center gap-x-2">
 				<FolderIcon />
 				<h1 className={"h3"}>{title}</h1>

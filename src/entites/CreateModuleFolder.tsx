@@ -36,6 +36,7 @@ export function CreateModuleFolder() {
 					trigger={<Button variant={"secondary"}>{t("createFolder")}</Button>}
 					title={t("createNewFolder")}
 					onSubmit={handleFolderCreation}
+					hasSubmitted={Boolean(createFolder.submittedAt)}
 				/>
 			</div>
 		</Popover>

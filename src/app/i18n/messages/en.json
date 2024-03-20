@@ -27,10 +27,10 @@
     "randomModule": "Random module"
   },
   "Folder": {
-    "numberOfModules": "Number of modules - {number}"
+    "numberOfModules": "{number, plural, =0 {Folder is empty} =1 {Folder has # module} other {Folder has # modules}}"
   },
   "Module": {
-    "numberOfTerms": "Number of terms - {number}"
+    "numberOfTerms": "{number, plural, =1 {Module has # term} other {Module has # terms}}"
   },
   "Profile": {
     "resetPassword": "Reset password",
@@ -61,6 +61,7 @@
   "Features": {
     "createModule": "Create module",
     "createFolder": "Create folder",
+    "editFolder": "Edit folder",
     "createNewFolder": "Create new folder",
     "createNewModule": "Create new module",
     "updatePassword": "Update password",
