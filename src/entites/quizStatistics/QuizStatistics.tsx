@@ -20,7 +20,7 @@ export function QuizStatistics(props: QuizStatisticsProps) {
 				progress={calculateProgress(positiveAnswers, positiveAnswers + negativeAnswers)}
 				className={"shrink-0"}
 			/>
-			<div className={"768:w-360 w-[50%] max-w-640"}>
+			<div className={"768:w-360 w-[90%] max-w-640"}>
 				<QuizStatisticsItem className={"mb-4"} title={t("confettiScreen.finished")} value={positiveAnswers} />
 				<QuizStatisticsItem variant={"danger"} title={t("confettiScreen.inProgress")} value={negativeAnswers} />
 			</div>
