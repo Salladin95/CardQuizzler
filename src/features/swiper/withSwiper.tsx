@@ -138,7 +138,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 			<section className={"container flex-center"}>
 				<div
 					ref={scope}
-					className={cn("w-360 h-[35rem] mt-4 640:w-428 768:w-640 768:h-640 768:mt-8 1024:w-768 relative ", className)}
+					className={cn("w-360 h-[30rem] mt-4 640:w-428 768:w-640 768:h-640 768:mt-8 1024:w-768 relative ", className)}
 				>
 					{currentCards?.map((card, index) => (
 						<Swipeable
@@ -159,14 +159,14 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 							/>
 						</Swipeable>
 					))}
-					<div className={"w-full px-4 absolute -bottom-[12%] 768:-bottom-[10%] flex justify-between"}>
+					<div className={"w-full px-4 absolute -bottom-[3.2rem] flex justify-between 768:-bottom-[4rem]"}>
 						<Button onClick={() => swipeManually(false)} variant={"none"} className={"w-min"}>
 							<ArrowLeft className={"text-primary hover:text-green transition-colors"} />
 						</Button>
 						<Button
 							variant={"none"}
 							disabled={swiperData.originalTerms.length === currentCards.length || isAnimating}
-							className={cn("absolute-x-center  text-black cursor-pointer w-min", {
+							className={cn("absolute-x-center text-black cursor-pointer w-min", {
 								"opacity-30": swiperData.originalTerms.length === currentCards.length || isAnimating,
 							})}
 							onClick={handleBack}

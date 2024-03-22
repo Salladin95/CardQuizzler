@@ -37,11 +37,11 @@ export function DisplayEditorContent(props: { content: string; onClick?: (e: Rea
 			</div>
 
 			<Dialog
-				className={"bg-purple-gradient"}
+				className={"bg-purple-gradient top-[54%] 640:top-[28rem]"}
 				trigger={
 					<Button
 						variant={"none"}
-						className={cn("bottom-6 absolute-x-center w-min text-sub-primary", {
+						className={cn("bottom-2 absolute-x-center w-min text-sub-primary", {
 							"opacity-0 pointer-events-none": !hasOverflow,
 						})}
 					>
@@ -49,7 +49,7 @@ export function DisplayEditorContent(props: { content: string; onClick?: (e: Rea
 					</Button>
 				}
 			>
-				<ScrollArea className={"w-428 h-428 flex-center"}>
+				<ScrollArea className={"w-320 h-[75vh] 40:w-428 768:w-640 1024:w-768 flex-center"}>
 					<EditorContent editor={editorContentWithOverflow} />
 				</ScrollArea>
 			</Dialog>

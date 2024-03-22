@@ -50,6 +50,7 @@ const config = {
 	theme: {
 		screens: {
 			// Mobile
+			320: "320px",
 			360: "360px",
 			375: "375px",
 			428: "428px",
