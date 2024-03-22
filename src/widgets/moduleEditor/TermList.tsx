@@ -28,11 +28,11 @@ function TermListComponent(props: TermListProps) {
 						transition={{ opacity: { duration: 0.3 }, height: { duration: 0.4 }, ease: "easeOut" }}
 						className="relative"
 					>
-						<div className={cn("mb-4", { "mb-8": index === items.length - 1 })}>
+						<div className={cn("mb-4", { "mb-12": index === items.length - 1 })}>
 							<TermEditor index={index} term={term} onUpdate={onUpdate} onDelete={onDelete} />
 							<Button
 								variant="secondary"
-								className="w-min mx-auto absolute-x-center z-50 -bottom-[12%] opacity-0 transition-opacity hover:opacity-100"
+								className="w-min mx-auto absolute-x-center z-[200] -bottom-[1.8rem] opacity-0 transition-opacity hover:opacity-100"
 								onClick={() => onAddTerm(index + 1)}
 								data-no-dnd="true"
 							>

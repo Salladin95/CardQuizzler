@@ -150,7 +150,8 @@
     "create": "Создать",
     "update": "Обновить",
     "continue": "Продолжить",
-    "submit": "Отправить"
+    "submit": "Отправить",
+    "more": "Ещё"
   },
   "Metadata": {
     "Home": {

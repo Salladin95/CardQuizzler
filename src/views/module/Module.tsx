@@ -68,7 +68,7 @@ function Module(props: ModuleProps) {
 		<main className={"flex flex-col relative overflow-hidden"}>
 			<FlatProgressBar progress={swiperState.progress} className={"absolute inset-0 w-full"} />
 			{swiperState.progress !== 100 && (
-				<Swiper swiperData={swiperState} className={"mt-12"} onUpdate={(swiperData) => setSwiperState(swiperData)} />
+				<Swiper swiperData={swiperState} onUpdate={(swiperData) => setSwiperState(swiperData)} />
 			)}
 			{swiperState.progress === 100 && (
 				<QuizConfettiScreen

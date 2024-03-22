@@ -25,7 +25,7 @@ export function Editor(props: TipTapEditorProps) {
 	})
 
 	return (
-		<div className={cn("editor-wrapper", className)} ref={parentRef}>
+		<div className={cn("editor-wrapper relative text-black", className)} ref={parentRef}>
 			<EditorContent editor={editor} />
 		</div>
 	)

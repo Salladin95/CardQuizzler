@@ -135,8 +135,11 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 		}
 
 		return (
-			<section className={"container flex-center mt-4 428:mt-0"}>
-				<div ref={scope} className={cn("w-360 h-428 640:w-428 768:w-640 768:h-640 1024:w-768 relative ", className)}>
+			<section className={"container flex-center"}>
+				<div
+					ref={scope}
+					className={cn("w-360 h-[35rem] mt-4 640:w-428 768:w-640 768:h-640 768:mt-8 1024:w-768 relative ", className)}
+				>
 					{currentCards?.map((card, index) => (
 						<Swipeable
 							className={"absolute rounded-12px"}
@@ -156,7 +159,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 							/>
 						</Swipeable>
 					))}
-					<div className={"w-full px-4 absolute -bottom-[15%] 768:-bottom-[10%] flex justify-between"}>
+					<div className={"w-full px-4 absolute -bottom-[12%] 768:-bottom-[10%] flex justify-between"}>
 						<Button onClick={() => swipeManually(false)} variant={"none"} className={"w-min"}>
 							<ArrowLeft className={"text-primary hover:text-green transition-colors"} />
 						</Button>

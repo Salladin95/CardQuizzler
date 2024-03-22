@@ -4,6 +4,8 @@ import { Underline } from "@tiptap/extension-underline"
 import { TextStyle } from "@tiptap/extension-text-style"
 import { EditorOptions, useEditor } from "@tiptap/react"
 
+export const charactersLimit = 500
+
 export function useConfigureEditor(props: Partial<EditorOptions>) {
 	return useEditor({
 		extensions: [
@@ -19,7 +21,11 @@ export function useConfigureEditor(props: Partial<EditorOptions>) {
 				horizontalRule: false,
 				dropcursor: false,
 				gapcursor: false,
-				// paragraph: false,
+				paragraph: {
+					HTMLAttributes: {
+						class: "",
+					},
+				},
 				// italic: false,
 				// bold: false,
 				// hardBreak: false,
@@ -32,7 +38,7 @@ export function useConfigureEditor(props: Partial<EditorOptions>) {
 		],
 		editorProps: {
 			attributes: {
-				class: "input input-primary input-size-default w-full h-full block",
+				class: "input input-primary input-size-default w-full h-full block pt-4",
 			},
 		},
 		...props,

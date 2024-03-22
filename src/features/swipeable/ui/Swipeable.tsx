@@ -138,13 +138,10 @@ export const Swipeable = React.forwardRef<HTMLDivElement, SwipeableProps>((props
 		<div className={cn("perspective-1000 w-[100%] h-[100%] text-white", className)} {...rest}>
 			<motion.div
 				ref={ref}
-				className={cn(
-					"swipeable w-[100%] h-[100%] rounded-12px flex-center transform-style-3d relative before:absolute before:content-[''] before:inset-[0.5rem] before:rounded before:border-3px",
-					{
-						"pointer-events-none": !isTheTopCard || isAnimating,
-						"z-50": isTheTopCard,
-					},
-				)}
+				className={cn("swipeable w-[100%] h-[100%] rounded-12px flex-center transform-style-3d relative", {
+					"pointer-events-none": !isTheTopCard || isAnimating,
+					"z-50": isTheTopCard,
+				})}
 				drag={true}
 				dragElastic={0.4}
 				onDragStart={handleDragStart}

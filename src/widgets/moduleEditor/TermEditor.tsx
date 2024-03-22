@@ -6,6 +6,7 @@ import { useTranslations } from "~/app/i18n"
 import { PropsWithClassName } from "~/app/types"
 import { Editor, EditorToolBar } from "~/features/editor"
 import { Button, TermEditorCtxProvider, XMarkIcon } from "~/shared"
+import { useWindowSize } from "react-use"
 
 type CreateModuleEditorProps = {
 	term: TermType
@@ -22,22 +23,24 @@ export function TermEditor(props: CreateModuleEditorProps) {
 		onUpdate({ ...term, ...updatedValues }, index)
 	}
 
+	const { width } = useWindowSize()
+
 	return (
 		<TermEditorCtxProvider>
 			<div className={cn("rounded bg-gray-800 px-4 428:px-8 pt-4 pb-10 text-white relative", className)}>
-				<div className={"flex justify-between"}>
+				<div className={"flex justify-between mb-4"}>
 					<span data-no-dnd="true">{index + 1}</span>
+					<EditorToolBar className={cn("", { "opacity-0 pointer-events-none": width < 1080 })} />
 					<Button data-no-dnd="true" variant={"none"} className={"w-min"} onClick={() => onDelete(index)}>
 						<XMarkIcon />
 					</Button>
 				</div>
-				<div className={"cursor-default flex flex-col 768:mt-2 768:flex-row 768:gap-x-6"} data-no-dnd="true">
+				<div className={"cursor-default flex flex-col 768:mt-2 768:flex-row gap-6"} data-no-dnd="true">
 					<TermEditorItem
 						onUpdate={(title) => handleUpdate({ title })}
 						title={t("Labels.term")}
 						initialContent={term.title}
 					/>
-					<EditorToolBar className={"w-min mx-auto mt-4 768:mt-0 768:absolute-x-center 768:top-2 z-[100]"} />
 					<TermEditorItem
 						onUpdate={(description) => handleUpdate({ description })}
 						title={t("Labels.definition")}

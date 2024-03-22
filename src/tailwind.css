@@ -140,6 +140,10 @@
                 #000 100%);
     }
 
+    .bg-purple-gradient {
+        background: linear-gradient(90deg, rgba(29, 55, 145, 100%) 0%, rgba(0, 25, 52, 100%) 100%);
+    }
+
     .scale-4 {
         transform: scale(4);
     }

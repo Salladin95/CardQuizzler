@@ -17,10 +17,13 @@ export function EditorToolBar(props: TipTapEditorToolBarProps) {
 		<div
 			data-toolbar
 			data-no-dnd="true"
-			className={cn("flex-center gap-x-3 tip-tap-toolbar px-2 py-2 rounded-xl bg-gray-700", className, {
-				"pointer-events-none": !editor,
-				"opacity-60": !editor,
-			})}
+			className={cn(
+				"flex-center gap-x-3 tip-tap-toolbar px-2 py-2 rounded-xl bg-gray-700",
+				{
+					"pointer-events-none opacity-60": !editor,
+				},
+				className,
+			)}
 			{...rest}
 		>
 			<ToolbarOption editor={editor} onClick={() => editor?.chain().focus().toggleBold().run()} name={"bold"}>
