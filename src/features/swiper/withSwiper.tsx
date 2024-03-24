@@ -14,7 +14,7 @@ import {
 	Swipeable,
 	SwipedCard,
 	updateAnswer,
-} from "../swipeable/"
+} from "~/features/swipeable/"
 
 export type SwiperCard<T> = T & SwipedCard & WithId
 export type SwiperData<T> = {
@@ -32,6 +32,8 @@ type SwiperProps<T> = {
 export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 	return function Swiper(props: SwiperProps<DataType>) {
 		const { className, onUpdate, swiperData } = props
+		const [scope, animate] = useAnimate()
+		const [isAnimating, setIsAnimating] = React.useState(false)
 		const [currentCards, setCurrentCards] = React.useState<SwiperCard<DataType>[]>(swiperData.originalTerms)
 
 		const handleSwipe = (answer: boolean) => {
@@ -95,24 +97,18 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 			}
 		}
 
-		const cleanSwipedStateOnAnimationEnd = () => {
+		function cleanSwipedStateOnAnimationEnd() {
 			const updatedCard = { ...getArrLastItem(currentCards), answer: null }
 			const updateCurrentCards = [...removeArrLastItem(currentCards), updatedCard]
 			setCurrentCards(updateCurrentCards)
 		}
 
-		const [isAnimating, setIsAnimating] = React.useState(false)
 		const handleAnimationStart = () => setIsAnimating(true)
-		const handleAnimationComplete = () => {
+
+		function handleAnimationComplete() {
 			setIsAnimating(false)
 			cleanSwipedStateOnAnimationEnd()
 		}
-
-		React.useEffect(() => {
-			setCurrentCards(swiperData.originalTerms)
-		}, [swiperData.originalTerms])
-
-		const [scope, animate] = useAnimate()
 
 		async function swipeManually(answer: boolean) {
 			const { moveDistance, targetRotation } = calculateMoveParameters()
@@ -134,11 +130,15 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 			}
 		}
 
+		React.useEffect(() => {
+			setCurrentCards(swiperData.originalTerms)
+		}, [swiperData.originalTerms])
+
 		return (
 			<section className={"container flex-center"}>
 				<div
 					ref={scope}
-					className={cn("w-360 h-[30rem] mt-4 640:w-428 768:w-640 768:h-640 768:mt-8 1024:w-768 relative ", className)}
+					className={cn("w-360 h-[30rem] mt-4 640:w-428 768:w-640 768:h-640 768:mt-8 1024:w-768 relative", className)}
 				>
 					{currentCards?.map((card, index) => (
 						<Swipeable

@@ -1,6 +1,7 @@
 import React from "react"
 import { Editor } from "@tiptap/react"
 import { PropsWithChildren } from "~/app/types"
+import { useTranslations } from "~/app/i18n"
 
 type TermEditorCtxType = {
 	editor: null | Editor
@@ -25,8 +26,9 @@ export function TermEditorCtxProvider(props: PropsWithChildren) {
 
 export const useTermEditorCtx = () => {
 	const ctx = React.useContext(TermEditorCtx)
+	const t = useTranslations("Exceptions")
 	if (!ctx) {
-		throw new Error("Term editor context is not defined")
+		throw new Error(t("termCtxNotDefined"))
 	}
 	return ctx
 }

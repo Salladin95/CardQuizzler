@@ -10,6 +10,7 @@ export type Profile = {
 export type TermType = {
 	id: string
 	title: string
+	moduleID: string
 	description: string
 }
 

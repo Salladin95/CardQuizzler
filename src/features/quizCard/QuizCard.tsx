@@ -22,11 +22,13 @@ export function QuizCard(props: QuizCardProps) {
 		setFlippableTarget(e.currentTarget.closest(".swipeable"))
 	}
 
+	const term: TermType = { title, description, id: props.id, moduleID: props.moduleID }
+
 	return (
 		<FlippableContent
 			className={`${className} quiz-card`}
-			frontSideContent={<DisplayEditorContent onClick={handleClick} content={title} />}
-			backSideContent={<DisplayEditorContent onClick={handleClick} content={description} />}
+			frontSideContent={<DisplayEditorContent term={term} onClick={handleClick} content={title} />}
+			backSideContent={<DisplayEditorContent term={term} onClick={handleClick} content={description} />}
 		/>
 	)
 }

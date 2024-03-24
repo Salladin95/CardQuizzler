@@ -12,6 +12,9 @@ import {
 	updateModule,
 	UpdateModulePayload,
 	UpdateModuleResponse,
+	updateTerm,
+	UpdateTermPayload,
+	UpdateTermResponse,
 } from "./requests"
 import { AxiosError } from "axios"
 
@@ -50,6 +53,15 @@ export function useDeleteModuleMutation(
 ) {
 	return useMutation({
 		mutationFn: deleteModule,
+		...options,
+	})
+}
+
+export function useUpdateTermMutation(
+	options?: Omit<UseMutationOptions<UpdateTermResponse, AxiosError, UpdateTermPayload>, "mutationFn">,
+) {
+	return useMutation({
+		mutationFn: updateTerm,
 		...options,
 	})
 }

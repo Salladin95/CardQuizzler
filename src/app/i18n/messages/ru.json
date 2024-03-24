@@ -61,6 +61,7 @@
   "Features": {
     "createModule": "Создать модуль",
     "createFolder": "Создать папку",
+    "editTerm": "Изменить термин",
     "editFolder": "Изменить папку",
     "createNewFolder": "Создать новую папку",
     "createNewModule": "Создать новый модуль",
@@ -82,7 +83,10 @@
       "updatePasswordFailure": "Не удалось обновить пароль",
       "updateEmailSuccess": "Email успешно обновлен",
       "updateEmailFailure": "Не удалось обновить email",
-      "deleteModuleSuccess": "Модуль удален успешно"
+      "deleteModuleSuccess": "Модуль удален успешно",
+      "updateTermSuccess": "Термин обновлен",
+      "updateTermFailure": "Не получилось обновить термин"
+
     }
   },
   "Placeholders": {
@@ -152,6 +156,11 @@
     "continue": "Продолжить",
     "submit": "Отправить",
     "more": "Ещё"
+  },
+  "Exceptions": {
+    "swiperCtxNotDefined": "Контекст Swiper не определен",
+    "termCtxNotDefined": "Контекст редактора терминов не определен",
+    "reqEmailVerificationCtxNotDefined": "Контекст редактора терминов не определен"
   },
   "Metadata": {
     "Home": {

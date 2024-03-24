@@ -1,4 +1,5 @@
 import React from "react"
+import { useAnimate } from "framer-motion"
 
 export type WithId = { id: string }
 export type WithParamsId = { params: WithId }
@@ -38,3 +39,4 @@ export type ApiValidationError = {
 export type ApiValidationResponse = ApiResponse<ApiValidationError[]>
 export type ApiResponseError = string
 export type ApiCommonResponse = ApiResponse<ApiResponseError>
+export type Animate = ReturnType<typeof useAnimate>[1]

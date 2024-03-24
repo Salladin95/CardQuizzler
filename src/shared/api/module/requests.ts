@@ -1,7 +1,7 @@
 import axios from "~/app/axios"
-import { JsonResponse, SortOptions } from "~/shared"
-import { ModuleType, TermType } from "~/app/models"
 import { AxiosResponse } from "axios"
+import { ModuleType, TermType } from "~/app/models"
+import { JsonResponse, SortOptions } from "~/shared"
 
 export type GetModulePayload = string
 export type GetModuleResponse = ModuleType
@@ -34,7 +34,15 @@ export async function getDifficultModules(): Promise<GetDifficultModulesResponse
 	return res.data.data
 }
 
-export type CreateModulePayload = Omit<ModuleType, "id">
+export type CreateTermPayload = {
+	id: string
+	title: string
+	description: string
+}
+export type CreateModulePayload = {
+	title: string
+	terms: CreateTermPayload[]
+}
 export type CreateModuleResponse = ModuleType
 
 export async function createModule(payload: CreateModulePayload): Promise<CreateModuleResponse> {
@@ -42,7 +50,7 @@ export async function createModule(payload: CreateModulePayload): Promise<Create
 	return res.data.data
 }
 
-export type CreateModuleInFolderPayload = Omit<ModuleType, "id"> & {
+export type CreateModuleInFolderPayload = CreateModulePayload & {
 	folderID: string
 }
 export type CreateModuleInFolderResponse = ModuleType
@@ -57,7 +65,7 @@ export async function createModuleInFolder({
 
 export type UpdateModulePayload = {
 	title?: string
-	newTerms?: TermType[]
+	newTerms?: CreateTermPayload[]
 	updatedTerms?: TermType[]
 	id: string
 }
@@ -73,4 +81,14 @@ export type DeleteModuleResponse = AxiosResponse<JsonResponse<null>>
 
 export async function deleteModule(id: DeleteModulePayload): Promise<DeleteModuleResponse> {
 	return axios.delete<JsonResponse<null>>(`module/${id}`)
+}
+
+export type UpdateTermPayload = Omit<TermType, "title" | "description"> & {
+	title?: string
+	description?: string
+}
+export type UpdateTermResponse = AxiosResponse<JsonResponse<null>>
+
+export async function updateTerm({ id, ...payload }: UpdateTermPayload): Promise<UpdateTermResponse> {
+	return axios.patch<JsonResponse<null>>(`term/${id}`, payload)
 }

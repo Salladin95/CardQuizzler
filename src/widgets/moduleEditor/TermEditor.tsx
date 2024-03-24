@@ -2,11 +2,11 @@
 import React from "react"
 import { cn } from "~/shared/lib"
 import { TermType } from "~/app/models"
-import { useTranslations } from "~/app/i18n"
-import { PropsWithClassName } from "~/app/types"
-import { Editor, EditorToolBar } from "~/features/editor"
-import { Button, TermEditorCtxProvider, XMarkIcon } from "~/shared"
 import { useWindowSize } from "react-use"
+import { PropsWithClassName } from "~/app/types"
+import { EditorToolBar } from "~/features/editor"
+import { TermEditorForm } from "~/entites/TermEditorForm"
+import { Button, TermEditorCtxProvider, UpdateTermPayload, XMarkIcon } from "~/shared"
 
 type CreateModuleEditorProps = {
 	term: TermType
@@ -17,9 +17,8 @@ type CreateModuleEditorProps = {
 
 export function TermEditor(props: CreateModuleEditorProps) {
 	const { onUpdate, onDelete, index, term, className } = props
-	const t = useTranslations()
 
-	const handleUpdate = (updatedValues: Partial<TermType>) => {
+	const handleUpdate = (updatedValues: Pick<UpdateTermPayload, "title" | "description">) => {
 		onUpdate({ ...term, ...updatedValues }, index)
 	}
 
@@ -35,42 +34,8 @@ export function TermEditor(props: CreateModuleEditorProps) {
 						<XMarkIcon />
 					</Button>
 				</div>
-				<div className={"cursor-default flex flex-col 768:mt-2 768:flex-row gap-6"} data-no-dnd="true">
-					<TermEditorItem
-						onUpdate={(title) => handleUpdate({ title })}
-						title={t("Labels.term")}
-						initialContent={term.title}
-					/>
-					<TermEditorItem
-						onUpdate={(description) => handleUpdate({ description })}
-						title={t("Labels.definition")}
-						initialContent={term.description}
-					/>
-				</div>
+				<TermEditorForm term={term} onUpdate={handleUpdate} />
 			</div>
 		</TermEditorCtxProvider>
-	)
-}
-
-type TermEditorItemProps = {
-	title: string
-	initialContent: string
-	onUpdate: (content: string) => void
-}
-
-export function TermEditorItem(props: TermEditorItemProps) {
-	const { title, initialContent, onUpdate } = props
-	return (
-		<div className={"flex-1"}>
-			<p className={"mb-2"}>{title}</p>
-			<Editor
-				options={{
-					content: initialContent,
-					onUpdate({ editor }) {
-						onUpdate(editor.getHTML())
-					},
-				}}
-			/>
-		</div>
 	)
 }

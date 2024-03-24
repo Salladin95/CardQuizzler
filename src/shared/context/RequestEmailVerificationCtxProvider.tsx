@@ -1,6 +1,7 @@
 import React from "react"
 import { PropsWithChildren } from "~/app/types"
 import { UseRequestEmailVerification, useRequestEmailVerification, useToast } from "~/shared"
+import { useTranslations } from "~/app/i18n"
 
 type RequestEmailVerificationCtxType = {
 	resetForm: (() => void) | null
@@ -35,8 +36,9 @@ export function RequestEmailVerificationCtxProvider(props: PropsWithChildren) {
 
 export const useRequestEmailVerificationCtx = () => {
 	const ctx = React.useContext(RequestEmailVerificationCtx)
+	const t = useTranslations("Exceptions")
 	if (!ctx) {
-		throw new Error("Request email verification context is not defined")
+		throw new Error(t("reqEmailVerificationCtxNotDefined"))
 	}
 	return ctx
 }
