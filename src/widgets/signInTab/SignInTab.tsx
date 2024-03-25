@@ -20,7 +20,7 @@ export const singInValidationSchema = Yup.object({
 export type SignInFormType = Yup.InferType<typeof singInValidationSchema>
 
 type SignInProps = {
-	resetPassword: React.ReactNode
+	forgotPassword: React.ReactNode
 	tabName: string
 	onSubmit: () => void
 }
@@ -109,7 +109,7 @@ export function SignInTab(props: SignInProps) {
 					{t("Auth.signIn")}
 				</ActionBtn>
 			</form>
-			{props.resetPassword}
+			{props.forgotPassword}
 		</RadixTabs.Content>
 	)
 }
