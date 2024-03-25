@@ -2,32 +2,17 @@ import React from "react"
 import { TermType } from "~/app/models"
 import { useTranslations } from "~/app/i18n"
 import { EditorContent } from "@tiptap/react"
-import { ActionBtn, TermEditorForm } from "~/entites"
-import { useQueryClient } from "@tanstack/react-query"
-import { EditorToolBar, useConfigureEditor } from "~/features/editor"
-import {
-	AdjustIcon,
-	Button,
-	Dialog,
-	moduleQueryKey,
-	ScrollArea,
-	TermEditorCtxProvider,
-	UpdateTermPayload,
-	useHasOverflow,
-	useToast,
-	useUpdateTermMutation,
-} from "~/shared"
+import { Button, Dialog, ScrollArea, useConfigureEditor, useHasOverflow, useUpdateTermCtx } from "~/shared"
 
 type DisplayEditorContentProps = {
 	content: string
-	onClick?: (e: React.SyntheticEvent) => void
 	term: TermType
+	onClick?: (e: React.SyntheticEvent) => void
 }
 
 export function DisplayEditorContent(props: DisplayEditorContentProps) {
-	const { content, onClick, term: originalTerm } = props
 	const t = useTranslations()
-	const [term, setTerm] = React.useState(originalTerm)
+	const { content, onClick, term } = props
 	const contentRef = React.useRef<HTMLDivElement>(null!)
 	const hasOverflow = useHasOverflow(contentRef.current)
 
@@ -51,26 +36,7 @@ export function DisplayEditorContent(props: DisplayEditorContentProps) {
 		content,
 	})
 
-	const [showUpdateTerm, setShowUpdateTerm] = React.useState(false)
-	const queryClient = useQueryClient()
-	const toast = useToast()
-	const updateTerm = useUpdateTermMutation({
-		onSuccess: () => {
-			toast({ variant: "primary", title: t("Generics.success"), description: t("Features.messages.updateTermSuccess") })
-			setShowUpdateTerm(false)
-			queryClient.resetQueries({ queryKey: [moduleQueryKey, originalTerm.moduleID] })
-			updateTerm.reset()
-		},
-		onError: () => {
-			toast({ title: t("Generics.error"), description: t("Features.messages.updateTermFailure") })
-			setShowUpdateTerm(false)
-			updateTerm.reset()
-		},
-	})
-
-	function handleUpdateTerm(payload: Pick<UpdateTermPayload, "title" | "description">) {
-		setTerm({ ...term, ...payload })
-	}
+	const { renderUpdateTerm } = useUpdateTermCtx()
 
 	return (
 		<div className={"w-full h-full flex-center"}>
@@ -78,29 +44,7 @@ export function DisplayEditorContent(props: DisplayEditorContentProps) {
 				<EditorContent editor={editorContent} className={"my-auto"} />
 			</div>
 
-			<Dialog
-				open={showUpdateTerm}
-				onOpenChange={setShowUpdateTerm}
-				className={"bg-gray-600 text-white top-[32vh] p-6 w-320 40:w-428 768:w-640 1024:w-768 rounded"}
-				trigger={
-					<Button variant={"none"} className={"absolute top-4 -left-[42%] z-[100]"}>
-						<AdjustIcon />
-					</Button>
-				}
-			>
-				<TermEditorCtxProvider>
-					<EditorToolBar className={"mb-6"} />
-					<TermEditorForm term={term} onUpdate={handleUpdateTerm} />
-					<ActionBtn
-						disabled={Boolean(updateTerm.submittedAt)}
-						loading={updateTerm.isPending}
-						className={"mt-8"}
-						onClick={() => updateTerm.mutate(term)}
-					>
-						{t("Generics.save")}
-					</ActionBtn>
-				</TermEditorCtxProvider>
-			</Dialog>
+			{renderUpdateTerm(term)}
 
 			{hasOverflow && (
 				<Dialog

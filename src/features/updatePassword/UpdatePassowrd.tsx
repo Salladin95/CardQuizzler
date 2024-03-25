@@ -1,13 +1,20 @@
 import React from "react"
 import * as Yup from "yup"
 import { Profile } from "~/app/models"
-import { useUpdatePassword } from "./api"
 import { useForm } from "react-hook-form"
 import { useTranslations } from "~/app/i18n"
 import { ActionBtn, FormField } from "~/entites"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useQueryClient } from "@tanstack/react-query"
-import { Button, Dialog, PasswordInput, profileQueryKey, useToast, useTranslatedFieldErrorMessages } from "~/shared"
+import {
+	Button,
+	Dialog,
+	PasswordInput,
+	profileQueryKey,
+	useToast,
+	useTranslatedFieldErrorMessages,
+	useUpdatePassword,
+} from "~/shared"
 
 const updatePasswordSchema = Yup.object({
 	currentPassword: Yup.string().required().password(),

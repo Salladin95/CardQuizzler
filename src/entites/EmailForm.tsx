@@ -3,15 +3,15 @@ import * as Yup from "~/yup"
 import { useForm } from "react-hook-form"
 import { useTranslations } from "~/app/i18n"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { ActionBtn, FormFieldWithLabel } from "~/entites"
-import { checkEmailFormat, cn, Input, useRequestEmailVerificationCtx, useTranslatedFieldErrorMessages } from "~/shared"
+import { FormFieldWithLabel } from "~/entites/index"
+import { checkEmailFormat, cn, Input, useTranslatedFieldErrorMessages } from "~/shared"
 
-const ForgotPasswordEmailFormSchema = Yup.object({
+const EmailFormSchema = Yup.object({
 	email: Yup.string().required().email(),
 })
-export type ForgotPasswordEmailFormType = Yup.InferType<typeof ForgotPasswordEmailFormSchema>
+export type EmailFormType = Yup.InferType<typeof EmailFormSchema>
 
-export enum ForgotPasswordEmailFormEnum {
+export enum EmailFormEnum {
 	EMAIL = "email",
 }
 
@@ -19,9 +19,12 @@ function getFormDefaultValues() {
 	return { email: "" }
 }
 
-// RETRIEVES EMAIL FROM USER"S INPUT AND MAKES EMAIL VERIFICATION REQUEST
-// SETS EMAIL & RESET FORM IN CONTEXT, SO WE COULD USE IT FURTHER
-export function ForgotPasswordEmailForm() {
+type EmailFormProps = {
+	onSubmit: (formType: EmailFormType) => void
+	renderSubmitBtn: (isDisabled: boolean) => React.ReactNode
+}
+
+export function EmailForm(props: EmailFormProps) {
 	const t = useTranslations()
 	const {
 		handleSubmit,
@@ -29,50 +32,39 @@ export function ForgotPasswordEmailForm() {
 		formState: { errors, isDirty },
 		reset: resetForm,
 		watch,
-	} = useForm<ForgotPasswordEmailFormType>({
+	} = useForm<EmailFormType>({
 		defaultValues: getFormDefaultValues(),
-		resolver: yupResolver(ForgotPasswordEmailFormSchema),
+		resolver: yupResolver(EmailFormSchema),
 		mode: "onChange",
 	})
 	const translatedErrorMessages = useTranslatedFieldErrorMessages(errors)
 
-	const email = watch(ForgotPasswordEmailFormEnum.EMAIL)
-	const isEmailValid = isDirty && checkEmailFormat(email)
+	const email = watch(EmailFormEnum.EMAIL)
+	const isEmailValid = checkEmailFormat(email)
 
-	const requestEmailVerificationCtx = useRequestEmailVerificationCtx()
-
-	const requestEmailVerification = requestEmailVerificationCtx.requestEmailVerification
-	requestEmailVerificationCtx.resetForm = resetForm
-
-	function onSummit(formData: ForgotPasswordEmailFormType) {
-		requestEmailVerification.mutate(formData)
-		requestEmailVerificationCtx.setEmail(email)
-	}
-
-	if (requestEmailVerification.isSuccess) {
-		return null
+	function onSubmit(formData: EmailFormType) {
+		props.onSubmit(formData)
+		resetForm()
 	}
 
 	return (
 		// USING FORM SO WE COULD SUBMIT WITH ENTER
-		<form onSubmit={handleSubmit(onSummit)} className={""}>
+		<form onSubmit={handleSubmit(onSubmit)} className={""}>
 			<FormFieldWithLabel
 				label={t("Labels.email")}
-				id={ForgotPasswordEmailFormEnum.EMAIL}
-				error={translatedErrorMessages.get(ForgotPasswordEmailFormEnum.EMAIL)}
+				id={EmailFormEnum.EMAIL}
+				error={translatedErrorMessages.get(EmailFormEnum.EMAIL)}
 				className={cn({ "text-red-400": !isEmailValid && isDirty })}
 			>
 				<Input
-					{...register(ForgotPasswordEmailFormEnum.EMAIL)}
+					{...register(EmailFormEnum.EMAIL)}
 					className={"mb-8"}
 					error={isDirty && !isEmailValid}
 					placeholder={t("Placeholders.email")}
-					id={ForgotPasswordEmailFormEnum.EMAIL}
+					id={EmailFormEnum.EMAIL}
 				/>
 			</FormFieldWithLabel>
-			<ActionBtn disabled={!isEmailValid} loading={requestEmailVerification.isPending} type={"submit"}>
-				{t("Features.requestCode")}
-			</ActionBtn>
+			{props.renderSubmitBtn(!isEmailValid)}
 		</form>
 	)
 }

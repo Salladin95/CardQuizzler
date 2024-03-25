@@ -10,7 +10,7 @@ export type ResetPasswordPayload = {
 }
 export type ResetPasswordResponse = Profile
 
-export async function resetPassword(payload: ResetPasswordPayload): Promise<ResetPasswordResponse> {
+export async function password(payload: ResetPasswordPayload): Promise<ResetPasswordResponse> {
 	const res = await axios.patch("/user/reset-password", {
 		code: payload.code,
 		email: payload.email,
@@ -23,7 +23,30 @@ export const useResetPassword = (
 	options?: Omit<UseMutationOptions<ResetPasswordResponse, AxiosError, ResetPasswordPayload>, "mutationFn">,
 ) => {
 	return useMutation({
-		mutationFn: resetPassword,
+		mutationFn: password,
+		...options,
+	})
+}
+export type UpdatePasswordPayload = {
+	currentPassword: string
+	newPassword: string
+	id: string
+}
+export type UpdatePasswordResponse = Profile
+
+export async function updatePassword(payload: UpdatePasswordPayload): Promise<UpdatePasswordResponse> {
+	const res = await axios.patch(`/user/update-password/${payload.id}`, {
+		currentPassword: payload.currentPassword,
+		newPassword: payload.newPassword,
+	})
+	return res.data
+}
+
+export const useUpdatePassword = (
+	options?: Omit<UseMutationOptions<UpdatePasswordResponse, AxiosError, UpdatePasswordPayload>, "mutationFn">,
+) => {
+	return useMutation({
+		mutationFn: updatePassword,
 		...options,
 	})
 }

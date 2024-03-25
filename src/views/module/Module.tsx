@@ -11,10 +11,12 @@ import {
 	FlatProgressBar,
 	LoadingDataRenderer,
 	recentActionsQueryKey,
+	UpdateTermCtxProvider,
 	useFetchDifficultModules,
 	useFetchModule,
 	useProcessQuizResult,
 } from "~/shared"
+import { EditorToolBar, UpdateTerm } from "~/features"
 
 type ModuleProps = ModuleType & { moduleID?: string }
 
@@ -64,11 +66,17 @@ function Module(props: ModuleProps) {
 		processQuiz.reset()
 	}
 
+	const renderUpdateTerm = (term: TermType) => (
+		<UpdateTerm originalTerm={term} renderToolBar={() => <EditorToolBar className={"mb-6"} />} />
+	)
+
 	return (
 		<main className={"flex flex-col relative overflow-hidden"}>
 			<FlatProgressBar progress={swiperState.progress} className={"absolute inset-0 w-full"} />
 			{swiperState.progress !== 100 && (
-				<Swiper swiperData={swiperState} onUpdate={(swiperData) => setSwiperState(swiperData)} />
+				<UpdateTermCtxProvider renderUpdateTerm={renderUpdateTerm}>
+					<Swiper swiperData={swiperState} onUpdate={(swiperData) => setSwiperState(swiperData)} />
+				</UpdateTermCtxProvider>
 			)}
 			{swiperState.progress === 100 && (
 				<QuizConfettiScreen

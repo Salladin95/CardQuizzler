@@ -1,2 +1,2 @@
 export * from "./TermEditorCtxProvider"
-export * from "./RequestEmailVerificationCtxProvider"
+export * from "./UpdateTermCtxProvider"

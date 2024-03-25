@@ -1,7 +1,8 @@
 import React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { Editor, useConfigureEditor } from "~/features/editor/"
+import { Editor } from "~/features/editor/"
+import { useConfigureEditor } from "~/shared"
 import { EditorContent } from "@tiptap/react"
 
 const meta: Meta<typeof Editor> = {

@@ -3,13 +3,13 @@ import { ActionBtn } from "~/entites"
 import { useTranslations } from "~/app/i18n"
 import { Button, Dialog, useRequestEmailVerification } from "~/shared"
 
-type WithEmailVerificationProps = {
+type WithEmailVerificationRequestProps = {
 	currentEmail: string
 	triggerTitle: string
-	render: () => React.ReactNode
+	render: (reset: () => void) => React.ReactNode
 }
 
-export function WithEmailVerification(props: WithEmailVerificationProps) {
+export function WithEmailVerificationRequest(props: WithEmailVerificationRequestProps) {
 	const t = useTranslations()
 	const { render, currentEmail, triggerTitle } = props
 	const [isOpen, setIsOpen] = React.useState(false)
@@ -45,7 +45,7 @@ export function WithEmailVerification(props: WithEmailVerificationProps) {
 						</ActionBtn>
 					</>
 				)}
-				{requestEmailVerification.isSuccess && render()}
+				{requestEmailVerification.isSuccess && render(reset)}
 			</Dialog>
 		</div>
 	)

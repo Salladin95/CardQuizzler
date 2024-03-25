@@ -74,10 +74,8 @@
     "edit": "Edit",
     "delete": "Delete",
     "requestCode": "Request verification code",
-    "updateEmail": {
-      "title": "Update email",
-      "mailVerificationMessage": "Your current email is {currentEmail}. We'll send a temporary verification code to this email."
-    },
+    "emailVerificationMessage": "Your current email is {currentEmail}. We'll send a temporary verification code to this email.",
+    "updateEmail": "Update email",
     "messages": {
       "updatePasswordSuccess": "Password has been updated",
       "updatePasswordFailure": "Failed to update password",
@@ -85,7 +83,9 @@
       "updateEmailFailure": "Failed to update email",
       "deleteModuleSuccess": "Module has been deleted",
       "updateTermSuccess": "Term has been update",
-      "updateTermFailure": "Failed to update term"
+      "updateTermFailure": "Failed to update term",
+      "reqEmailVerificationFailure": "Failed  to request email verification",
+      "reqEmailVerificationSuccess": "Email verification has been requested"
     }
   },
   "Placeholders": {
@@ -100,6 +100,7 @@
     "code": "Enter code"
   },
   "Labels": {
+    "code": "Code",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm password",
@@ -157,7 +158,8 @@
   "Exceptions": {
     "swiperCtxNotDefined": "Swiper context is not defined",
     "termCtxNotDefined": "Term editor context is not defined",
-    "reqEmailVerificationCtxNotDefined": "Term editor context is not defined"
+    "reqEmailVerificationCtxNotDefined": "Request email verification context is not defined",
+    "updateTermCtxNotDefined": "Update term context is not defined"
   },
   "Metadata": {
     "Home": {

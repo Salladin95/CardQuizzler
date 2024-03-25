@@ -74,10 +74,8 @@
     "edit": "Редактировать",
     "delete": "Удалить",
     "requestCode": "Запросить код подтверждения",
-    "updateEmail": {
-      "title": "Обновить email",
-      "mailVerificationMessage": "Ваш текущий email - {currentEmail}. Мы отправим временный код подтверждения на этот email."
-    },
+    "emailVerificationMessage": "Ваш текущий email - {currentEmail}. Мы отправим временный код подтверждения на этот email.",
+    "updateEmail": "Обновить email",
     "messages": {
       "updatePasswordSuccess": "Пароль успешно обновлен",
       "updatePasswordFailure": "Не удалось обновить пароль",
@@ -85,7 +83,9 @@
       "updateEmailFailure": "Не удалось обновить email",
       "deleteModuleSuccess": "Модуль удален успешно",
       "updateTermSuccess": "Термин обновлен",
-      "updateTermFailure": "Не получилось обновить термин"
+      "updateTermFailure": "Не получилось обновить термин",
+      "reqEmailVerificationFailure": "Не получилось запроси верификацию почты",
+      "reqEmailVerificationSuccess": "Запрос на верификацию отправлен"
 
     }
   },
@@ -101,6 +101,7 @@
     "code": "Введите код"
   },
   "Labels": {
+    "code": "Код",
     "email": "Электронная почта",
     "password": "Пароль",
     "confirmPassword": "Подтвердите пароль",
@@ -160,7 +161,8 @@
   "Exceptions": {
     "swiperCtxNotDefined": "Контекст Swiper не определен",
     "termCtxNotDefined": "Контекст редактора терминов не определен",
-    "reqEmailVerificationCtxNotDefined": "Контекст редактора терминов не определен"
+    "reqEmailVerificationCtxNotDefined": "Конеткс запроса верификации почты не определен",
+    "updateTermCtxNotDefined": "Контекст обновления термина не определен"
   },
   "Metadata": {
     "Home": {

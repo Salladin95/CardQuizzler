@@ -1,7 +1,7 @@
 import React from "react"
 import { Editor } from "@tiptap/react"
-import { PropsWithChildren } from "~/app/types"
 import { useTranslations } from "~/app/i18n"
+import { PropsWithChildren } from "~/app/types"
 
 type TermEditorCtxType = {
 	editor: null | Editor

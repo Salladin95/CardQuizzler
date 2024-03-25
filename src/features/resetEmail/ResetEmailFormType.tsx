@@ -1,10 +1,10 @@
 import React from "react"
 import * as Yup from "~/yup"
-import { Button, Input, useTranslatedFieldErrorMessages } from "~/shared"
 import { useForm } from "react-hook-form"
 import { useTranslations } from "~/app/i18n"
-import { ActionBtn, FormField } from "~/entites"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { ActionBtn, FormFieldWithLabel } from "~/entites"
+import { Input, useTranslatedFieldErrorMessages } from "~/shared"
 
 const resetEmailFormSchema = Yup.object({
 	email: Yup.string().required().email(),
@@ -35,8 +35,6 @@ export function ResetEmailForm(props: ResetEmailFormProps) {
 	const t = useTranslations()
 	const { isSubmitting, hasSubmitError, onSubmit: onSubmitProp } = props
 
-	const [showEmailField, setShowEmailField] = React.useState(false)
-
 	const {
 		handleSubmit,
 		register,
@@ -50,7 +48,6 @@ export function ResetEmailForm(props: ResetEmailFormProps) {
 	})
 
 	const newEmail = watch(ResetEmailFormEnum.EMAIL)
-	const code = watch(ResetEmailFormEnum.CODE)
 
 	function onSubmit(form: ResetEmailFormType) {
 		reset(getResetFormDefaultValues)
@@ -61,40 +58,40 @@ export function ResetEmailForm(props: ResetEmailFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className={"text-primary"}>
-			<FormField error={translatedErrors.get(ResetEmailFormEnum.CODE)}>
+			<FormFieldWithLabel
+				label={t("Labels.code")}
+				id={ResetEmailFormEnum.CODE}
+				error={translatedErrors.get(ResetEmailFormEnum.CODE)}
+			>
 				<Input
 					{...register(ResetEmailFormEnum.CODE)}
+					id={ResetEmailFormEnum.CODE}
 					error={Boolean(errors?.code)}
 					className={"mb-8"}
 					placeholder={t("Placeholders.code")}
 				/>
-			</FormField>
-			{!showEmailField && (
-				<Button disabled={Boolean(errors?.code) || !code} onClick={() => setShowEmailField(true)}>
-					{t("Generics.continue")}
-				</Button>
-			)}
-			{showEmailField && (
-				<>
-					<p className={"mb-4 text-body-2 italic"}>{t("Labels.email")}</p>
-					<FormField error={translatedErrors.get(ResetEmailFormEnum.EMAIL)}>
-						<Input
-							{...register(ResetEmailFormEnum.EMAIL)}
-							error={Boolean(errors?.email)}
-							className={"mb-8"}
-							placeholder={t("Placeholders.email")}
-						/>
-					</FormField>
+			</FormFieldWithLabel>
+			<FormFieldWithLabel
+				label={t("Labels.email")}
+				id={ResetEmailFormEnum.EMAIL}
+				error={translatedErrors.get(ResetEmailFormEnum.EMAIL)}
+			>
+				<Input
+					{...register(ResetEmailFormEnum.EMAIL)}
+					id={ResetEmailFormEnum.EMAIL}
+					error={Boolean(errors?.email)}
+					className={"mb-8"}
+					placeholder={t("Placeholders.email")}
+				/>
+			</FormFieldWithLabel>
 
-					<ActionBtn
-						disabled={!newEmail || hasSubmitError || Boolean(Object.keys(errors).length)}
-						loading={isSubmitting}
-						type={"submit"}
-					>
-						{t("Generics.submit")}
-					</ActionBtn>
-				</>
-			)}
+			<ActionBtn
+				disabled={!newEmail || hasSubmitError || Boolean(Object.keys(errors).length)}
+				loading={isSubmitting}
+				type={"submit"}
+			>
+				{t("Generics.submit")}
+			</ActionBtn>
 		</form>
 	)
 }

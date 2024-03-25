@@ -5,7 +5,7 @@ import { Dialog, useRequestEmailVerification, useToast } from "~/shared"
 
 type ForgotPasswordProps = {
 	trigger: React.ReactNode
-	renderResetPassword: (email: string) => React.ReactNode
+	renderResetPassword: (email: string, reset: () => void) => React.ReactNode
 }
 
 export function ForgotPassword(props: ForgotPasswordProps) {
@@ -15,6 +15,12 @@ export function ForgotPassword(props: ForgotPasswordProps) {
 	const t = useTranslations()
 	const toast = useToast()
 
+	function reset() {
+		requestEmailVerification.reset()
+		setIsOpen(false)
+		setEmail("")
+	}
+
 	const requestEmailVerification = useRequestEmailVerification({
 		onError: () => {
 			toast({
@@ -22,12 +28,9 @@ export function ForgotPassword(props: ForgotPasswordProps) {
 				title: t("Generics.error"),
 				description: t("Features.messages.reqEmailVerificationFailure"),
 			})
+			reset()
 		},
 	})
-
-	function onSubmit() {
-		// requestEmailVerification.reset()
-	}
 
 	const hasRequestedVerification = requestEmailVerification.isSuccess
 
@@ -37,10 +40,7 @@ export function ForgotPassword(props: ForgotPasswordProps) {
 				className={"p-8 py-12 w-[90%] 768:w-[55%] 1024:w-[40%]"}
 				open={isOpen}
 				onOpenChange={setIsOpen}
-				onOverlayClick={() => {
-					setIsOpen(false)
-					requestEmailVerification.reset()
-				}}
+				onOverlayClick={reset}
 				trigger={trigger}
 			>
 				{!hasRequestedVerification && (
@@ -52,11 +52,11 @@ export function ForgotPassword(props: ForgotPasswordProps) {
 						)}
 						onSubmit={(formType) => {
 							requestEmailVerification.mutate(formType)
-							setEmail(email)
+							setEmail(formType.email)
 						}}
 					/>
 				)}
-				{hasRequestedVerification && renderResetPassword(email)}
+				{hasRequestedVerification && renderResetPassword(email, reset)}
 			</Dialog>
 		</div>
 	)

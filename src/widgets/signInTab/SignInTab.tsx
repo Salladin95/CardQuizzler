@@ -10,7 +10,8 @@ import { useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PasswordInput } from "~/shared/ui/PasswordInput"
 import { ActionBtn, FormFieldWithLabel } from "~/entites"
-import { Input, profileQueryKey, useToast, useTranslatedFieldErrorMessages } from "~/shared"
+import { Button, Input, profileQueryKey, useToast, useTranslatedFieldErrorMessages } from "~/shared"
+import { ForgotPassword, ResetPassword } from "~/features"
 
 export const singInValidationSchema = Yup.object({
 	email: Yup.string().required().email(),
@@ -20,7 +21,6 @@ export const singInValidationSchema = Yup.object({
 export type SignInFormType = Yup.InferType<typeof singInValidationSchema>
 
 type SignInProps = {
-	forgotPassword: React.ReactNode
 	tabName: string
 	onSubmit: () => void
 }
@@ -109,7 +109,14 @@ export function SignInTab(props: SignInProps) {
 					{t("Auth.signIn")}
 				</ActionBtn>
 			</form>
-			{props.forgotPassword}
+			<ForgotPassword
+				trigger={
+					<Button variant={"none"} className={"text-body-2"}>
+						{t("Auth.forgotPassword")}
+					</Button>
+				}
+				renderResetPassword={(email: string, reset: () => void) => <ResetPassword email={email} reset={reset} />}
+			/>
 		</RadixTabs.Content>
 	)
 }

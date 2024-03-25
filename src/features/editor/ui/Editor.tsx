@@ -1,10 +1,9 @@
 "use client"
 import React from "react"
 import { cn } from "~/shared/lib"
-import { useTermEditorCtx } from "~/shared"
-import { useConfigureEditor } from "../hooks"
 import { PropsWithClassName } from "~/app/types"
 import { EditorContent, EditorOptions } from "@tiptap/react"
+import { useConfigureEditor, useTermEditorCtx } from "~/shared"
 
 type TipTapEditorProps = {
 	options?: Partial<EditorOptions>

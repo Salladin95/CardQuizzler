@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Flippable, FlippableProps } from "~/features/flippable/Flippable"
+import { Flippable, FlippableProps } from "~/features/Flippable"
 import React from "react"
 import { Card } from "~/entites"
 
