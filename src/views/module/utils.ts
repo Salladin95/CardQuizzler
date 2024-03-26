@@ -11,6 +11,6 @@ export function initializeSwiperData(terms: SwiperCard<TermType>[]): SwiperData<
 		swipedCards: [],
 		negativeSwipesCounter: 0,
 		positiveSwipesCounter: 0,
-		originalTerms: terms,
+		startingTerms: terms,
 	}
 }

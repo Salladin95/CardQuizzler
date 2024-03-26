@@ -4,6 +4,7 @@ import { WithId } from "~/app/types"
 import { QuizConfettiScreen } from "~/widgets"
 import { ModuleType, TermType } from "~/app/models"
 import { useQueryClient } from "@tanstack/react-query"
+import { EditorToolBar, UpdateTerm } from "~/features"
 import { cleanSwipedCards, initializeSwiperData } from "./utils"
 import { getNegativeAnswers, getPositiveAnswers, Swiper, SwiperData } from "~/features/swiper"
 import {
@@ -15,46 +16,30 @@ import {
 	useFetchDifficultModules,
 	useFetchModule,
 	useProcessQuizResult,
+	useStoredSwiperState,
 } from "~/shared"
-import { EditorToolBar, UpdateTerm } from "~/features"
 
-type ModuleProps = ModuleType & { moduleID?: string }
+type ModuleProps = ModuleType
 
 function Module(props: ModuleProps) {
-	const { terms } = props
+	const { terms, id } = props
 	const queryClient = useQueryClient()
 
 	const processQuiz = useProcessQuizResult()
-	const [swiperState, setSwiperState] = React.useState<SwiperData<TermType>>(initializeSwiperData(terms))
+
+	const [storedProgress, setStoredProgress, removeStoredProgress] = useStoredSwiperState(id)
+
+	const [swiperState, setSwiperState] = React.useState<SwiperData<TermType>>(
+		storedProgress || initializeSwiperData(terms),
+	)
+
+	function handleUpdateSwiperState(updatedState: SwiperData<TermType>) {
+		setSwiperState(updatedState)
+		setStoredProgress(updatedState)
+	}
 
 	const negativeAnswers = getNegativeAnswers(swiperState.swipedCards)
 	const positiveAnswers = getPositiveAnswers(swiperState.swipedCards)
-
-	React.useEffect(() => {
-		if (
-			!processQuiz.submittedAt &&
-			swiperState.originalTerms?.length === negativeAnswers?.length + positiveAnswers?.length
-		) {
-			processQuiz.mutate(
-				{ terms: swiperState.swipedCards, moduleID: props.moduleID },
-				{
-					onSuccess: () => {
-						queryClient.invalidateQueries({ queryKey: [recentActionsQueryKey] })
-						queryClient.invalidateQueries({ queryKey: [difficultModulesQueryKey] })
-					},
-				},
-			)
-		}
-	}, [
-		negativeAnswers,
-		positiveAnswers,
-		processQuiz,
-		props.id,
-		props.moduleID,
-		queryClient,
-		swiperState.originalTerms,
-		swiperState.swipedCards,
-	])
 
 	function handleRestart() {
 		setSwiperState(initializeSwiperData([...terms]))
@@ -66,16 +51,58 @@ function Module(props: ModuleProps) {
 		processQuiz.reset()
 	}
 
+	function handleTermUpdate(term: TermType) {
+		const startingTerms = swiperState.startingTerms.map((t) => {
+			if (t.id === term.id) {
+				return term
+			}
+			return t
+		})
+		setStoredProgress({ ...swiperState, startingTerms })
+	}
+
 	const renderUpdateTerm = (term: TermType) => (
-		<UpdateTerm originalTerm={term} renderToolBar={() => <EditorToolBar className={"mb-6"} />} />
+		<UpdateTerm
+			onTermUpdate={handleTermUpdate}
+			originalTerm={term}
+			renderToolBar={() => <EditorToolBar className={"mb-6"} />}
+		/>
 	)
+
+	React.useEffect(() => {
+		if (
+			!processQuiz.submittedAt &&
+			swiperState.startingTerms?.length === negativeAnswers?.length + positiveAnswers?.length
+		) {
+			processQuiz.mutate(
+				{ terms: swiperState.swipedCards, moduleID: props.id },
+				{
+					onSuccess: () => {
+						queryClient.invalidateQueries({ queryKey: [recentActionsQueryKey] })
+						queryClient.invalidateQueries({ queryKey: [difficultModulesQueryKey] })
+						removeStoredProgress()
+					},
+				},
+			)
+		}
+	}, [
+		negativeAnswers,
+		positiveAnswers,
+		processQuiz,
+		props.id,
+		queryClient,
+		removeStoredProgress,
+		swiperState,
+		swiperState.startingTerms,
+		swiperState.swipedCards,
+	])
 
 	return (
 		<main className={"flex flex-col relative overflow-hidden"}>
 			<FlatProgressBar progress={swiperState.progress} className={"absolute inset-0 w-full"} />
 			{swiperState.progress !== 100 && (
 				<UpdateTermCtxProvider renderUpdateTerm={renderUpdateTerm}>
-					<Swiper swiperData={swiperState} onUpdate={(swiperData) => setSwiperState(swiperData)} />
+					<Swiper swiperData={swiperState} onUpdate={handleUpdateSwiperState} />
 				</UpdateTermCtxProvider>
 			)}
 			{swiperState.progress === 100 && (
@@ -92,13 +119,12 @@ function Module(props: ModuleProps) {
 
 export function ModulePage(props: WithId) {
 	const { data, isLoading } = useFetchModule(props.id)
-	return LoadingDataRenderer<ModuleProps>({ Comp: Module, data, isLoading, moduleID: props.id })
+	return LoadingDataRenderer<ModuleProps>({ Comp: Module, data, isLoading })
 }
 
 export function DifficultModulePage(props: { title: string }) {
 	const { data, isLoading } = useFetchDifficultModules()
 	const [module, setModule] = React.useState<ModuleType | null>(null)
-
 	React.useEffect(() => {
 		if (!isLoading && data) {
 			const targetModule = data.find((m) => m.title === props.title)

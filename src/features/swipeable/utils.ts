@@ -13,6 +13,10 @@ export function removeArrLastItem<T>(arr: T[]) {
 	return arr.slice(0, getArrLastIndex(arr))
 }
 
+export function removeArrFirstItem<T>(arr: T[]) {
+	return arr.slice(1)
+}
+
 export function updateAnswer<T>(card: SwiperCard<T>, answer: boolean) {
 	return { ...card, answer }
 }

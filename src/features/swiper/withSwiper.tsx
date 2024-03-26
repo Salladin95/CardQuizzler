@@ -2,9 +2,8 @@
 import React from "react"
 import { useAnimate } from "framer-motion"
 import { calculateProgress, cn } from "~/shared/lib"
-import { ArrowLeft, ArrowRight, Button } from "~/shared"
 import { PropsWithClassName, WithId } from "~/app/types"
-import { TurnLeftIcon } from "~/shared/ui/icons/TurnLeftIcon"
+import { ArrowLeft, ArrowRight, Button, TurnLeftIcon } from "~/shared"
 // TODO: SHOULDN'T USE MODULES FROM THE SAME LEVEL
 import {
 	calculateMoveParameters,
@@ -21,7 +20,7 @@ export type SwiperData<T> = {
 	positiveSwipesCounter: number
 	negativeSwipesCounter: number
 	swipedCards: SwiperCard<T>[]
-	originalTerms: SwiperCard<T>[]
+	startingTerms: SwiperCard<T>[]
 	progress: number
 }
 type SwiperProps<T> = {
@@ -34,30 +33,33 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 		const { className, onUpdate, swiperData } = props
 		const [scope, animate] = useAnimate()
 		const [isAnimating, setIsAnimating] = React.useState(false)
-		const [currentCards, setCurrentCards] = React.useState<SwiperCard<DataType>[]>(swiperData.originalTerms)
+
+		// We use current cards because, on swipe we remove swiped card. We do so (remove card) so the current card would be on top.
+		// We need to have originalCards (passed cards when quiz was initialized) to keep track of progress (percentage).
+		const [currentCards, setCurrentCards] = React.useState<SwiperCard<DataType>[]>(swiperData.startingTerms)
 
 		const handleSwipe = (answer: boolean) => {
-			// TODO SHOULD THE FIRST ELEMENT
+			// TODO: SHOULD BE THE FIRST ELEMENT
 			const swipedSlide = updateAnswer(currentCards[getArrLastIndex(currentCards)], answer)
 			let updatedSwiperData = {
 				...swiperData,
 				progress: calculateProgress(
 					swiperData.positiveSwipesCounter + swiperData.negativeSwipesCounter + 1,
-					swiperData.originalTerms.length,
+					swiperData.startingTerms.length,
 				),
 				swipedCards: [...swiperData.swipedCards, swipedSlide],
 			}
-			// TODO SHOULD THE FIRST ELEMENT
+			// TODO: SHOULD BE THE FIRST ELEMENT
 			setCurrentCards(removeArrLastItem(currentCards))
 
 			updatedSwiperData = !answer
 				? {
 						...updatedSwiperData,
-						negativeSwipesCounter: Math.min(swiperData.originalTerms.length, swiperData.negativeSwipesCounter + 1),
+						negativeSwipesCounter: Math.min(swiperData.startingTerms.length, swiperData.negativeSwipesCounter + 1),
 				  }
 				: {
 						...updatedSwiperData,
-						positiveSwipesCounter: Math.min(swiperData.originalTerms.length, swiperData.positiveSwipesCounter + 1),
+						positiveSwipesCounter: Math.min(swiperData.startingTerms.length, swiperData.positiveSwipesCounter + 1),
 				  }
 
 			onUpdate(updatedSwiperData)
@@ -71,7 +73,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 						...swiperData,
 						progress: calculateProgress(
 							swiperData.positiveSwipesCounter + swiperData.negativeSwipesCounter - 1,
-							swiperData.originalTerms.length,
+							swiperData.startingTerms.length,
 						),
 						negativeSwipesCounter: Math.max(0, swiperData.negativeSwipesCounter - 1),
 						swipedCards: removeArrLastItem(swiperData.swipedCards),
@@ -85,7 +87,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 						...swiperData,
 						progress: calculateProgress(
 							swiperData.positiveSwipesCounter + swiperData.negativeSwipesCounter - 1,
-							swiperData.originalTerms.length,
+							swiperData.startingTerms.length,
 						),
 						positiveSwipesCounter: Math.max(0, swiperData.positiveSwipesCounter - 1),
 						swipedCards: removeArrLastItem(swiperData.swipedCards),
@@ -131,8 +133,11 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 		}
 
 		React.useEffect(() => {
-			setCurrentCards(swiperData.originalTerms)
-		}, [swiperData.originalTerms])
+			// Exclude swiped cards on reload
+			const swipedTermsIDS = swiperData.swipedCards.map((card) => card.id)
+			const startingTerms = swiperData.startingTerms.filter((t) => !swipedTermsIDS.includes(t.id))
+			setCurrentCards(startingTerms)
+		}, [swiperData.startingTerms, swiperData.swipedCards])
 
 		return (
 			<section className={"container flex-center"}>
@@ -165,9 +170,9 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 						</Button>
 						<Button
 							variant={"none"}
-							disabled={swiperData.originalTerms.length === currentCards.length || isAnimating}
+							disabled={swiperData.startingTerms.length === currentCards.length || isAnimating}
 							className={cn("absolute-x-center text-black cursor-pointer w-min", {
-								"opacity-30": swiperData.originalTerms.length === currentCards.length || isAnimating,
+								"opacity-30": swiperData.startingTerms.length === currentCards.length || isAnimating,
 							})}
 							onClick={handleBack}
 						>

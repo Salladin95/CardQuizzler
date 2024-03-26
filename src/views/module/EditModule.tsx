@@ -5,7 +5,15 @@ import { TermType } from "~/app/models"
 import { ModuleEditor } from "~/widgets"
 import { useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
-import { homeDataKey, Loader, moduleQueryKey, modulesQueryKey, useFetchModule, useUpdateModuleMutation } from "~/shared"
+import {
+	homeDataKey,
+	Loader,
+	moduleQueryKey,
+	modulesQueryKey,
+	useFetchModule,
+	useStoredSwiperState,
+	useUpdateModuleMutation,
+} from "~/shared"
 
 export function EditModulePage(props: WithId) {
 	const { id } = props
@@ -14,12 +22,14 @@ export function EditModulePage(props: WithId) {
 
 	const { data: module, isPending } = useFetchModule(props.id)
 
+	const [_v, _s, removeStoredProgress] = useStoredSwiperState(props.id)
 	const updateModule = useUpdateModuleMutation({
 		onSuccess: async () => {
 			router.push("/")
 			queryClient.invalidateQueries({ queryKey: [homeDataKey] })
 			queryClient.invalidateQueries({ queryKey: [modulesQueryKey] })
 			queryClient.invalidateQueries({ queryKey: [moduleQueryKey, id] })
+			removeStoredProgress()
 		},
 	})
 

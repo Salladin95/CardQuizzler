@@ -8,6 +8,7 @@ import {
 	Button,
 	Dialog,
 	moduleQueryKey,
+	TermEditorCtxProvider,
 	UpdateTermPayload,
 	useToast,
 	useUpdateTermMutation,
@@ -16,10 +17,11 @@ import {
 type UpdateTermProps = {
 	originalTerm: TermType
 	renderToolBar: () => React.ReactNode
+	onTermUpdate: (term: TermType) => void
 }
 
 export function UpdateTerm(props: UpdateTermProps) {
-	const { originalTerm, renderToolBar } = props
+	const { originalTerm, renderToolBar, onTermUpdate } = props
 	const t = useTranslations()
 
 	const [term, setTerm] = React.useState(originalTerm)
@@ -32,6 +34,7 @@ export function UpdateTerm(props: UpdateTermProps) {
 			setShowUpdateTerm(false)
 			queryClient.resetQueries({ queryKey: [moduleQueryKey, originalTerm.moduleID] })
 			updateTerm.reset()
+			onTermUpdate(term)
 		},
 		onError: () => {
 			toast({ title: t("Generics.error"), description: t("Features.messages.updateTermFailure") })
@@ -55,8 +58,10 @@ export function UpdateTerm(props: UpdateTermProps) {
 				</Button>
 			}
 		>
-			{renderToolBar()}
-			<TermEditorForm term={term} onUpdate={handleUpdateTerm} />
+			<TermEditorCtxProvider>
+				{renderToolBar()}
+				<TermEditorForm term={term} onUpdate={handleUpdateTerm} />
+			</TermEditorCtxProvider>
 			<ActionBtn
 				disabled={Boolean(updateTerm.submittedAt)}
 				loading={updateTerm.isPending}

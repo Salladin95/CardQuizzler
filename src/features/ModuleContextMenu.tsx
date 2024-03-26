@@ -14,6 +14,7 @@ import {
 	Popover,
 	TrashIcon,
 	useDeleteModuleMutation,
+	useStoredSwiperState,
 	useToast,
 } from "~/shared"
 
@@ -25,6 +26,7 @@ export function ModuleContextMenu(props: ModuleProps) {
 	const toast = useToast()
 	const queryClient = useQueryClient()
 
+	const [_v, _s, removeStoredProgress] = useStoredSwiperState(props.id)
 	const deleteModule = useDeleteModuleMutation({
 		onSuccess: () => {
 			toast({
@@ -35,6 +37,7 @@ export function ModuleContextMenu(props: ModuleProps) {
 			queryClient.invalidateQueries({ queryKey: [homeDataKey] })
 			queryClient.invalidateQueries({ queryKey: [modulesQueryKey] })
 			queryClient.invalidateQueries({ queryKey: [moduleQueryKey, id] })
+			removeStoredProgress()
 		},
 	})
 
