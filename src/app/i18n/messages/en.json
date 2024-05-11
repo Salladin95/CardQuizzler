@@ -60,6 +60,9 @@
   },
   "Features": {
     "createModule": "Create module",
+    "studyModule": "Study this module",
+    "copy": "Make a copy",
+    "share": "Share",
     "createFolder": "Create folder",
     "editFolder": "Edit folder",
     "editTerm": "Edit term",

@@ -5,8 +5,11 @@ import { SwitchLocale } from "~/features"
 import { PropsWithClassName } from "~/app/types"
 import { useTranslations } from "~/app/i18n"
 import { Button, Logo, useProfile, UserIcon } from "~/shared"
+import React from "react"
 
-type HeaderProps = { style?: React.CSSProperties } & PropsWithClassName
+type HeaderProps = { style?: React.CSSProperties } & PropsWithClassName & {
+		renderContextMenu?: () => React.ReactNode
+	}
 
 export function Header(props: HeaderProps) {
 	const { data: profile } = useProfile({ staleTime: 0 })
@@ -36,7 +39,7 @@ export function Header(props: HeaderProps) {
 					</Link>
 				)}
 				<SwitchLocale />
-				{/*<div className={"h-[2px] bg-primary"} />*/}
+				{props.renderContextMenu ? props.renderContextMenu() : null}
 			</div>
 		</header>
 	)

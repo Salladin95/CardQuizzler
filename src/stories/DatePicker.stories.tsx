@@ -18,6 +18,6 @@ export default meta
 
 type Story = StoryObj<typeof DatePickerComp>
 
-export const DatePicker: Story = {
+export const DatePickerStories: Story = {
 	args: {},
 }

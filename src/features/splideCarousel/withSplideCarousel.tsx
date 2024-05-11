@@ -1,18 +1,16 @@
 "use client"
 import React from "react"
+import { CarouselControllers } from "./CarouselControllers"
 import { PropsWithClassName, WithId } from "~/app/types"
-import { Options, Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
-import { CarouselControllers } from "~/features/splideCarousel/CarouselControllers"
+import { useBreakpoint } from "~/shared/hooks/useBreakpoint"
 import { getSplideOptions } from "~/features/splideCarousel/lib/getSplideOptions"
+import { Options, Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
 
 import "@splidejs/react-splide/css/core"
-import { useMedia } from "react-use"
-import { useBreakpoint } from "~/shared/hooks/useBreakpoint"
 
-type SplideCarouselProps<T> = {
+export type SplideCarouselProps<T> = {
 	data: T[] | undefined | null
 	options?: Options
-	withControllers?: boolean
 	onClick?: (id: string) => void
 } & PropsWithClassName
 
@@ -20,7 +18,7 @@ export function withSplideCarousel<DataType extends WithId>(
 	Component: React.ComponentType<DataType & PropsWithClassName>,
 ) {
 	return function (props: SplideCarouselProps<DataType>) {
-		const { data, onClick, options, withControllers = true, className } = props
+		const { data, onClick, options, className } = props
 
 		function handleClick(id: string) {
 			onClick && onClick(id)
@@ -47,7 +45,7 @@ export function withSplideCarousel<DataType extends WithId>(
 						</SplideSlide>
 					))}
 				</SplideTrack>
-				{withControllers && <CarouselControllers />}
+				<CarouselControllers />
 			</Splide>
 		)
 	}

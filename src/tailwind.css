@@ -211,4 +211,10 @@
     .flex-cb {
         @apply flex items-center justify-between;
     }
+
+    .splide-pagination {
+        .is-active {
+            @apply bg-primary;
+        }
+    }
 }

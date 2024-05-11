@@ -4,7 +4,7 @@ import { useTranslations } from "~/app/i18n"
 import { PropsWithChildren } from "~/app/types"
 
 type UpdateTermCtxType = {
-	renderUpdateTerm: (t: TermType) => React.ReactNode
+	renderUpdateTerm?: (t: TermType) => React.ReactNode
 }
 
 const UpdateTermCtx = React.createContext<UpdateTermCtxType | null>(null)

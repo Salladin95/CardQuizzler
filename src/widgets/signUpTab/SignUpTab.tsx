@@ -57,6 +57,7 @@ export function SignUpTab(props: SignUpProps) {
 		onSuccess: () => {
 			onSubmitProp()
 			toast({ variant: "primary", title: t("Generics.success"), description: t("Auth.messages.signUpSuccess") })
+			resetForm(getSignUpFormDefaultValues())
 		},
 		onError: () => {
 			toast({ variant: "error", title: t("Generics.error"), description: t("Auth.messages.signUpFailure") })
@@ -69,6 +70,7 @@ export function SignUpTab(props: SignUpProps) {
 		control,
 		formState: { errors },
 		watch,
+		reset: resetForm,
 	} = useForm<SignUpFormType>({
 		defaultValues: getSignUpFormDefaultValues(),
 		resolver: yupResolver(singUpValidationSchema),

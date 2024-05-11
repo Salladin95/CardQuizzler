@@ -42,12 +42,16 @@ function Module(props: ModuleProps) {
 	const positiveAnswers = getPositiveAnswers(swiperState.swipedCards)
 
 	function handleRestart() {
-		setSwiperState(initializeSwiperData([...terms]))
+		const state = initializeSwiperData([...terms])
+		setSwiperState(state)
+		setStoredProgress(state)
 		processQuiz.reset()
 	}
 
 	function handleContinue() {
-		setSwiperState(initializeSwiperData(cleanSwipedCards(negativeAnswers)))
+		const state = initializeSwiperData(cleanSwipedCards(negativeAnswers))
+		setSwiperState(state)
+		setStoredProgress(state)
 		processQuiz.reset()
 	}
 

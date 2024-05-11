@@ -1,10 +1,10 @@
 "use client"
 import React from "react"
 import { cn } from "~/shared/lib"
-import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "framer-motion"
-import { animateOntoScreen, moveCardToItsInitialPosition, rotateAndMoveSmoothly } from "../animations"
 import { calculateMoveParameters } from "../utils"
 import { DataAttributesProps, PropsWithClassName } from "~/app/types"
+import { motion, PanInfo, useAnimation, useMotionValue, useTransform } from "framer-motion"
+import { animateOntoScreen, moveCardToItsInitialPosition, rotateAndMoveSmoothly } from "../animations"
 
 type StartPoint = {
 	x: number

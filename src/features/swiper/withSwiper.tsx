@@ -135,7 +135,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 		React.useEffect(() => {
 			// Exclude swiped cards on reload
 			const swipedTermsIDS = swiperData.swipedCards.map((card) => card.id)
-			const startingTerms = swiperData.startingTerms.filter((t) => !swipedTermsIDS.includes(t.id))
+			const startingTerms = swiperData.startingTerms?.filter((t) => !swipedTermsIDS.includes(t.id))
 			setCurrentCards(startingTerms)
 		}, [swiperData.startingTerms, swiperData.swipedCards])
 
@@ -170,9 +170,9 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 						</Button>
 						<Button
 							variant={"none"}
-							disabled={swiperData.startingTerms.length === currentCards.length || isAnimating}
+							disabled={swiperData?.startingTerms?.length === currentCards?.length || isAnimating}
 							className={cn("absolute-x-center text-black cursor-pointer w-min", {
-								"opacity-30": swiperData.startingTerms.length === currentCards.length || isAnimating,
+								"opacity-30": swiperData?.startingTerms?.length === currentCards?.length || isAnimating,
 							})}
 							onClick={handleBack}
 						>

@@ -59,8 +59,11 @@
     }
   },
   "Features": {
+    "studyModule": "Изучить модуль",
     "createModule": "Создать модуль",
     "createFolder": "Создать папку",
+    "copy": "Сделать копию",
+    "share": "Поделиться",
     "editTerm": "Изменить термин",
     "editFolder": "Изменить папку",
     "createNewFolder": "Создать новую папку",

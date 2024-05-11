@@ -16,6 +16,7 @@ export function mockModule(): ModuleType {
 		id: faker.string.uuid(),
 		title: fakerEN.word.noun(),
 		terms: mockTerms(),
+		userID: faker.string.uuid(),
 	}
 }
 

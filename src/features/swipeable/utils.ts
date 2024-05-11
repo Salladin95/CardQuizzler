@@ -1,5 +1,4 @@
 import { SwiperCard } from "~/features/swiper"
-import { SwipeDirection } from "~/features/swipeable"
 
 export function getArrLastIndex<T>(arr: T[]) {
 	return arr.length - 1

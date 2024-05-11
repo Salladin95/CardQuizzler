@@ -1,18 +1,21 @@
 import React from "react"
 import { TermType } from "~/app/models"
 import { useTranslations } from "~/app/i18n"
-import { EditorContent } from "@tiptap/react"
-import { Button, Dialog, ScrollArea, useConfigureEditor, useHasOverflow, useUpdateTermCtx } from "~/shared"
+import { EditorContent, EditorOptions } from "@tiptap/react"
+import { Button, cn, Dialog, ScrollArea, useConfigureEditor, useHasOverflow, useUpdateTermCtx } from "~/shared"
 
 type DisplayEditorContentProps = {
 	content: string
 	term: TermType
 	onClick?: (e: React.SyntheticEvent) => void
+	render?: (term: TermType) => React.ReactNode
+	options?: Partial<EditorOptions>
+	className?: string
 }
 
 export function DisplayEditorContent(props: DisplayEditorContentProps) {
 	const t = useTranslations()
-	const { content, onClick, term } = props
+	const { content, options, onClick, term, render, className } = props
 	const contentRef = React.useRef<HTMLDivElement>(null!)
 	const hasOverflow = useHasOverflow(contentRef.current)
 
@@ -24,6 +27,7 @@ export function DisplayEditorContent(props: DisplayEditorContentProps) {
 			},
 		},
 		content,
+		...options,
 	})
 
 	const editorContentWithOverflow = useConfigureEditor({
@@ -34,17 +38,23 @@ export function DisplayEditorContent(props: DisplayEditorContentProps) {
 			},
 		},
 		content,
+		...options,
 	})
 
 	const { renderUpdateTerm } = useUpdateTermCtx()
 
 	return (
 		<div className={"w-full h-full flex-center"}>
-			<div onClick={onClick} ref={contentRef} className={"w-full h-[75%] flex-center overflow-hidden"}>
+			<div
+				onClick={onClick}
+				ref={contentRef}
+				className={cn("w-full h-[75%] flex items-center justify-center overflow-hidden", className)}
+			>
 				<EditorContent editor={editorContent} className={"my-auto"} />
 			</div>
 
-			{renderUpdateTerm(term)}
+			{renderUpdateTerm ? renderUpdateTerm(term) : null}
+			{render ? render(term) : null}
 
 			{hasOverflow && (
 				<Dialog

@@ -1,30 +1,37 @@
 "use client"
 import React from "react"
 import Link from "next/link"
+import { ActionBtn } from "~/entites"
 import { useTranslations } from "~/app/i18n"
 import { useQueryClient } from "@tanstack/react-query"
-import { ActionBtn, Module, ModuleProps } from "~/entites"
 import {
 	AdjustIcon,
-	ArrowsPointingOutIcon,
+	BookOpenIcon,
 	Button,
 	homeDataKey,
 	moduleQueryKey,
 	modulesQueryKey,
+	MotionToggleButton,
 	Popover,
+	ShareIcon,
 	TrashIcon,
 	useDeleteModuleMutation,
+	useProfile,
 	useStoredSwiperState,
 	useToast,
 } from "~/shared"
+import { ModuleType } from "~/app/models"
+import { DuplicateIcon } from "~/shared/ui/icons/DuplicateIcon"
 
-export function ModuleContextMenu(props: ModuleProps) {
+export function ModuleContextMenu(props: ModuleType) {
 	const t = useTranslations()
-	const { id } = props
+	const { id, userID } = props
 	const [showPopover, setShowPopover] = React.useState(false)
 
 	const toast = useToast()
 	const queryClient = useQueryClient()
+
+	const { data: profile } = useProfile()
 
 	const [_v, _s, removeStoredProgress] = useStoredSwiperState(props.id)
 	const deleteModule = useDeleteModuleMutation({
@@ -49,21 +56,17 @@ export function ModuleContextMenu(props: ModuleProps) {
 	return (
 		<Popover
 			side={"top"}
-			trigger={
-				<div>
-					<Module {...props} />
-				</div>
-			}
+			trigger={<MotionToggleButton isOpen={showPopover} toggle={() => setShowPopover(!showPopover)} />}
 			open={showPopover}
 			onOpenChange={setShowPopover}
 			className={"min-w-[20rem] flex-center flex-col gap-y-2"}
 		>
-			<Button disabled={!props?.terms.length} className={"justify-start"} asChild>
+			<Button className={"justify-start"} asChild>
 				<Link href={`/module/${id}`}>
 					<span className={"mr-2"}>
-						<ArrowsPointingOutIcon />
+						<BookOpenIcon />
 					</span>
-					<span>{t("Features.open")}</span>
+					<span>{t("Features.studyModule")}</span>
 				</Link>
 			</Button>
 			<Button className={"justify-start"} asChild>
@@ -74,6 +77,26 @@ export function ModuleContextMenu(props: ModuleProps) {
 					<span>{t("Features.edit")}</span>
 				</Link>
 			</Button>
+			{profile?.id === userID && (
+				<Button className={"justify-start"} asChild>
+					<Link href={`/module/${id}`}>
+						<span className={"mr-2"}>
+							<ShareIcon />
+						</span>
+						<span>{t("Features.share")}</span>
+					</Link>
+				</Button>
+			)}
+			{profile?.id !== userID && (
+				<Button className={"justify-start"} asChild>
+					<Link href={`/module/${id}`}>
+						<span className={"mr-2"}>
+							<DuplicateIcon />
+						</span>
+						<span>{t("Features.copy")}</span>
+					</Link>
+				</Button>
+			)}
 			{/*TODO: EXTRACT TO SEPARATE FUNCTION ADD CONFIRM MODULE*/}
 			<ActionBtn
 				disabled={deleteModule.isSuccess}

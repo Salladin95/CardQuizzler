@@ -24,6 +24,7 @@ export type ModuleType = {
 	id: string
 	title: string
 	terms: TermType[]
+	userID: string
 }
 
 export type HomePageData = {

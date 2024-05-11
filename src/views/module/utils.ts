@@ -1,8 +1,8 @@
-import { SwiperCard, SwiperData } from "~/features/swiper"
 import { TermType } from "~/app/models"
+import { SwiperCard, SwiperData } from "~/features/swiper"
 
 export function cleanSwipedCards(cards: SwiperCard<TermType>[]) {
-	return cards.map((answer) => ({ ...answer, swipedTowards: null }))
+	return cards.map((card) => ({ ...card, answer: undefined }))
 }
 
 export function initializeSwiperData(terms: SwiperCard<TermType>[]): SwiperData<TermType> {

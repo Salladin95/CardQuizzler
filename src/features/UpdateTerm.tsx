@@ -53,7 +53,7 @@ export function UpdateTerm(props: UpdateTermProps) {
 			onOpenChange={setShowUpdateTerm}
 			className={"bg-gray-600 text-white top-[32vh] p-6 w-320 40:w-428 768:w-640 1024:w-768 rounded"}
 			trigger={
-				<Button variant={"none"} className={"absolute top-4 -left-[42%] z-[100]"}>
+				<Button variant={"none"} className={"w-min absolute top-4 left-[2%] z-[100]"}>
 					<AdjustIcon />
 				</Button>
 			}

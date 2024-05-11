@@ -1,6 +1,6 @@
 import React from "react"
 import { TermType } from "~/app/models"
-import { useFlippable } from "~/shared/"
+import { RotateByAxis, useFlippable } from "~/shared/"
 import { FlippableContent } from "~/entites/"
 import { PropsWithClassName } from "~/app/types"
 import { DisplayEditorContent } from "./DisplayEditorContent"
@@ -15,7 +15,11 @@ export function QuizCard(props: QuizCardProps) {
 	const [isFlipped, setIsFlipped] = React.useState(false)
 	const [flippableTarget, setFlippableTarget] = React.useState<Element | null>(null)
 
-	const isFlipping = useFlippable(flippableTarget, Boolean(isFlipped))
+	const isFlipping = useFlippable({
+		elementOrSelector: flippableTarget,
+		isFlipped: Boolean(isFlipped),
+		rotateByAxis: RotateByAxis.Y,
+	})
 
 	function handleClick(e: React.SyntheticEvent) {
 		const isDragging = e.currentTarget.closest("[data-drag-active='true']")
@@ -28,6 +32,7 @@ export function QuizCard(props: QuizCardProps) {
 
 	return (
 		<FlippableContent
+			rotateByAxis={RotateByAxis.Y}
 			className={`${className} quiz-card`}
 			frontSideContent={<DisplayEditorContent term={term} onClick={handleClick} content={title} />}
 			backSideContent={<DisplayEditorContent term={term} onClick={handleClick} content={description} />}
