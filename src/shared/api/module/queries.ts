@@ -4,6 +4,7 @@ import {
 	getDifficultModules,
 	GetDifficultModulesResponse,
 	getModule,
+	GetModulePayload,
 	GetModuleResponse,
 	getModules,
 	GetModulesResponse,
@@ -22,12 +23,12 @@ export const useFetchModules = (options?: Omit<UseQueryOptions<GetModulesRespons
 }
 
 export const useFetchModule = (
-	id: string,
+	{ password, id }: GetModulePayload,
 	options?: Omit<UseQueryOptions<GetModuleResponse, AxiosError>, "queryFn">,
 ) => {
 	return useQuery({
-		queryKey: [moduleQueryKey, id],
-		queryFn: ({ queryKey }) => getModule(queryKey[1] as string),
+		queryKey: [moduleQueryKey, id, password],
+		queryFn: () => getModule({ id, password }),
 		...options,
 	})
 }

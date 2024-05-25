@@ -6,10 +6,12 @@ import { EditModulePage } from "~/views/module"
 import { DataHydration, getModule, moduleQueryKey } from "~/shared"
 
 export default function ModuleWithDataHydration(props: WithParamsId) {
-	const { params } = props
+	const {
+		params: { id },
+	} = props
 	return (
-		<DataHydration<ModuleType> getData={() => getModule(params.id)} queryKeys={[moduleQueryKey, params.id]}>
-			<EditModulePage id={params.id} />
+		<DataHydration<ModuleType> getData={() => getModule({ id })} queryKeys={[moduleQueryKey, id]}>
+			<EditModulePage id={id} />
 		</DataHydration>
 	)
 }

@@ -1,5 +1,8 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import {
+	copyModule,
+	CopyModulePayload,
+	CopyModuleResponse,
 	createModule,
 	createModuleInFolder,
 	CreateModuleInFolderPayload,
@@ -62,6 +65,15 @@ export function useUpdateTermMutation(
 ) {
 	return useMutation({
 		mutationFn: updateTerm,
+		...options,
+	})
+}
+
+export function useCopyModuleMutation(
+	options?: Omit<UseMutationOptions<CopyModuleResponse, AxiosError, CopyModulePayload>, "mutationFn">,
+) {
+	return useMutation({
+		mutationFn: copyModule,
 		...options,
 	})
 }

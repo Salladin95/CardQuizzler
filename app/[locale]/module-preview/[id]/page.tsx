@@ -10,7 +10,7 @@ export default function ModulePreview(props: WithParamsId) {
 	} = props
 	useProtectedProfile()
 	return (
-		<DataHydration<ModuleType> getData={() => getModule(id)} queryKeys={[moduleQueryKey, id]}>
+		<DataHydration<ModuleType> getData={() => getModule({ id })} queryKeys={[moduleQueryKey, id]}>
 			<ModulePreviewPage id={id} />
 		</DataHydration>
 	)

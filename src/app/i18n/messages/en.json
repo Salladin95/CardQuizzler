@@ -85,6 +85,7 @@
       "updateEmailSuccess": "Email has been updated",
       "updateEmailFailure": "Failed to update email",
       "deleteModuleSuccess": "Module has been deleted",
+      "copyModuleSuccess": "Module has been copied",
       "updateTermSuccess": "Term has been update",
       "updateTermFailure": "Failed to update term",
       "reqEmailVerificationFailure": "Failed  to request email verification",
@@ -111,7 +112,9 @@
     "birthday": "Birthday",
     "createdAt": "Here since",
     "term": "Term",
-    "definition": "Definition"
+    "definition": "Definition",
+    "onlyMe": "Only me",
+    "open": "Open"
   },
   "Validation": {
     "required": {
@@ -159,10 +162,14 @@
     "more": "More"
   },
   "Exceptions": {
+    "ctxIsNotDefined": "Context - '{ctx}' is not defined",
     "swiperCtxNotDefined": "Swiper context is not defined",
     "termCtxNotDefined": "Term editor context is not defined",
     "reqEmailVerificationCtxNotDefined": "Request email verification context is not defined",
     "updateTermCtxNotDefined": "Update term context is not defined"
+  },
+  "Titles": {
+    "protectedByPassword": "Access requires password"
   },
   "Metadata": {
     "Home": {

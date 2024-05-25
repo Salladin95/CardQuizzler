@@ -1,17 +1,18 @@
 "use client"
 import React from "react"
 import { TermType } from "~/app/models"
-import { Button, Input } from "~/shared"
 import { ActionBtn } from "~/entites"
+import { AccessType } from "~/app/types"
+import { useTranslations } from "~/app/i18n"
 import { createEmptyTerm, createEmptyTerms } from "./lib"
 import { TermList } from "~/widgets/moduleEditor/TermList"
 import useAddClassToTag from "~/shared/hooks/useAddClassToTag"
-import { useTranslations } from "~/app/i18n"
+import { Button, createOption, Input, Select } from "~/shared"
 
 type ModuleEditorProps = {
 	terms?: TermType[]
 	moduleName?: string
-	onSubmit: (moduleName: string, terms: TermType[]) => void
+	onSubmit: (moduleName: string, terms: TermType[], access: AccessType, password: string) => void
 	hasSubmitted?: boolean
 	isSubmitting?: boolean
 }
@@ -43,14 +44,25 @@ export function ModuleEditor(props: ModuleEditorProps) {
 		setTerms(newTerms)
 	}
 
-	const handleSubmit = () => onSubmit(moduleName, terms)
+	useAddClassToTag("hide-scrollbar", "body")
+
+	const accessOptions = [
+		[AccessType.OPEN, t("Labels.open")],
+		[AccessType.PASSWORD, t("Labels.password")],
+		[AccessType.ONLY_ME, t("Labels.onlyMe")],
+	].map((option) => createOption(...option))
+
+	const [accessOption, setAccessOption] = React.useState<AccessType>(AccessType.OPEN)
+	const [password, setPassword] = React.useState("")
+
+	const handleSubmit = () => onSubmit(moduleName, terms, accessOption, password)
 	const title = !props.terms ? t("Widgets.createNewModule") : t("Widgets.updateModule")
 	const submitBtnTitle = !props.terms ? t("Generics.create") : t("Generics.save")
 
-	// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
-	const isSubmitDisabled = !terms.length || !moduleName || hasSubmitted
+	const hasPasswordError = accessOption === AccessType.PASSWORD && !password
 
-	useAddClassToTag("hide-scrollbar", "body")
+	// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
+	const isSubmitDisabled = !terms.length || !moduleName || hasSubmitted || hasPasswordError
 
 	return (
 		<section className={"overflow-hidden p-1"}>
@@ -71,6 +83,28 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				className={"mb-8"}
 				error={hasError}
 			/>
+			<div className={"flex gap-4 mb-8"}>
+				<Select
+					defaultValue={accessOption}
+					onChange={(option) => setAccessOption(option as AccessType)}
+					placeholder={"Select access"}
+					options={accessOptions}
+					className={"flex-1"}
+				/>
+				{accessOption === AccessType.PASSWORD && (
+					<Input
+						value={password}
+						onChange={(e) => {
+							const value = e.currentTarget.value
+							setPassword(value)
+						}}
+						placeholder={t("Placeholders.password")}
+						className={"flex-1"}
+						error={!password}
+					/>
+				)}
+			</div>
+
 			<TermList
 				items={terms}
 				onReorder={handleReorder}

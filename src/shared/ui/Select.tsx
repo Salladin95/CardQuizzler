@@ -76,7 +76,11 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
 	}
 
 	return (
-		<div className={selectVariants({ variant, size })} data-disabled={Boolean(disabled)} data-error={error}>
+		<div
+			className={cn(selectVariants({ variant, size }), className)}
+			data-disabled={Boolean(disabled)}
+			data-error={error}
+		>
 			<RadixSelect.Root {...rest} onValueChange={handleChange}>
 				<RadixSelect.Trigger className={"select-trigger"} disabled={Boolean(disabled)}>
 					<RadixSelect.Value className={"select-trigger-value"} placeholder={placeholder} />
@@ -86,7 +90,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
 				</RadixSelect.Trigger>
 				{/* No portal to have styles nesting and working for variants and sizes */}
 				<RadixSelect.Content asChild position={"popper"} sideOffset={4}>
-					<Framer.motion.div className={cn("select-content", className)} {...animation}>
+					<Framer.motion.div className={"select-content"} {...animation}>
 						<RadixSelect.Viewport asChild>
 							<ScrollArea>
 								{options.map((option) => {

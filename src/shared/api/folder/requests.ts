@@ -2,6 +2,22 @@ import axios from "~/app/axios"
 import { JsonResponse } from "~/shared"
 import { FolderType } from "~/app/models"
 
+export type CopyFolderPayload = {
+	id: string
+	password?: string
+}
+export type CopyFolderResponse = number
+
+export async function copyFolder(payload: CopyFolderPayload): Promise<CopyFolderResponse> {
+	const { id, password } = payload
+	let url = `copy-folder/${id}`
+	if (password) {
+		url += `password=${password}`
+	}
+	const res = await axios.post<string>(url)
+	return res.status
+}
+
 export type GetFolderPayload = string
 export type GetFolderResponse = FolderType
 

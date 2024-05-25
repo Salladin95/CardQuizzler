@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { WithId } from "~/app/types"
+import { AccessType, WithId } from "~/app/types"
 import { TermType } from "~/app/models"
 import { ModuleEditor } from "~/widgets"
 import { useRouter } from "next/navigation"
@@ -20,7 +20,7 @@ export function EditModulePage(props: WithId) {
 	const router = useRouter()
 	const queryClient = useQueryClient()
 
-	const { data: module, isPending } = useFetchModule(props.id)
+	const { data: module, isPending } = useFetchModule({ id: props.id })
 
 	const [_v, _s, removeStoredProgress] = useStoredSwiperState(props.id)
 	const updateModule = useUpdateModuleMutation({
@@ -36,10 +36,10 @@ export function EditModulePage(props: WithId) {
 	const originalTermsIDS = new Set<string>()
 	module?.terms.forEach((term) => originalTermsIDS.add(term.id))
 
-	function handleUpdateModule(updatedTitle: string, updatedTerms: TermType[]) {
+	function handleUpdateModule(updatedTitle: string, updatedTerms: TermType[], access: AccessType, password: string) {
 		const originalTerms = updatedTerms.filter((term) => originalTermsIDS.has(term.id))
 		const newTerms = updatedTerms.filter((term) => !originalTermsIDS.has(term.id))
-		updateModule.mutate({ updatedTerms: originalTerms, newTerms, title: updatedTitle, id })
+		updateModule.mutate({ updatedTerms: originalTerms, newTerms, title: updatedTitle, id, access, password })
 	}
 
 	switch (true) {
@@ -58,7 +58,7 @@ export function EditModulePage(props: WithId) {
 							terms={module.terms}
 							onSubmit={handleUpdateModule}
 							isSubmitting={updateModule.isPending}
-							hasSubmitted={false}
+							hasSubmitted={Boolean(updateModule.submittedAt)}
 						/>
 					</main>
 				)

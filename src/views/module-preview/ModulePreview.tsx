@@ -7,6 +7,8 @@ import { DisplayEditorContent } from "~/features/quizCard/DisplayEditorContent"
 import { Button, LoadingDataRenderer, Separator, UpdateTermCtxProvider, useFetchModule } from "~/shared"
 import Link from "next/link"
 import { ModuleContextMenu } from "~/features"
+import React from "react"
+import { useProtectedModuleCtx } from "~/shared/context/ProtectedModuleCtxProvider"
 
 type ModulePreviewProps = ModuleType
 
@@ -21,7 +23,7 @@ function ModulePreview(module: ModulePreviewProps) {
 	}
 	return (
 		<>
-			<Header renderContextMenu={() => <ModuleContextMenu {...module} />} />
+			<Header className={"container"} renderContextMenu={() => <ModuleContextMenu {...module} />} />
 			<main className={"container"}>
 				<div>
 					<ModulePreviewCarousel module={module} />
@@ -68,6 +70,13 @@ function ModulePreview(module: ModulePreviewProps) {
 }
 
 export function ModulePreviewPage(props: WithId) {
-	const { data, isLoading } = useFetchModule(props.id)
+	const protectedModuleCtx = useProtectedModuleCtx()
+	const { data, isLoading, error } = useFetchModule({ id: props.id, password: protectedModuleCtx?.password })
+	React.useEffect(() => {
+		if (!protectedModuleCtx) return
+		if (error?.status === 403) {
+			protectedModuleCtx?.updatePassword("")
+		}
+	}, [error, isLoading, protectedModuleCtx])
 	return LoadingDataRenderer<ModulePreviewProps>({ Comp: ModulePreview, data, isLoading })
 }

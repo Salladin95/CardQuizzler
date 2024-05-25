@@ -1,15 +1,19 @@
 import axios from "~/app/axios"
 import { AxiosResponse } from "axios"
+import { SecureAccess } from "~/app/types"
 import { ModuleType, TermType } from "~/app/models"
 import { JsonResponse, SortOptions } from "~/shared"
 
-export type GetModulePayload = string
+export type GetModulePayload = {
+	id: string
+	password?: string
+}
 export type GetModuleResponse = ModuleType
 
 const modulesDefaultLimit = 25
 
-export async function getModule(id: GetModulePayload): Promise<GetModuleResponse> {
-	const res = await axios.get<JsonResponse<GetModuleResponse>>(`module/${id}`)
+export async function getModule({ id, password }: GetModulePayload): Promise<GetModuleResponse> {
+	const res = await axios.get<JsonResponse<GetModuleResponse>>(`module/${id}?password=${password}`)
 	return res.data.data
 }
 
@@ -42,12 +46,28 @@ export type CreateTermPayload = {
 export type CreateModulePayload = {
 	title: string
 	terms: CreateTermPayload[]
-}
+} & SecureAccess
 export type CreateModuleResponse = ModuleType
 
 export async function createModule(payload: CreateModulePayload): Promise<CreateModuleResponse> {
 	const res = await axios.post<JsonResponse<ModuleType>>("module", payload)
 	return res.data.data
+}
+
+export type CopyModulePayload = {
+	id: string
+	password?: string
+}
+export type CopyModuleResponse = number
+
+export async function copyModule(payload: CopyModulePayload): Promise<CopyModuleResponse> {
+	const { id, password } = payload
+	let url = `copy-module/${id}`
+	if (password) {
+		url += `password=${password}`
+	}
+	const res = await axios.post<string>(url)
+	return res.status
 }
 
 export type CreateModuleInFolderPayload = CreateModulePayload & {
@@ -68,7 +88,7 @@ export type UpdateModulePayload = {
 	newTerms?: CreateTermPayload[]
 	updatedTerms?: TermType[]
 	id: string
-}
+} & SecureAccess
 export type UpdateModuleResponse = ModuleType
 
 export async function updateModule({ id, ...payload }: UpdateModulePayload): Promise<UpdateModuleResponse> {

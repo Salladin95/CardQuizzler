@@ -10,9 +10,7 @@ type FormFieldProps = {
 type FormFieldWithLabelProps = {
 	id: string
 	label: string
-} & PropsWithChildren &
-	PropsWithClassName &
-	FormFieldProps
+} & FormFieldProps
 
 export function FormFieldWithLabel(props: FormFieldWithLabelProps) {
 	const { id, label, children, error, className } = props

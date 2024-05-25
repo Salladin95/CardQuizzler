@@ -4,6 +4,9 @@ import {
 	addModuleToFolder,
 	AddModuleToFolderPayload,
 	AddModuleToFolderResponse,
+	copyFolder,
+	CopyFolderPayload,
+	CopyFolderResponse,
 	createFolder,
 	CreateFolderPayload,
 	CreateFolderResponse,
@@ -61,6 +64,15 @@ export function useDeleteFolderMutation(
 ) {
 	return useMutation({
 		mutationFn: deleteFolder,
+		...options,
+	})
+}
+
+export function useCopyFolderMutation(
+	options?: Omit<UseMutationOptions<CopyFolderResponse, AxiosError, CopyFolderPayload>, "mutationFn">,
+) {
+	return useMutation({
+		mutationFn: copyFolder,
 		...options,
 	})
 }

@@ -85,6 +85,7 @@
       "updateEmailSuccess": "Email успешно обновлен",
       "updateEmailFailure": "Не удалось обновить email",
       "deleteModuleSuccess": "Модуль удален успешно",
+      "copyModuleSuccess": "Модуль скопирован",
       "updateTermSuccess": "Термин обновлен",
       "updateTermFailure": "Не получилось обновить термин",
       "reqEmailVerificationFailure": "Не получилось запроси верификацию почты",
@@ -112,7 +113,9 @@
     "birthday": "День рождения",
     "createdAt": "Здесь с",
     "term": "Термин",
-    "definition": "Определение"
+    "definition": "Определение",
+    "onlyMe": "Только я",
+    "open": "Открытый"
   },
   "Validation": {
     "required": {
@@ -162,10 +165,14 @@
     "more": "Ещё"
   },
   "Exceptions": {
+    "ctxIsNotDefined": "Контекст - '{ctx}' не определен",
     "swiperCtxNotDefined": "Контекст Swiper не определен",
     "termCtxNotDefined": "Контекст редактора терминов не определен",
     "reqEmailVerificationCtxNotDefined": "Конеткс запроса верификации почты не определен",
     "updateTermCtxNotDefined": "Контекст обновления термина не определен"
+  },
+  "Title": {
+    "protectedByPassword": "Для доступа нужен пароль"
   },
   "Metadata": {
     "Home": {

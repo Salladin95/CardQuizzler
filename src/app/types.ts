@@ -44,3 +44,23 @@ export type Animate = ReturnType<typeof useAnimate>[1]
 export enum LocalStorageEnum {
 	MODULE_PROGRESS = "module-progress",
 }
+
+export enum AccessType {
+	ONLY_ME = "only me",
+	OPEN = "open",
+	PASSWORD = "password",
+}
+
+export type AccessOptions = {
+	label: string
+	value: AccessType
+}
+
+export type SecureAccess =
+	| { access: AccessType.ONLY_ME | AccessType.OPEN }
+	| {
+			access: AccessType.PASSWORD
+			password: string
+	  }
+
+export type WithPassword = { password?: string }

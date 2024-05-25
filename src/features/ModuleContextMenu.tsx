@@ -15,6 +15,7 @@ import {
 	Popover,
 	ShareIcon,
 	TrashIcon,
+	useCopyModuleMutation,
 	useDeleteModuleMutation,
 	useProfile,
 	useStoredSwiperState,
@@ -48,9 +49,25 @@ export function ModuleContextMenu(props: ModuleType) {
 		},
 	})
 
+	const copyModule = useCopyModuleMutation({
+		onSuccess: () => {
+			toast({
+				variant: "primary",
+				title: t("Generics.success"),
+				description: t("Features.messages.copyModuleSuccess"),
+			})
+			queryClient.invalidateQueries({ queryKey: [homeDataKey] })
+			queryClient.invalidateQueries({ queryKey: [modulesQueryKey] })
+		},
+	})
+
 	function handleDeleteModule() {
 		deleteModule.mutate(id)
 		setShowPopover(false)
+	}
+
+	function handleCopyModule() {
+		copyModule.mutate({ id })
 	}
 
 	return (
@@ -88,14 +105,12 @@ export function ModuleContextMenu(props: ModuleType) {
 				</Button>
 			)}
 			{profile?.id !== userID && (
-				<Button className={"justify-start"} asChild>
-					<Link href={`/module/${id}`}>
-						<span className={"mr-2"}>
-							<DuplicateIcon />
-						</span>
-						<span>{t("Features.copy")}</span>
-					</Link>
-				</Button>
+				<ActionBtn className={"justify-start"} loading={copyModule.isPending} onClick={handleCopyModule}>
+					<span className={"mr-2"}>
+						<DuplicateIcon />
+					</span>
+					<span>{t("Features.copy")}</span>
+				</ActionBtn>
 			)}
 			{/*TODO: EXTRACT TO SEPARATE FUNCTION ADD CONFIRM MODULE*/}
 			<ActionBtn
