@@ -1,59 +1,131 @@
 "use client"
 import React from "react"
+import * as Yup from "~/yup"
 import { FolderType } from "~/app/models"
 import { useTranslations } from "~/app/i18n"
-import { Button, Dialog, Input } from "~/shared"
+import { AccessType } from "~/app/types"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { Controller, useForm } from "react-hook-form"
+import { ACCESS_TYPE_KEYS, getAccessTypeSelectOptions } from "~/app/constants"
+import {
+	Button,
+	CreateFolderPayload,
+	createPasswordValidation,
+	Dialog,
+	Input,
+	PasswordInput,
+	Select,
+	useTranslatedFieldErrorMessages,
+} from "~/shared"
+import { FormField } from "~/entites/FormField"
+
+type CreateEditFolderFormType = CreateFolderPayload
 
 type CreateFolderProps = {
-	onSubmit?: (folderName: string) => void
+	onSubmit?: (payload: CreateEditFolderFormType) => void
 	title?: string
 	trigger?: React.ReactNode
 	folder?: FolderType
 	hasSubmitted?: boolean
 }
 
+function getCreateEditFormDefValues(folder?: FolderType): CreateEditFolderFormType {
+	return {
+		title: folder?.title || "",
+		access: folder?.access || AccessType.OPEN,
+		password: "",
+	}
+}
+
 export function CreateEditFolder(props: CreateFolderProps) {
 	const t = useTranslations()
 	const { onSubmit, title, hasSubmitted, trigger, folder } = props
-	const [folderName, setFolderName] = React.useState(folder?.title || "")
+
+	// If true we are in edit mode
+	const isEditMode = Boolean(folder)
+
 	const [showDialog, setShowDialog] = React.useState(false)
 
-	// Created separated value for error, because I don't want to show input's error state on first render
-	const [hasError, setHasError] = React.useState(false)
+	const createEditFolderValidationSchema = Yup.object({
+		title: Yup.string().required(),
+		access: Yup.string().required().oneOf(ACCESS_TYPE_KEYS),
+		password: createPasswordValidation(isEditMode, folder?.access),
+	})
 
-	function handleSubmit() {
-		if (!folderName) {
-			return
-		}
+	const {
+		handleSubmit: handleFormSubmit,
+		register,
+		formState: { errors },
+		reset: resetForm,
+		watch,
+		control,
+		resetField,
+	} = useForm<CreateEditFolderFormType>({
+		defaultValues: getCreateEditFormDefValues(folder),
+		resolver: yupResolver(createEditFolderValidationSchema),
+	})
+
+	const translatedErrorMessages = useTranslatedFieldErrorMessages(errors)
+
+	function handleSubmit(formData: CreateEditFolderFormType) {
 		setShowDialog(false)
-		onSubmit && onSubmit(folderName)
+		onSubmit && onSubmit(formData)
+		resetForm()
 	}
+
+	const accessOption = watch("access")
+	const isSubmitDisabled = !!Object.keys(errors).length || hasSubmitted
+
+	React.useEffect(() => {
+		resetField("password")
+	}, [accessOption, resetField])
 
 	return (
 		<Dialog open={showDialog} trigger={trigger} className={"w-360 640:w-428 768:w-640 h-[20rem] py-12 px-8"}>
-			<div className={"relative w-full h-full"}>
-				<h1 className={"mb-6 h2 640:h1 text-center text-primary"}>{title}</h1>
-				<Input
-					placeholder={t("Placeholders.folder")}
-					value={folderName}
-					error={hasError}
-					onChange={(e) => {
-						const value = e.currentTarget.value
-						setFolderName(value)
-						setHasError(!value)
-					}}
-					className={"mb-4"}
-				/>
-				<Button
-					className={"absolute bottom-0 right-0 w-[10rem]"}
-					variant={"primary"}
-					onClick={handleSubmit}
-					// For "disabled" state I don't use "hasError" value because I want to disable it for the first render
-					disabled={!folderName || Boolean(hasSubmitted)}
-				>
-					{t("Generics.save")}
-				</Button>
-			</div>
+			<form onSubmit={handleFormSubmit(handleSubmit)}>
+				<div className={"relative w-full h-full"}>
+					<h1 className={"mb-6 h2 640:h1 text-center text-primary"}>{title}</h1>
+					<Input
+						{...register("title")}
+						placeholder={t("Placeholders.folder")}
+						error={Boolean(errors.title)}
+						className={"mb-4"}
+					/>
+					<div className={"flex gap-4 mb-8"}>
+						<Controller
+							name={"access"}
+							control={control}
+							render={({ field }) => (
+								<Select
+									{...field}
+									placeholder={t("Placeholders.access")}
+									options={getAccessTypeSelectOptions(t)}
+									className={"flex-1"}
+									error={Boolean(errors.access)}
+								/>
+							)}
+						/>
+						{accessOption === AccessType.PASSWORD && (
+							<FormField error={translatedErrorMessages.get("password")}>
+								<PasswordInput
+									{...register("password")}
+									placeholder={t("Placeholders.password")}
+									className={"flex-1"}
+									error={Boolean(errors.password)}
+								/>
+							</FormField>
+						)}
+					</div>
+					<Button
+						type={"submit"}
+						className={"ml-auto w-[10rem]"}
+						variant={"primary"}
+						disabled={Boolean(isSubmitDisabled)}
+					>
+						{t("Generics.save")}
+					</Button>
+				</div>
+			</form>
 		</Dialog>
 	)
 }

@@ -1,9 +1,9 @@
 "use client"
 import React from "react"
-import { AccessType, WithId } from "~/app/types"
 import { TermType } from "~/app/models"
 import { ModuleEditor } from "~/widgets"
 import { useRouter } from "next/navigation"
+import { AccessType, WithId } from "~/app/types"
 import { useQueryClient } from "@tanstack/react-query"
 import {
 	homeDataKey,
@@ -54,8 +54,7 @@ export function EditModulePage(props: WithId) {
 				return (
 					<main className={"container"}>
 						<ModuleEditor
-							moduleName={module.title}
-							terms={module.terms}
+							module={module}
 							onSubmit={handleUpdateModule}
 							isSubmitting={updateModule.isPending}
 							hasSubmitted={Boolean(updateModule.submittedAt)}

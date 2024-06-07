@@ -41,10 +41,6 @@ export type ApiResponseError = string
 export type ApiCommonResponse = ApiResponse<ApiResponseError>
 export type Animate = ReturnType<typeof useAnimate>[1]
 
-export enum LocalStorageEnum {
-	MODULE_PROGRESS = "module-progress",
-}
-
 export enum AccessType {
 	ONLY_ME = "only me",
 	OPEN = "open",

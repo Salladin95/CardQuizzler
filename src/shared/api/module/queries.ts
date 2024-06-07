@@ -24,7 +24,7 @@ export const useFetchModules = (options?: Omit<UseQueryOptions<GetModulesRespons
 
 export const useFetchModule = (
 	{ password, id }: GetModulePayload,
-	options?: Omit<UseQueryOptions<GetModuleResponse, AxiosError>, "queryFn">,
+	options?: Omit<UseQueryOptions<GetModuleResponse, AxiosError>, "queryFn" | "queryKey">,
 ) => {
 	return useQuery({
 		queryKey: [moduleQueryKey, id, password],

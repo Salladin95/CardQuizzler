@@ -4,7 +4,7 @@ import Link from "next/link"
 import { WithId } from "~/app/types"
 import { hasFolderTheModule } from "./utils"
 import { useTranslations } from "~/app/i18n"
-import { FolderType, ModuleType } from "~/app/models"
+import { FolderType } from "~/app/models"
 import { useQueryClient } from "@tanstack/react-query"
 import { FolderContextMenu, ModuleContextMenu } from "~/features"
 import {
@@ -18,18 +18,17 @@ import {
 	useAddModuleToFolderMutation,
 	useDeleteModuleFromFolderMutation,
 	useFetchFolder,
-	useFetchModules,
+	useProtectedModuleCtx,
 	XMarkIcon,
 } from "~/shared"
 
 type FolderProps = {
 	folder?: FolderType
-	modules?: ModuleType[]
 }
 
 function Folder(props: FolderProps) {
 	const t = useTranslations()
-	const { folder, modules } = props
+	const { folder } = props
 	const [showDialog, setShowDialog] = React.useState(false)
 	const queryClient = useQueryClient()
 
@@ -60,7 +59,7 @@ function Folder(props: FolderProps) {
 		)
 	}
 
-	if (!folder || !modules) return null
+	if (!folder) return null
 
 	return (
 		<main className={"container"}>
@@ -102,7 +101,7 @@ function Folder(props: FolderProps) {
 				</Button>
 
 				<section className={"flex flex-col gap-y-2 px-6 py-8 "}>
-					{modules?.map((module) => (
+					{folder.modules?.map((module) => (
 						<div
 							key={module.id}
 							className={"flex justify-between items-center px-4 py-3 rounded bg-gray-800 text-white"}
@@ -118,13 +117,25 @@ function Folder(props: FolderProps) {
 }
 
 export function FolderPage(props: WithId) {
-	const { data: folder, isPending: isFolderPending } = useFetchFolder(props.id)
-	const { data: userModules, isPending: areUserModulesLoading } = useFetchModules()
-	return (
-		<LoadingDataRenderer<FolderProps>
-			Comp={Folder}
-			data={{ folder: folder, modules: userModules }}
-			isLoading={isFolderPending || areUserModulesLoading}
-		/>
+	const protectedByPasswordCtx = useProtectedModuleCtx()
+	const {
+		error,
+		data: folder,
+		isPending: isFolderPending,
+	} = useFetchFolder(
+		{
+			id: props.id,
+			password: protectedByPasswordCtx?.password,
+		},
+		{ enabled: Boolean(props.id) },
 	)
+
+	React.useEffect(() => {
+		if (!protectedByPasswordCtx) return
+		if (error?.response?.status === 403) {
+			protectedByPasswordCtx.updatePassword("")
+		}
+	}, [error, protectedByPasswordCtx])
+
+	return <LoadingDataRenderer<FolderProps> Comp={Folder} data={{ folder: folder }} isLoading={isFolderPending} />
 }

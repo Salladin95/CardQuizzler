@@ -11,14 +11,14 @@ function translateFieldError(t: ReturnType<typeof useTranslations>, err?: FieldE
 	return t(msg)
 }
 
-export function useTranslatedFieldErrorMessages<T extends FieldError>(errors: FieldErrors<T>) {
+export function useTranslatedFieldErrorMessages<T extends FieldErrors<T>>(errors: T) {
 	const t = useTranslations()
-	const fieldErrorMessages = new Map<string, string | undefined>()
+	const fieldErrorMessages = new Map<keyof T, string | undefined>()
 
 	if (errors) {
 		Object.keys(errors).forEach((key) => {
 			const err = (errors as Record<string, FieldError>)[key]
-			fieldErrorMessages.set(key, translateFieldError(t, err))
+			fieldErrorMessages.set(key as keyof T, translateFieldError(t, err))
 		})
 	}
 

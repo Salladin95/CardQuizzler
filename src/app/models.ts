@@ -1,3 +1,5 @@
+import { AccessType } from "~/app/types"
+
 export type Profile = {
 	email: string
 	name: string
@@ -18,6 +20,8 @@ export type FolderType = {
 	id: string
 	title: string
 	modules: ModuleType[]
+	access: AccessType
+	password?: string
 }
 
 export type ModuleType = {
@@ -25,6 +29,7 @@ export type ModuleType = {
 	title: string
 	terms: TermType[]
 	userID: string
+	access: AccessType
 }
 
 export type HomePageData = {

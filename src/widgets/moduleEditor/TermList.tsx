@@ -8,7 +8,7 @@ import { SortableItem, withSortableGroup } from "~/features/sortable"
 
 export type TermListProps = {
 	items: TermType[]
-	onUpdate: (updatedTerm: TermType, index: number) => void
+	onUpdate: (index: number, updatedTerm: TermType) => void
 	onDelete: (index: number) => void
 	onAddTerm: (at: number) => void
 }

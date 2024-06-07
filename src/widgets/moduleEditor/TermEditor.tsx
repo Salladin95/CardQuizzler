@@ -12,14 +12,15 @@ type CreateModuleEditorProps = {
 	term: TermType
 	index: number
 	onDelete: (index: number) => void
-	onUpdate: (term: TermType, index: number) => void
+	onUpdate: (index: number, term: TermType) => void
 } & PropsWithClassName
 
 export function TermEditor(props: CreateModuleEditorProps) {
 	const { onUpdate, onDelete, index, term, className } = props
 
-	const handleUpdate = (updatedValues: Pick<UpdateTermPayload, "title" | "description">) => {
-		onUpdate({ ...term, ...updatedValues }, index)
+	const handleUpdate = (updatedValues: Partial<UpdateTermPayload>) => {
+		const updatedTerm = { ...term, ...updatedValues }
+		onUpdate(index, updatedTerm)
 	}
 
 	const { width } = useWindowSize()

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useTranslations } from "~/app/i18n"
 import { CreateEditFolder } from "./CreateEditFolder"
 import { useQueryClient } from "@tanstack/react-query"
-import { Button, foldersQueryKey, Popover, useCreateFolderMutation } from "~/shared"
+import { Button, CreateFolderPayload, foldersQueryKey, Popover, useCreateFolderMutation } from "~/shared"
 
 export function CreateModuleFolder() {
 	const router = useRouter()
@@ -21,8 +21,8 @@ export function CreateModuleFolder() {
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: [foldersQueryKey] }),
 	})
 
-	async function handleFolderCreation(folderName: string) {
-		const folder = await createFolder.mutateAsync({ title: folderName })
+	async function handleFolderCreation(payload: CreateFolderPayload) {
+		const folder = await createFolder.mutateAsync(payload)
 		router.push(`/folder/${folder.id}`)
 	}
 

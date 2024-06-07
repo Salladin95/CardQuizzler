@@ -18,7 +18,7 @@ import {
 	useProcessQuizResult,
 	useStoredSwiperState,
 } from "~/shared"
-import { useProtectedModuleCtx } from "~/shared/context/ProtectedModuleCtxProvider"
+import { useProtectedModuleCtx } from "~/shared/context/ProtectedByPasswordCtxProvider"
 
 type ModuleProps = ModuleType
 
@@ -127,10 +127,10 @@ export function ModulePage(props: WithId) {
 	const { data, isLoading, error } = useFetchModule({ id: props.id, password: protectedModuleCtx?.password })
 	React.useEffect(() => {
 		if (!protectedModuleCtx) return
-		if (error?.status === 403) {
+		if (error?.response?.status === 403) {
 			protectedModuleCtx?.updatePassword("")
 		}
-	}, [error, isLoading, protectedModuleCtx])
+	}, [error, protectedModuleCtx])
 	return LoadingDataRenderer<ModuleProps>({ Comp: Module, data, isLoading })
 }
 

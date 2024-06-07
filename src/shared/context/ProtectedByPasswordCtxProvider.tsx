@@ -1,20 +1,20 @@
 "use client"
 import React from "react"
-import { PropsWithChildren } from "~/app/types"
 import { useSessionStorage } from "react-use"
+import { PropsWithChildren } from "~/app/types"
 
-type ProtectedModuleCtxType = {
+type ProtectedByPasswordCtxType = {
 	password: string
 	updatePassword: (password: string) => void
 }
 
-const ProtectedModuleCtx = React.createContext<ProtectedModuleCtxType | null>(null)
+const ProtectedByPasswordCtx = React.createContext<ProtectedByPasswordCtxType | null>(null)
 
-type ProtectedModuleCtxProviderProps = {
+type ProtectedByPasswordCtxProviderProps = {
 	sessionStoreKey: string
 } & PropsWithChildren
 
-export function ProtectedModuleCtxProvider(props: ProtectedModuleCtxProviderProps) {
+export function ProtectedByPasswordCtxProvider(props: ProtectedByPasswordCtxProviderProps) {
 	const { children, sessionStoreKey } = props
 	const [sessionStorePassword, setSessionStorePassword] = useSessionStorage(sessionStoreKey, "")
 	const [password, setPassword] = React.useState(sessionStorePassword)
@@ -24,9 +24,11 @@ export function ProtectedModuleCtxProvider(props: ProtectedModuleCtxProviderProp
 		setPassword(password)
 	}
 
-	return <ProtectedModuleCtx.Provider value={{ password, updatePassword }}>{children}</ProtectedModuleCtx.Provider>
+	return (
+		<ProtectedByPasswordCtx.Provider value={{ password, updatePassword }}>{children}</ProtectedByPasswordCtx.Provider>
+	)
 }
 
 export function useProtectedModuleCtx() {
-	return React.useContext(ProtectedModuleCtx)
+	return React.useContext(ProtectedByPasswordCtx)
 }

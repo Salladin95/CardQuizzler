@@ -8,6 +8,7 @@ import { ActionBtn, CreateEditFolder } from "~/entites"
 import {
 	AdjustIcon,
 	Button,
+	CreateFolderPayload,
 	EllipsisIcon,
 	folderQueryKey,
 	foldersQueryKey,
@@ -51,12 +52,9 @@ export function FolderContextMenu(props: FolderSettingsMenuProps) {
 		},
 	})
 
-	function handleUpdateFolder(folderName: string) {
+	function handleUpdateFolder(payload: Partial<CreateFolderPayload>) {
 		closePopover()
-		if (folderName === folder.title) {
-			return
-		}
-		updateFolder.mutate({ title: folderName, id: folder.id })
+		updateFolder.mutate({ id: folder.id, ...payload })
 	}
 
 	function handleDeleteFolder() {

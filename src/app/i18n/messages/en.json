@@ -93,6 +93,7 @@
     }
   },
   "Placeholders": {
+    "access": "Select access",
     "folder": "Enter name for the folder, like: 'grammar'...",
     "module": "Enter name for the module, like: 'grammar'...",
     "email": "Enter your email",
@@ -124,7 +125,12 @@
       "newPassword": "New password is required",
       "email": "Email is required",
       "name": "Name is required",
-      "birthday": "Birthday is required"
+      "birthday": "Birthday is required",
+      "title": "Title is required",
+      "access": "Access is required",
+      "description": "Description is required",
+      "id": "ID is required",
+      "moduleID": "ModuleID is required"
     },
     "min": {
       "newPassword": "At least {min, plural, =1 {# character} other {# characters}}",

@@ -1,6 +1,6 @@
 import { AxiosError } from "axios"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
-import { getFolder, GetFolderResponse, getFolders, GetFoldersResponse } from "./requests"
+import { getFolder, GetFolderPayload, GetFolderResponse, getFolders, GetFoldersResponse } from "./requests"
 
 export const foldersQueryKey = "folders-query-key"
 export const folderQueryKey = "folder-query-key"
@@ -14,12 +14,12 @@ export const useFetchFolders = (options?: Omit<UseQueryOptions<GetFoldersRespons
 }
 
 export const useFetchFolder = (
-	id: string,
-	options?: Omit<UseQueryOptions<GetFolderResponse, AxiosError>, "queryFn">,
+	payload: GetFolderPayload,
+	options?: Omit<UseQueryOptions<GetFolderResponse, AxiosError>, "queryFn" | "queryKey">,
 ) => {
 	return useQuery({
-		queryKey: [folderQueryKey, id],
-		queryFn: ({ queryKey }) => getFolder(queryKey[1] as string),
+		queryKey: [folderQueryKey, payload.id],
+		queryFn: () => getFolder(payload),
 		...options,
 	})
 }

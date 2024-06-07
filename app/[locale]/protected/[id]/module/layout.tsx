@@ -1,4 +1,4 @@
 "use client"
-import { PasswordProtectedLayout } from "~/entites"
+import { PasswordProtectedLayout } from "~/widgets"
 
 export default PasswordProtectedLayout

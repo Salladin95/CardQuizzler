@@ -12,7 +12,7 @@ export type GetModuleResponse = ModuleType
 
 const modulesDefaultLimit = 25
 
-export async function getModule({ id, password }: GetModulePayload): Promise<GetModuleResponse> {
+export async function getModule({ id, password = "" }: GetModulePayload): Promise<GetModuleResponse> {
 	const res = await axios.get<JsonResponse<GetModuleResponse>>(`module/${id}?password=${password}`)
 	return res.data.data
 }

@@ -2,12 +2,14 @@ import { faker, fakerEN } from "@faker-js/faker"
 import { FolderType, ModuleType } from "~/app/models"
 import { createArray } from "~/shared/lib/creators"
 import { mockTerms } from "~/shared/lib/mock/mockTerm"
+import { AccessType } from "~/app/types"
 
 export function mockFolder(): FolderType {
 	return {
 		id: faker.string.uuid(),
 		title: fakerEN.word.noun(),
 		modules: mockModules(),
+		access: AccessType.OPEN,
 	}
 }
 
@@ -17,6 +19,7 @@ export function mockModule(): ModuleType {
 		title: fakerEN.word.noun(),
 		terms: mockTerms(),
 		userID: faker.string.uuid(),
+		access: AccessType.OPEN,
 	}
 }
 
@@ -33,6 +36,7 @@ export function mockCreateFolder(title: string): FolderType {
 		id: faker.string.uuid(),
 		title,
 		modules: [],
+		access: AccessType.OPEN,
 	}
 }
 

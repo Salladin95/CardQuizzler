@@ -1,6 +1,7 @@
 import axios from "~/app/axios"
 import { JsonResponse } from "~/shared"
 import { FolderType } from "~/app/models"
+import { AccessType } from "~/app/types"
 
 export type CopyFolderPayload = {
 	id: string
@@ -18,11 +19,11 @@ export async function copyFolder(payload: CopyFolderPayload): Promise<CopyFolder
 	return res.status
 }
 
-export type GetFolderPayload = string
+export type GetFolderPayload = { id: string; password?: string }
 export type GetFolderResponse = FolderType
 
-export async function getFolder(id: GetFolderPayload): Promise<GetFolderResponse> {
-	const res = await axios.get<JsonResponse<FolderType>>(`/folder/${id}`)
+export async function getFolder({ id, password = "" }: GetFolderPayload): Promise<GetFolderResponse> {
+	const res = await axios.get<JsonResponse<FolderType>>(`/folder/${id}?password=${password}`)
 	return res.data.data
 }
 
@@ -35,6 +36,8 @@ export async function getFolders(): Promise<GetFoldersResponse> {
 
 export type CreateFolderPayload = {
 	title: string
+	access: AccessType
+	password?: string
 }
 export type CreateFolderResponse = FolderType
 
@@ -44,13 +47,12 @@ export async function createFolder(payload: CreateFolderPayload): Promise<Create
 }
 
 export type UpdateFolderPayload = {
-	title: string
 	id: string
-}
+} & Partial<CreateFolderPayload>
 export type UpdateFolderResponse = FolderType
 
 export async function updateFolder(payload: UpdateFolderPayload): Promise<UpdateFolderResponse> {
-	const res = await axios.patch<JsonResponse<FolderType>>(`/folder/${payload.id}`, { title: payload.title })
+	const res = await axios.patch<JsonResponse<FolderType>>(`/folder/${payload.id}`, payload)
 	return res.data.data
 }
 

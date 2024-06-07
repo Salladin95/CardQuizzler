@@ -4,8 +4,6 @@ import { Underline } from "@tiptap/extension-underline"
 import { TextStyle } from "@tiptap/extension-text-style"
 import { EditorOptions, useEditor } from "@tiptap/react"
 
-export const charactersLimit = 500
-
 export function useConfigureEditor(props: Partial<EditorOptions>) {
 	return useEditor({
 		extensions: [
@@ -26,11 +24,6 @@ export function useConfigureEditor(props: Partial<EditorOptions>) {
 						class: "",
 					},
 				},
-				// italic: false,
-				// bold: false,
-				// hardBreak: false,
-				// document: false,
-				// text: false,
 			}),
 			Highlight.configure({ multicolor: true }),
 			TextStyle.configure(),

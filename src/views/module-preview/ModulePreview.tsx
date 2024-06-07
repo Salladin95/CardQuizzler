@@ -8,7 +8,7 @@ import { Button, LoadingDataRenderer, Separator, UpdateTermCtxProvider, useFetch
 import Link from "next/link"
 import { ModuleContextMenu } from "~/features"
 import React from "react"
-import { useProtectedModuleCtx } from "~/shared/context/ProtectedModuleCtxProvider"
+import { useProtectedModuleCtx } from "~/shared/context/ProtectedByPasswordCtxProvider"
 
 type ModulePreviewProps = ModuleType
 
@@ -71,10 +71,17 @@ function ModulePreview(module: ModulePreviewProps) {
 
 export function ModulePreviewPage(props: WithId) {
 	const protectedModuleCtx = useProtectedModuleCtx()
-	const { data, isLoading, error } = useFetchModule({ id: props.id, password: protectedModuleCtx?.password })
+	const enableFetching = !protectedModuleCtx ? true : Boolean(protectedModuleCtx.password)
+	const { data, isLoading, error } = useFetchModule(
+		{
+			id: props.id,
+			password: protectedModuleCtx?.password,
+		},
+		{ enabled: enableFetching },
+	)
 	React.useEffect(() => {
 		if (!protectedModuleCtx) return
-		if (error?.status === 403) {
+		if (error?.response?.status === 403) {
 			protectedModuleCtx?.updatePassword("")
 		}
 	}, [error, isLoading, protectedModuleCtx])

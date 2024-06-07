@@ -1,3 +1,6 @@
+import * as Yup from "~/yup"
+import { AccessType } from "~/app/types"
+
 /**
  * Clamps a value to a specified range.
  *
@@ -70,4 +73,50 @@ export function getRandomArrEl<T>(arr: T[]): T {
 
 export function getRandomInt(max: number) {
 	return Math.floor(Math.random() * max)
+}
+
+/**
+ * Determines if the password field is required based on the newAccess type and mode.
+ *
+ * @param {AccessType} newAccess - Updated access type.
+ * @param {AccessType} currentAccess The current newAccess type of the folder.
+ * @param {boolean} isEditMode - Flag indicating if the form is in edit mode.
+ * @returns {boolean} - True if the password field is required, otherwise false.
+ */
+
+export function isPasswordRequired(
+	newAccess: AccessType,
+	currentAccess: AccessType | undefined,
+	isEditMode: boolean,
+): boolean {
+	if (isEditMode) {
+		// If we're in edit mode, we want to make password field required only if
+		// newAccess field has updated, and it's equal to AccessType.PASSWORD
+		return newAccess !== currentAccess && newAccess === AccessType.PASSWORD
+	}
+	// If we're creating a new folder, we want to make password field required only if newAccess equals AccessType.PASSWORD
+	return newAccess === AccessType.PASSWORD
+}
+
+/**
+ * Creates a password validation schema based on the access type and mode.
+ *
+ * @param {boolean} isEditMode - Flag indicating if the form is in edit mode.
+ * @param {AccessType} currentAccess - The current access type of the folder/module.
+ * @returns {Yup.StringSchema} - The password validation schema.
+ */
+export function createPasswordValidation(isEditMode: boolean, currentAccess?: AccessType): Yup.StringSchema {
+	return Yup.string().when("accessOption", {
+		is: (access: AccessType) => isPasswordRequired(access, currentAccess, isEditMode),
+		then: (schema) => schema.required().min(4),
+		otherwise: (schema) =>
+			schema.test(
+				"passwordLength",
+				{
+					key: "Validation.min.password",
+					values: { min: 4 },
+				},
+				(psd) => (!psd ? true : psd.length >= 4),
+			),
+	})
 }

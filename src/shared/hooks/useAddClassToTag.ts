@@ -1,6 +1,6 @@
 import React from "react"
 
-const useAddClassToTag = (className: string, tag: string) => {
+export const useAddClassToTag = (className: string, tag: string) => {
 	React.useEffect(() => {
 		if (!className) return
 		document.querySelector(tag)?.classList.add(className)
@@ -9,5 +9,3 @@ const useAddClassToTag = (className: string, tag: string) => {
 		}
 	}, [className, tag])
 }
-
-export default useAddClassToTag
