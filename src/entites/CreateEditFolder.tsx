@@ -10,7 +10,6 @@ import { ACCESS_TYPE_KEYS, getAccessTypeSelectOptions } from "~/app/constants"
 import {
 	Button,
 	CreateFolderPayload,
-	createPasswordValidation,
 	Dialog,
 	Input,
 	PasswordInput,
@@ -49,7 +48,7 @@ export function CreateEditFolder(props: CreateFolderProps) {
 	const createEditFolderValidationSchema = Yup.object({
 		title: Yup.string().required(),
 		access: Yup.string().required().oneOf(ACCESS_TYPE_KEYS),
-		password: createPasswordValidation(isEditMode, folder?.access),
+		password: Yup.string().protectedByPassword(isEditMode, folder?.access),
 	})
 
 	const {

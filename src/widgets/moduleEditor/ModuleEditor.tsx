@@ -9,8 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useFieldArray, useForm } from "react-hook-form"
 import { createEmptyTerm, createEmptyTerms } from "./lib"
 import { TermList } from "~/widgets/moduleEditor/TermList"
+import { Button, Input, Select, useAddClassToTag } from "~/shared"
 import { ACCESS_TYPE_KEYS, getAccessTypeSelectOptions } from "~/app/constants"
-import { Button, createPasswordValidation, Input, Select, useAddClassToTag } from "~/shared"
 
 type ModuleEditorProps = {
 	module?: ModuleType
@@ -23,7 +23,7 @@ const getModuleEditorSchema = (isEditMode: boolean, currentAccess?: AccessType) 
 	return Yup.object({
 		title: Yup.string().required(),
 		access: Yup.string().required().oneOf(ACCESS_TYPE_KEYS),
-		password: createPasswordValidation(isEditMode, currentAccess),
+		password: Yup.string().protectedByPassword(isEditMode, currentAccess),
 		terms: Yup.array()
 			.of(
 				Yup.object().shape({

@@ -1,5 +1,6 @@
 import * as yup from "yup"
 import { emailRegexp } from "~/shared"
+import { AccessType } from "~/app/types"
 
 yup.setLocale({
 	mixed: {
@@ -49,6 +50,45 @@ yup.addMethod(yup.number, "codeLength", function method() {
 		{ key: "Validation.length.code", values: { length: 6 } },
 		(val) => Boolean(val) && val?.toString().length === 6,
 	)
+})
+
+/**
+ * Determines if the password field is required based on the newAccess type and mode.
+ *
+ * @param {AccessType} newAccess - Updated access type.
+ * @param {AccessType} currentAccess The current newAccess type of the folder.
+ * @param {boolean} isEditMode - Flag indicating if the form is in edit mode.
+ * @returns {boolean} - True if the password field is required, otherwise false.
+ */
+
+function isPasswordRequired(
+	newAccess: AccessType,
+	currentAccess: AccessType | undefined,
+	isEditMode: boolean,
+): boolean {
+	if (isEditMode) {
+		// If we're in edit mode, we want to make password field required only if
+		// newAccess field has updated, and it's equal to AccessType.PASSWORD
+		return newAccess !== currentAccess && newAccess === AccessType.PASSWORD
+	}
+	// If we're creating a new folder, we want to make password field required only if newAccess equals AccessType.PASSWORD
+	return newAccess === AccessType.PASSWORD
+}
+
+yup.addMethod(yup.string, "protectedByPassword", function method(isEditMode: boolean, currentAccess?: AccessType) {
+	return this.when("accessOption", {
+		is: (access: AccessType) => isPasswordRequired(access, currentAccess, isEditMode),
+		then: (schema) => schema.required().min(4),
+		otherwise: (schema) =>
+			schema.test(
+				"passwordLength",
+				{
+					key: "Validation.min.password",
+					values: { min: 4 },
+				},
+				(psd) => (!psd ? true : psd.length >= 4),
+			),
+	})
 })
 
 export * from "yup"
