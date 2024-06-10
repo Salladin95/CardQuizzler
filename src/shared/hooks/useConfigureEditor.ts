@@ -5,6 +5,7 @@ import { TextStyle } from "@tiptap/extension-text-style"
 import { EditorOptions, useEditor } from "@tiptap/react"
 
 export function useConfigureEditor(props: Partial<EditorOptions>) {
+	const { ...options } = props
 	return useEditor({
 		extensions: [
 			StarterKit.configure({
@@ -34,6 +35,6 @@ export function useConfigureEditor(props: Partial<EditorOptions>) {
 				class: "input input-primary input-size-default w-full h-full block pt-4",
 			},
 		},
-		...props,
+		...options,
 	})
 }

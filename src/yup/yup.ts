@@ -76,7 +76,7 @@ function isPasswordRequired(
 }
 
 yup.addMethod(yup.string, "protectedByPassword", function method(isEditMode: boolean, currentAccess?: AccessType) {
-	return this.when("accessOption", {
+	return this.when("access", {
 		is: (access: AccessType) => isPasswordRequired(access, currentAccess, isEditMode),
 		then: (schema) => schema.required().min(4),
 		otherwise: (schema) =>

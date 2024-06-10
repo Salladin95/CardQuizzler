@@ -1,9 +1,10 @@
 "use client"
 import React from "react"
 import * as Yup from "~/yup"
+import { AccessType } from "~/app/types"
 import { FolderType } from "~/app/models"
 import { useTranslations } from "~/app/i18n"
-import { AccessType } from "~/app/types"
+import { FormField } from "~/entites/FormField"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Controller, useForm } from "react-hook-form"
 import { ACCESS_TYPE_KEYS, getAccessTypeSelectOptions } from "~/app/constants"
@@ -16,7 +17,6 @@ import {
 	Select,
 	useTranslatedFieldErrorMessages,
 } from "~/shared"
-import { FormField } from "~/entites/FormField"
 
 type CreateEditFolderFormType = CreateFolderPayload
 

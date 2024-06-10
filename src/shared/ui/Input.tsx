@@ -5,7 +5,7 @@ import { cva, VariantProps } from "class-variance-authority"
 import { Slot } from "@radix-ui/react-slot"
 import { focusFirstInput } from "../lib"
 
-const inputVariants = cva("input", {
+export const inputVariants = cva("input", {
 	variants: {
 		variant: {
 			primary: ["input-primary"],

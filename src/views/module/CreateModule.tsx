@@ -1,11 +1,9 @@
 "use client"
 import React from "react"
-import { TermType } from "~/app/models"
 import { ModuleEditor } from "~/widgets"
-import { AccessType } from "~/app/types"
 import { useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
-import { homeDataKey, modulesQueryKey, useCreateModuleMutation } from "~/shared"
+import { CreateModulePayload, homeDataKey, modulesQueryKey, useCreateModuleMutation } from "~/shared"
 
 export function CreateModulePage() {
 	const router = useRouter()
@@ -17,8 +15,8 @@ export function CreateModulePage() {
 		},
 	})
 
-	function handleCreateModule(title: string, terms: TermType[], access: AccessType, password: string) {
-		createModule.mutate({ terms, title, access, password })
+	function handleCreateModule(payload: CreateModulePayload) {
+		createModule.mutate(payload)
 	}
 
 	return (

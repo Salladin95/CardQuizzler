@@ -1,10 +1,14 @@
 import React from "react"
-import { TermType } from "~/app/models"
 import { ModuleEditor } from "~/widgets"
-import { AccessType } from "~/app/types"
 import { useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
-import { folderQueryKey, foldersQueryKey, modulesQueryKey, useCreateModuleInFolderMutation } from "~/shared"
+import {
+	CreateModulePayload,
+	folderQueryKey,
+	foldersQueryKey,
+	modulesQueryKey,
+	useCreateModuleInFolderMutation,
+} from "~/shared"
 
 export function AddModuleToTheFolderPage(props: { id: string }) {
 	const { id: folderID } = props
@@ -18,8 +22,8 @@ export function AddModuleToTheFolderPage(props: { id: string }) {
 		},
 	})
 
-	async function handleSubmit(title: string, terms: TermType[], access: AccessType, password: string) {
-		createModuleInFolder.mutate({ terms, title, folderID, access, password })
+	async function handleSubmit(payload: CreateModulePayload) {
+		createModuleInFolder.mutate({ ...payload, folderID })
 	}
 
 	return (

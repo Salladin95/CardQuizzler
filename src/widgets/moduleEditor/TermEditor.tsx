@@ -35,7 +35,7 @@ export function TermEditor(props: CreateModuleEditorProps) {
 						<XMarkIcon />
 					</Button>
 				</div>
-				<TermEditorForm term={term} onUpdate={handleUpdate} />
+				<TermEditorForm index={index} term={term} onUpdate={handleUpdate} />
 			</div>
 		</TermEditorCtxProvider>
 	)

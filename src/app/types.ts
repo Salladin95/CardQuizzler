@@ -52,11 +52,9 @@ export type AccessOptions = {
 	value: AccessType
 }
 
-export type SecureAccess =
-	| { access: AccessType.ONLY_ME | AccessType.OPEN }
-	| {
-			access: AccessType.PASSWORD
-			password: string
-	  }
+export type SecureAccess = {
+	access: AccessType
+	password?: string
+}
 
 export type WithPassword = { password?: string }

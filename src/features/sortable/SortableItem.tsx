@@ -19,9 +19,6 @@ export function SortableItem(props: SortableItemProps) {
 		transition,
 	}
 
-	// Log inside the component to check the props received
-	// console.log("Rendering SortableItem with id:", id)
-
 	return (
 		<div ref={setNodeRef} style={style} className={cn("relative", className)}>
 			<div {...attributes} {...listeners} className={"absolute inset-0 w-full h-[2rem] cursor-grab z-10"} />

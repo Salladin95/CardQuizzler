@@ -1,11 +1,12 @@
 "use client"
 import React from "react"
+import { WithId } from "~/app/types"
 import { TermType } from "~/app/models"
 import { ModuleEditor } from "~/widgets"
 import { useRouter } from "next/navigation"
-import { AccessType, WithId } from "~/app/types"
 import { useQueryClient } from "@tanstack/react-query"
 import {
+	CreateModulePayload,
 	homeDataKey,
 	Loader,
 	moduleQueryKey,
@@ -36,10 +37,10 @@ export function EditModulePage(props: WithId) {
 	const originalTermsIDS = new Set<string>()
 	module?.terms.forEach((term) => originalTermsIDS.add(term.id))
 
-	function handleUpdateModule(updatedTitle: string, updatedTerms: TermType[], access: AccessType, password: string) {
-		const originalTerms = updatedTerms.filter((term) => originalTermsIDS.has(term.id))
-		const newTerms = updatedTerms.filter((term) => !originalTermsIDS.has(term.id))
-		updateModule.mutate({ updatedTerms: originalTerms, newTerms, title: updatedTitle, id, access, password })
+	function handleUpdateModule(payload: CreateModulePayload) {
+		const originalTerms = payload.terms?.filter((term) => originalTermsIDS.has(term.id)) as TermType[]
+		const newTerms = payload.terms?.filter((term) => !originalTermsIDS.has(term.id))
+		updateModule.mutate({ ...payload, id, updatedTerms: originalTerms, newTerms })
 	}
 
 	switch (true) {
