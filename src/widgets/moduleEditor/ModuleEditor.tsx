@@ -6,14 +6,14 @@ import { AccessType } from "~/app/types"
 import { useTranslations } from "~/app/i18n"
 import { ModuleType, TermType } from "~/app/models"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { createEmptyTerm, createEmptyTerms } from "./lib"
 import { TermList } from "~/widgets/moduleEditor/TermList"
-import { Controller, FormProvider, useFieldArray, useForm } from "react-hook-form"
 import { ACCESS_TYPE_KEYS, getAccessTypeSelectOptions } from "~/app/constants"
-import { Button, CreateModulePayload, Input, PasswordInput, Select, useAddClassToTag } from "~/shared"
+import { Controller, FormProvider, useFieldArray, useForm } from "react-hook-form"
+import { Button, createEmptyTerm, CreateModulePayload, Input, PasswordInput, Select, useAddClassToTag } from "~/shared"
 
 type ModuleEditorProps = {
 	module?: ModuleType
+	terms: TermType[]
 	onSubmit: (payload: CreateModulePayload) => void
 	hasSubmitted?: boolean
 	isSubmitting?: boolean
@@ -37,25 +37,25 @@ const getModuleEditorSchema = (isEditMode: boolean, currentAccess?: AccessType) 
 	})
 }
 
-function getModuleEditorFormDefValues(module?: ModuleType) {
+function getModuleEditorFormDefValues(terms: TermType[], module?: ModuleType) {
 	return {
 		title: module?.title || "",
 		access: module?.access || AccessType.OPEN,
 		password: "",
-		terms: module?.terms || createEmptyTerms(3),
+		terms: terms,
 	}
 }
 
 export function ModuleEditor(props: ModuleEditorProps) {
 	const t = useTranslations()
-	const { onSubmit, hasSubmitted, isSubmitting, module } = props
+	const { terms, onSubmit, hasSubmitted, isSubmitting, module } = props
 
 	const isEditMode = Boolean(module)
 
 	const form = useForm({
 		mode: "onTouched",
 		resolver: yupResolver(getModuleEditorSchema(isEditMode, module?.access)),
-		defaultValues: getModuleEditorFormDefValues(module),
+		defaultValues: getModuleEditorFormDefValues(terms, module),
 	})
 
 	const {
@@ -68,7 +68,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 		trigger,
 	} = form
 
-	const terms = watch("terms")
+	const formTerms = watch("terms")
 	const accessOption = watch("access")
 
 	const {
@@ -137,13 +137,13 @@ export function ModuleEditor(props: ModuleEditorProps) {
 						)}
 					</div>
 					<TermList
-						items={terms}
+						items={formTerms}
 						onReorder={replaceTerms}
 						onUpdate={handleUpdateTerm}
 						onDelete={handleRemoveTerm}
 						onAddTerm={(index: number) => handleInsertTerm(index, createEmptyTerm())}
 					/>
-					<Button className="w-min mx-auto mb-12" onClick={() => handleInsertTerm(terms.length, createEmptyTerm())}>
+					<Button className="w-min mx-auto mb-12" onClick={() => handleInsertTerm(formTerms.length, createEmptyTerm())}>
 						{t("Generics.add")}
 					</Button>
 					<ActionBtn

@@ -3,6 +3,7 @@ import { ModuleEditor } from "~/widgets"
 import { useRouter } from "next/navigation"
 import { useQueryClient } from "@tanstack/react-query"
 import {
+	createEmptyTerms,
 	CreateModulePayload,
 	folderQueryKey,
 	foldersQueryKey,
@@ -10,7 +11,7 @@ import {
 	useCreateModuleInFolderMutation,
 } from "~/shared"
 
-export function AddModuleToTheFolderPage(props: { id: string }) {
+export function CreateModuleInFolderPage(props: { id: string }) {
 	const { id: folderID } = props
 	const router = useRouter()
 	const queryClient = useQueryClient()
@@ -29,6 +30,7 @@ export function AddModuleToTheFolderPage(props: { id: string }) {
 	return (
 		<main className={"container"}>
 			<ModuleEditor
+				terms={createEmptyTerms(3)}
 				onSubmit={handleSubmit}
 				hasSubmitted={createModuleInFolder.isSuccess}
 				isSubmitting={createModuleInFolder.isPending}

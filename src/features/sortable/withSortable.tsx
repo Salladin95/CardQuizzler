@@ -2,8 +2,8 @@
 import React from "react"
 import { WithId } from "~/app/types"
 import { MouseSensor, TouchSensor } from "./lib/smartMouseSensor"
-import { closestCenter, DndContext, DragEndEvent, useSensor, useSensors } from "@dnd-kit/core"
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { closestCenter, DndContext, DragEndEvent, useSensor, useSensors } from "@dnd-kit/core"
 
 export type SortableGroupData<DataT> = { items: DataT[] }
 

@@ -55,6 +55,7 @@ export function EditModulePage(props: WithId) {
 				return (
 					<main className={"container"}>
 						<ModuleEditor
+							terms={module.terms}
 							module={module}
 							onSubmit={handleUpdateModule}
 							isSubmitting={updateModule.isPending}

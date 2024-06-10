@@ -1,4 +1,6 @@
 import { SelectOption } from "~/app/types"
+import {TermType} from "~/app/models";
+import {v4 as uuidv4} from "uuid";
 
 /**
  * Creates array by index iterator
@@ -27,3 +29,16 @@ export const createOption = (value: string = "0", label = `Option ${value}`): Se
 })
 
 export const createOptions = (length = 10) => createArray(length, (_, index) => createOption(index.toString()))
+
+export function createEmptyTerm(): TermType {
+	return {
+		id: uuidv4(),
+		moduleID: uuidv4(),
+		title: "",
+		description: "",
+	}
+}
+
+export function createEmptyTerms(amount = 1): TermType[] {
+	return createArray(amount, createEmptyTerm)
+}
