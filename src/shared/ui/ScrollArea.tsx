@@ -3,6 +3,7 @@
 import React from "react"
 import * as RadixScrollArea from "@radix-ui/react-scroll-area"
 import { cva, VariantProps } from "class-variance-authority"
+import { cn } from "~/shared"
 
 const scrollAreaVariants = cva("scroll-area", {
 	variants: {
@@ -109,7 +110,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>((pro
 	}, [viewportRef])
 
 	return (
-		<RadixScrollArea.Root className={scrollAreaVariants({ variant, size, className })} ref={ref}>
+		<RadixScrollArea.Root className={cn(scrollAreaVariants({ variant, size }), className)} ref={ref}>
 			<RadixScrollArea.Viewport asChild className="scroll-area-viewport" ref={viewportRef} {...viewport}>
 				{children}
 			</RadixScrollArea.Viewport>

@@ -1,9 +1,9 @@
 "use client"
 import React from "react"
 import Link from "next/link"
-import { HomePageData } from "~/app/models"
 import { useTranslations } from "~/app/i18n"
-import { CreateModuleFolder } from "~/entites"
+import { HomePageData } from "~/app/models"
+import { CreateModuleFolder, HomeSearchBar } from "~/entites"
 import { DifficultModulesCarousel, FolderCarousel, ModulesCarousel } from "~/widgets"
 import { Button, getRandomArrEl, LoadingDataRenderer, useFetchHomePageData } from "~/shared"
 
@@ -13,6 +13,8 @@ export function Home(props: HomePageData) {
 
 	return (
 		<main className={"container overflow-hidden"}>
+			<HomeSearchBar className={"mb-2"} />
+
 			{Boolean(lastActions?.length) && (
 				<section className="mb-4">
 					<h1>{t("lastActions")}</h1>

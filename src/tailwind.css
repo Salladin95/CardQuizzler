@@ -217,4 +217,27 @@
             @apply bg-primary;
         }
     }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        @apply w-[.6rem] h-[.6rem];
+
+        /* w - applies only for vertical scroller */
+
+        /* h - applies only for horizontal scroller  */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: inherit;
+        margin-block: .5rem;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #7749F8;
+        border-radius: 1rem;
+        height: 30px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: hsl(120deg 100% 10% / 100%);
+    }
 }

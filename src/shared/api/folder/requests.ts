@@ -1,7 +1,9 @@
 import axios from "~/app/axios"
-import { JsonResponse } from "~/shared"
-import { FolderType } from "~/app/models"
 import { AccessType } from "~/app/types"
+import { FolderType } from "~/app/models"
+import { GetByTitlePayload, JsonResponse, SortOptions } from "~/shared"
+
+const foldersDefaultLimit = 25
 
 export type CopyFolderPayload = {
 	id: string
@@ -29,8 +31,27 @@ export async function getFolder({ id, password = "" }: GetFolderPayload): Promis
 
 export type GetFoldersResponse = FolderType[]
 
-export async function getFolders(): Promise<GetFoldersResponse> {
-	const res = await axios.get<JsonResponse<FolderType[]>>("/folder")
+export async function getFolders(sortOptions?: SortOptions): Promise<GetFoldersResponse> {
+	const parsedOptions = {
+		limit: sortOptions?.limit || foldersDefaultLimit,
+		page: sortOptions?.page || 1,
+		sortBy: sortOptions?.sortBy || "created_at-",
+	}
+	const res = await axios.get<JsonResponse<GetFoldersResponse>>(
+		`folder?page=${parsedOptions.page}&limit=${parsedOptions.limit}&sortBy=${parsedOptions.sortBy}`,
+	)
+	return res.data.data
+}
+
+export async function getFoldersByTitle(payload: GetByTitlePayload): Promise<GetFoldersResponse> {
+	const parsedOptions = {
+		limit: payload?.limit || foldersDefaultLimit,
+		page: payload?.page || 1,
+		sortBy: payload?.sortBy || "created_at-",
+	}
+	const res = await axios.get<JsonResponse<GetFoldersResponse>>(
+		`folders-by-title/${payload.title}?page=${parsedOptions.page}&limit=${parsedOptions.limit}&sortBy=${parsedOptions.sortBy}`,
+	)
 	return res.data.data
 }
 

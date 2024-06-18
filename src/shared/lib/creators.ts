@@ -1,6 +1,6 @@
 import { SelectOption } from "~/app/types"
-import {TermType} from "~/app/models";
-import {v4 as uuidv4} from "uuid";
+import { TermType } from "~/app/models"
+import { v4 as uuidv4 } from "uuid"
 
 /**
  * Creates array by index iterator

@@ -1,6 +1,7 @@
 "use client"
 import { cn } from "~/shared/lib"
 import { ModuleType } from "~/app/models"
+import { ClosedBookIcon } from "~/shared"
 import { useTranslations } from "~/app/i18n"
 import { PropsWithClassName } from "~/app/types"
 
@@ -26,7 +27,10 @@ export function Module(props: ModuleProps) {
 			)}
 		>
 			<p className={"mb-1 text-body-2"}>{t("numberOfTerms", { number: terms.length })}</p>
-			<h1 className={"h3"}>{title}</h1>
+			<div className={"flex items-center gap-2"}>
+				<ClosedBookIcon className={"text-white"} />
+				<h1 className={"h3"}>{title}</h1>
+			</div>
 		</div>
 	)
 }

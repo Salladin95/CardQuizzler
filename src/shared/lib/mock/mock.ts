@@ -10,6 +10,8 @@ export function mockFolder(): FolderType {
 		title: fakerEN.word.noun(),
 		modules: mockModules(),
 		access: AccessType.OPEN,
+		userID: faker.string.uuid(),
+		authorID: faker.string.uuid(),
 	}
 }
 
@@ -20,6 +22,7 @@ export function mockModule(): ModuleType {
 		terms: mockTerms(),
 		userID: faker.string.uuid(),
 		access: AccessType.OPEN,
+		authorID: faker.string.uuid(),
 	}
 }
 
@@ -32,12 +35,7 @@ export function mockModules(length = 2) {
 }
 
 export function mockCreateFolder(title: string): FolderType {
-	return {
-		id: faker.string.uuid(),
-		title,
-		modules: [],
-		access: AccessType.OPEN,
-	}
+	return mockFolder()
 }
 
 export function mockGetFolder(_: string): FolderType {

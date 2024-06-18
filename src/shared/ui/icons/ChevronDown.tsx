@@ -5,11 +5,11 @@ export function ChevronDown(props: React.SVGAttributes<SVGElement>) {
 	const { className, ...rest } = props
 	return (
 		<svg
-			className={cn(className, "stroke-current")}
+			className={cn("w-6 h-6 fill-none", className)}
 			fill="none"
-			height="24"
+			strokeWidth={1.5}
+			stroke="currentColor"
 			viewBox="0 0 24 24"
-			width="24"
 			xmlns="http://www.w3.org/2000/svg"
 			{...rest}
 		>

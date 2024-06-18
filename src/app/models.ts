@@ -16,20 +16,29 @@ export type TermType = {
 	description: string
 }
 
-export type FolderType = {
+type SharedValues = {
 	id: string
 	title: string
-	modules: ModuleType[]
 	access: AccessType
 	password?: string
+	authorID: string
+	userID: string
+}
+
+export type FolderType = {
+	modules: ModuleType[]
+} & SharedValues
+
+export function isFolder(folder: Record<string, unknown>): folder is FolderType {
+	return Object.hasOwn(folder, "modules")
 }
 
 export type ModuleType = {
-	id: string
-	title: string
 	terms: TermType[]
-	userID: string
-	access: AccessType
+} & SharedValues
+
+export function isModule(module: Record<string, unknown>): module is ModuleType {
+	return Object.hasOwn(module, "terms")
 }
 
 export type HomePageData = {

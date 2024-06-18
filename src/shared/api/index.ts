@@ -11,6 +11,10 @@ export type SortOptions = {
 	limit?: number
 }
 
+export type GetByTitlePayload = {
+	title: string
+} & SortOptions
+
 export type JsonResponse<T> = {
 	message: string
 	data: T

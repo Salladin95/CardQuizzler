@@ -2,7 +2,7 @@ import axios from "~/app/axios"
 import { AxiosResponse } from "axios"
 import { SecureAccess } from "~/app/types"
 import { ModuleType, TermType } from "~/app/models"
-import { JsonResponse, SortOptions } from "~/shared"
+import { GetByTitlePayload, JsonResponse, SortOptions } from "~/shared"
 
 export type GetModulePayload = {
 	id: string
@@ -27,6 +27,18 @@ export async function getModules(sortOptions?: SortOptions): Promise<GetModulesR
 	}
 	const res = await axios.get<JsonResponse<GetModulesResponse>>(
 		`module?page=${parsedOptions.page}&limit=${parsedOptions.limit}&sortBy=${parsedOptions.sortBy}`,
+	)
+	return res.data.data
+}
+
+export async function getModulesByTitle(payload: GetByTitlePayload): Promise<GetModulesResponse> {
+	const parsedOptions = {
+		limit: payload?.limit || modulesDefaultLimit,
+		page: payload?.page || 1,
+		sortBy: payload?.sortBy || "created_at-",
+	}
+	const res = await axios.get<JsonResponse<GetModulesResponse>>(
+		`modules-by-title/${payload.title}?page=${parsedOptions.page}&limit=${parsedOptions.limit}&sortBy=${parsedOptions.sortBy}`,
 	)
 	return res.data.data
 }
