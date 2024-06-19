@@ -11,11 +11,13 @@ import {
 	cn,
 	FolderIcon,
 	Loader,
+	SearchIcon,
 	Separator,
 	useInfiniteFoldersByTitle,
 	useInfiniteModulesByTitle,
 	useProfile,
 } from "~/shared"
+import { useDebounce } from "react-use"
 
 type Hint = FolderType | ModuleType
 
@@ -116,11 +118,11 @@ function RenderHints(props: RenderHintsProps) {
 	}, [isFoldersLoading, onLoadingChange, enabled, isModulesLoading, isLoadingFoldersNextPage, isLoadingModulesNextPage])
 
 	React.useEffect(() => {
-		if (isInView) {
+		if (isInView && title) {
 			hasModulesNextPage && fetchModulesNextPage()
 			hasFoldersNextPage && fetchFoldersNextPage()
 		}
-	}, [fetchFoldersNextPage, fetchModulesNextPage, hasFoldersNextPage, hasModulesNextPage, isInView])
+	}, [fetchFoldersNextPage, fetchModulesNextPage, hasFoldersNextPage, hasModulesNextPage, isInView, title])
 
 	return (
 		<ul>
@@ -150,17 +152,37 @@ function RenderHints(props: RenderHintsProps) {
 type HomeSearchBarProps = Omit<AutocompleteProps, "renderHints">
 
 export function HomeSearchBar(props: HomeSearchBarProps) {
-	const [title, setTitle] = React.useState("")
-	const [isLoading, setIsLoading] = React.useState(false)
 	const { data: profile } = useProfile()
+
+	const [isLoading, setIsLoading] = React.useState(false)
+
+	const [title, setTitle] = React.useState("")
+	const [debouncedTitle, setDebouncedTitle] = React.useState("")
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const updatedTitle = e.target.value
+		setTitle(updatedTitle)
+	}
+
+	useDebounce(
+		() => {
+			setDebouncedTitle(title)
+		},
+		500,
+		[title],
+	)
 
 	return (
 		<Autocomplete
-			prefix={<Loader size={"sm"} className={cn("fill-primary", { "opacity-0": !isLoading })} />}
-			onChange={(e) => setTitle(e.target.value)}
+			suffix={isLoading ? <Loader size={"sm"} className={"fill-primary"} /> : <SearchIcon />}
+			onChange={handleChange}
 			{...props}
 			renderHints={() => (
-				<RenderHints title={title} uid={profile?.id} onLoadingChange={(isPending) => setIsLoading(isPending)} />
+				<RenderHints
+					title={debouncedTitle}
+					uid={profile?.id}
+					onLoadingChange={(isPending) => setIsLoading(isPending)}
+				/>
 			)}
 		/>
 	)
