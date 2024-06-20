@@ -1,4 +1,5 @@
 import { AxiosError } from "axios"
+import { UseInfiniteQueryCustomOptions } from ".."
 import { useInfiniteQuery, useQuery, UseQueryOptions } from "@tanstack/react-query"
 import {
 	getDifficultModules,
@@ -39,12 +40,12 @@ export const useFetchModulesByTitle = (
 	})
 }
 
-export const useInfiniteModulesByTitle = (title: string) => {
+export const useInfiniteModulesByTitle = (title: string, options?: UseInfiniteQueryCustomOptions) => {
 	return useInfiniteQuery({
-		queryKey: [infiniteModulesQueryKey],
-		queryFn: ({ pageParam }) => getModulesByTitle({ title, page: pageParam, limit: 4 }),
+		...options,
+		queryKey: [infiniteModulesQueryKey, title],
+		queryFn: ({ pageParam, queryKey }) => getModulesByTitle({ title: queryKey[1], page: pageParam, limit: 4 }),
 		initialPageParam: 0,
-		enabled: Boolean(title),
 		getNextPageParam: (lastPage, allPages, lastPageParam) => {
 			if (lastPage.length === 0) {
 				return undefined

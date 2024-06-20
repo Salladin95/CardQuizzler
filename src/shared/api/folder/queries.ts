@@ -1,4 +1,5 @@
 import { AxiosError } from "axios"
+import { UseInfiniteQueryCustomOptions } from ".."
 import { useInfiniteQuery, useQuery, UseQueryOptions } from "@tanstack/react-query"
 import {
 	getFolder,
@@ -33,23 +34,17 @@ export const useFetchFoldersByTitle = (
 	})
 }
 
-export const useInfiniteFoldersByTitle = (title: string) => {
+export const useInfiniteFoldersByTitle = (title: string, options?: UseInfiniteQueryCustomOptions) => {
 	return useInfiniteQuery({
-		queryKey: [infiniteFoldersQueryKey],
-		queryFn: ({ pageParam }) => getFoldersByTitle({ title, page: pageParam, limit: 4 }),
-		enabled: Boolean(title),
+		...options,
+		queryKey: [infiniteFoldersQueryKey, title],
+		queryFn: ({ pageParam, queryKey }) => getFoldersByTitle({ title: queryKey[1], page: pageParam, limit: 4 }),
 		initialPageParam: 0,
 		getNextPageParam: (lastPage, allPages, lastPageParam) => {
 			if (lastPage.length === 0) {
 				return undefined
 			}
 			return lastPageParam + 1
-		},
-		getPreviousPageParam: (firstPage, allPages, firstPageParam) => {
-			if (firstPageParam <= 1) {
-				return undefined
-			}
-			return firstPageParam - 1
 		},
 	})
 }

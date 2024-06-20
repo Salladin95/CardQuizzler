@@ -9,6 +9,7 @@ import {
 	AutocompleteProps,
 	ClosedBookIcon,
 	cn,
+	debounce,
 	FolderIcon,
 	Loader,
 	SearchIcon,
@@ -17,7 +18,6 @@ import {
 	useInfiniteModulesByTitle,
 	useProfile,
 } from "~/shared"
-import { useDebounce } from "react-use"
 
 type Hint = FolderType | ModuleType
 
@@ -72,7 +72,7 @@ function RenderHints(props: RenderHintsProps) {
 		hasNextPage: hasFoldersNextPage,
 		fetchNextPage: fetchFoldersNextPage,
 		isFetchingNextPage: isLoadingFoldersNextPage,
-	} = useInfiniteFoldersByTitle(title)
+	} = useInfiniteFoldersByTitle(title, { enabled })
 
 	const {
 		data: infiniteModulesData,
@@ -80,7 +80,7 @@ function RenderHints(props: RenderHintsProps) {
 		hasNextPage: hasModulesNextPage,
 		fetchNextPage: fetchModulesNextPage,
 		isFetchingNextPage: isLoadingModulesNextPage,
-	} = useInfiniteModulesByTitle(title)
+	} = useInfiniteModulesByTitle(title, { enabled })
 
 	function filterHints(h: { access: AccessType; userID: string }) {
 		return uid === h.userID || h.access !== AccessType.ONLY_ME
@@ -157,20 +157,13 @@ export function HomeSearchBar(props: HomeSearchBarProps) {
 	const [isLoading, setIsLoading] = React.useState(false)
 
 	const [title, setTitle] = React.useState("")
-	const [debouncedTitle, setDebouncedTitle] = React.useState("")
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const updatedTitle = e.target.value
 		setTitle(updatedTitle)
 	}
 
-	useDebounce(
-		() => {
-			setDebouncedTitle(title)
-		},
-		500,
-		[title],
-	)
+	const handleChange = debounce(onChange, 300)
 
 	return (
 		<Autocomplete
@@ -178,11 +171,7 @@ export function HomeSearchBar(props: HomeSearchBarProps) {
 			onChange={handleChange}
 			{...props}
 			renderHints={() => (
-				<RenderHints
-					title={debouncedTitle}
-					uid={profile?.id}
-					onLoadingChange={(isPending) => setIsLoading(isPending)}
-				/>
+				<RenderHints title={title} uid={profile?.id} onLoadingChange={(isPending) => setIsLoading(isPending)} />
 			)}
 		/>
 	)

@@ -76,7 +76,7 @@ export async function copyModule(payload: CopyModulePayload): Promise<CopyModule
 	const { id, password } = payload
 	let url = `copy-module/${id}`
 	if (password) {
-		url += `password=${password}`
+		url += `?password=${password}`
 	}
 	const res = await axios.post<string>(url)
 	return res.status

@@ -23,6 +23,7 @@ import {
 } from "~/shared"
 import { ModuleType } from "~/app/models"
 import { DuplicateIcon } from "~/shared/ui/icons/DuplicateIcon"
+import { useSessionStorage } from "react-use"
 
 export function ModuleContextMenu(props: ModuleType) {
 	const t = useTranslations()
@@ -61,13 +62,15 @@ export function ModuleContextMenu(props: ModuleType) {
 		},
 	})
 
+	const [modulePassword] = useSessionStorage(id, "")
+
 	function handleDeleteModule() {
 		deleteModule.mutate(id)
 		setShowPopover(false)
 	}
 
 	function handleCopyModule() {
-		copyModule.mutate({ id })
+		copyModule.mutate({ id, password: modulePassword })
 	}
 
 	return (

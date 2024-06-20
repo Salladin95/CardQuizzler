@@ -3,7 +3,13 @@ import { SwiperCard } from "~/features"
 import { AxiosError, AxiosResponse } from "axios"
 import { HomePageData, TermType } from "~/app/models"
 import { DeleteModuleResponse, getDifficultModules, getFolders, getModules } from "~/shared"
-import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "@tanstack/react-query"
+import {
+	UseInfiniteQueryOptions,
+	useMutation,
+	UseMutationOptions,
+	useQuery,
+	UseQueryOptions,
+} from "@tanstack/react-query"
 
 export type SortOptions = {
 	page?: number
@@ -19,6 +25,8 @@ export type JsonResponse<T> = {
 	message: string
 	data: T
 }
+
+export type UseInfiniteQueryCustomOptions = Partial<Pick<UseInfiniteQueryOptions, "enabled">>
 
 export const homeDataKey = "home-page-date-key"
 

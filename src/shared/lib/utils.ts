@@ -1,6 +1,3 @@
-import * as Yup from "~/yup"
-import { AccessType } from "~/app/types"
-
 /**
  * Clamps a value to a specified range.
  *
@@ -67,8 +64,11 @@ export function checkEmailFormat(email: string): boolean {
  * @param {unknown[]} arr
  * @returns {unknown}
  */
-export function getRandomArrEl<T>(arr: T[]): T {
-	return arr[Math.floor(Math.random() * arr.length)]
+export function getRandomArrEl<T>(arr: T[]): T | null {
+	if (arr instanceof Array) {
+		return arr[Math.floor(Math.random() * arr.length)]
+	}
+	return null
 }
 
 export function getRandomInt(max: number) {
@@ -76,10 +76,36 @@ export function getRandomInt(max: number) {
 }
 
 /**
- * Determines if the password field is required based on the newAccess type and mode.
+ * Creates a debounced function that delays the invocation of the provided function until after
+ * a specified wait time has elapsed since the last time the debounced function was invoked.
+ * Optionally, the function can be invoked immediately on the first call.
  *
- * @param {AccessType} newAccess - Updated access type.
- * @param {AccessType} currentAccess The current newAccess type of the folder.
- * @param {boolean} isEditMode - Flag indicating if the form is in edit mode.
- * @returns {boolean} - True if the password field is required, otherwise false.
+ * @param func - The function to debounce.
+ * @param wait - The number of milliseconds to delay.
+ * @param immediate - If `true`, the function is invoked immediately on the first call.
+ * @returns A new debounced function.
  */
+export function debounce<T extends (...args: never[]) => unknown>(func: T, wait: number, immediate: boolean = false) {
+	let timeout: ReturnType<typeof setTimeout> | null
+
+	return function executedFunction(...args: Parameters<T>): void {
+		const later = () => {
+			timeout = null
+			if (!immediate) {
+				func(...args)
+			}
+		}
+
+		const callNow = immediate && !timeout
+
+		if (timeout) {
+			clearTimeout(timeout)
+		}
+
+		timeout = setTimeout(later, wait)
+
+		if (callNow) {
+			func(...args)
+		}
+	}
+}
