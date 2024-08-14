@@ -1,3 +1,6 @@
+import { AccessType } from "~/app/types"
+import { FolderType, isFolder, isModule, ModuleType } from "~/app/models"
+
 /**
  * Clamps a value to a specified range.
  *
@@ -108,4 +111,58 @@ export function debounce<T extends (...args: never[]) => unknown>(func: T, wait:
 			func(...args)
 		}
 	}
+}
+
+/**
+ * generateModuleLink generates the URL based on access type for module
+ * @param module {ModuleType}
+ * @param uid {string}
+ */
+export function generateModuleLink(module: ModuleType, uid?: string): string | null {
+	if (uid === module.userID) {
+		return `/module-preview/${module.id}`
+	}
+	switch (module.access) {
+		case AccessType.PASSWORD:
+			return `/protected/${module.id}/module-preview`
+		case AccessType.OPEN:
+			return `/module-preview/${module.id}`
+		default:
+			return null
+	}
+}
+
+/**
+ * generateFolderLink generates the URL based on access type for folder
+ * @param folder {FolderType}
+ * @param uid {string}
+ */
+export function generateFolderLink(folder: FolderType, uid?: string): string | null {
+	if (uid === folder.userID) {
+		return `/folder/${folder.id}`
+	}
+	switch (folder.access) {
+		case AccessType.PASSWORD:
+			return `/protected/${folder.id}/folder`
+		case AccessType.OPEN:
+			return `/folder/${folder.id}`
+		default:
+			return null
+	}
+}
+
+/**
+ * Generates a link based on the type of object provided (module or folder) and the user ID.
+ * @param obj {T}  - The object for which to generate the link. Must be either a ModuleType or FolderType.
+ * @param uid {string}  - The user ID.
+ * @returns {string|null} The generated URL or null if the object type is not supported.
+ */
+export function generateLink<T extends Record<string, unknown>>(obj: T, uid?: string): string | null {
+	let link: string | null = null
+	if (isModule(obj)) {
+		link = generateModuleLink(obj, uid)
+	} else if (isFolder(obj)) {
+		link = generateFolderLink(obj, uid)
+	}
+	return link
 }

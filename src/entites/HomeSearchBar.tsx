@@ -3,7 +3,7 @@ import React from "react"
 import { AccessType } from "~/app/types"
 import { useInView } from "framer-motion"
 import { useRouter } from "next/navigation"
-import { FolderType, isFolder, isModule, ModuleType } from "~/app/models"
+import { FolderType, isFolder, ModuleType } from "~/app/models"
 import {
 	Autocomplete,
 	AutocompleteProps,
@@ -11,6 +11,7 @@ import {
 	cn,
 	debounce,
 	FolderIcon,
+	generateLink,
 	Loader,
 	SearchIcon,
 	Separator,
@@ -20,36 +21,6 @@ import {
 } from "~/shared"
 
 type Hint = FolderType | ModuleType
-
-// Function to generate the URL based on access type
-function generateModuleLink(module: ModuleType, uid?: string): string | null {
-	if (uid === module.userID) {
-		return `/module-preview/${module.id}`
-	}
-	switch (module.access) {
-		case AccessType.PASSWORD:
-			return `/protected/${module.id}/module-preview`
-		case AccessType.OPEN:
-			return `/module-preview/${module.id}`
-		default:
-			return null
-	}
-}
-
-// Function to generate the URL based on access type
-function generateFolderLink(folder: FolderType, uid?: string): string | null {
-	if (uid === folder.userID) {
-		return `/folder/${folder.id}`
-	}
-	switch (folder.access) {
-		case AccessType.PASSWORD:
-			return `/protected/${folder.id}/folder`
-		case AccessType.OPEN:
-			return `/folder/${folder.id}`
-		default:
-			return null
-	}
-}
 
 type RenderHintsProps = {
 	uid?: string
@@ -102,12 +73,7 @@ function RenderHints(props: RenderHintsProps) {
 	const hints = title ? [...moduleHints, ...folderHints] : []
 
 	function handleClick(hint: Hint) {
-		let link: string | null = null
-		if (isModule(hint)) {
-			link = generateModuleLink(hint, uid)
-		} else if (isFolder(hint)) {
-			link = generateFolderLink(hint, uid)
-		}
+		const link = generateLink<Hint>(hint, uid)
 		link && router.push(link)
 	}
 

@@ -2,18 +2,23 @@
 import React from "react"
 import Link from "next/link"
 import { ActionBtn } from "~/entites"
+import { ModuleType } from "~/app/models"
 import { useTranslations } from "~/app/i18n"
+import { useSessionStorage } from "react-use"
 import { useQueryClient } from "@tanstack/react-query"
 import {
 	AdjustIcon,
 	BookOpenIcon,
 	Button,
+	cn,
+	CopyIcon,
+	generateLink,
 	homeDataKey,
+	Input,
 	moduleQueryKey,
 	modulesQueryKey,
 	MotionToggleButton,
 	Popover,
-	ShareIcon,
 	TrashIcon,
 	useCopyModuleMutation,
 	useDeleteModuleMutation,
@@ -21,9 +26,6 @@ import {
 	useStoredSwiperState,
 	useToast,
 } from "~/shared"
-import { ModuleType } from "~/app/models"
-import { DuplicateIcon } from "~/shared/ui/icons/DuplicateIcon"
-import { useSessionStorage } from "react-use"
 
 export function ModuleContextMenu(props: ModuleType) {
 	const t = useTranslations()
@@ -73,6 +75,12 @@ export function ModuleContextMenu(props: ModuleType) {
 		copyModule.mutate({ id, password: modulePassword })
 	}
 
+	const [showShareDialog, setShowShareDialog] = React.useState(false)
+
+	const link = generateLink(props, userID) || ""
+
+	const [isCopied, setIsCopied] = React.useState(false)
+
 	return (
 		<Popover
 			side={"top"}
@@ -98,24 +106,45 @@ export function ModuleContextMenu(props: ModuleType) {
 				</Link>
 			</Button>
 			{profile?.id === userID && (
-				<Button className={"justify-start"} asChild>
-					<Link href={`/module/${id}`}>
-						<span className={"mr-2"}>
-							<ShareIcon />
-						</span>
-						<span>{t("Features.share")}</span>
-					</Link>
-				</Button>
+				// <Dialog
+				// 	trigger={
+				// 		<Button className={"justify-start"} asChild>
+				// 			<span className={"mr-2"}>
+				// 				<ShareIcon />
+				// 			</span>
+				// 			<span>{t("Features.share")}</span>
+				// 		</Button>
+				// 	}
+				// 	open={showShareDialog}
+				// 	onOpenChange={setShowShareDialog}
+				// >
+				<Input
+					readOnly
+					value={link}
+					className={cn("text-primary", { "cursor-default": isCopied })}
+					suffix={
+						<Button
+							onClick={async () => {
+								await navigator.clipboard.writeText(link)
+								setIsCopied(true)
+							}}
+							className={cn("text-white p-0 w-[2rem] h-[2rem]", { "pointer-events-none opacity-70": isCopied })}
+						>
+							<CopyIcon className={""} />
+						</Button>
+					}
+				/>
+				// 	</Dialog>
 			)}
-			{profile?.id !== userID && (
+
+			{profile?.id === userID && (
 				<ActionBtn className={"justify-start"} loading={copyModule.isPending} onClick={handleCopyModule}>
 					<span className={"mr-2"}>
-						<DuplicateIcon />
+						<CopyIcon />
 					</span>
 					<span>{t("Features.copy")}</span>
 				</ActionBtn>
 			)}
-			{/*TODO: EXTRACT TO SEPARATE FUNCTION ADD CONFIRM MODULE*/}
 			<ActionBtn
 				disabled={deleteModule.isSuccess}
 				loading={deleteModule.isPending}

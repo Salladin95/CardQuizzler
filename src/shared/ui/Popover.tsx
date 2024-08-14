@@ -32,9 +32,6 @@ export type PopoverProps = RadixPopover.PopoverProps &
 		 */
 		anchor?: React.ReactNode
 		/**
-		 * Anchor is used to position popover relative to a specific UI element.
-		 */
-		/**
 		 * React node for popover trigger
 		 * */
 		trigger?: React.ReactNode

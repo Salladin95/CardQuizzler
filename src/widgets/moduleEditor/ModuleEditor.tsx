@@ -103,9 +103,14 @@ export function ModuleEditor(props: ModuleEditorProps) {
 				<section className={"overflow-hidden p-1"}>
 					<div className="flex justify-between mb-4">
 						<h1 className="h2 text-primary">{title}</h1>
-						<Button disabled={isSubmitDisabled} className="w-min" type={"submit"}>
+						<ActionBtn
+							type={"submit"}
+							loading={isSubmitting}
+							disabled={isSubmitDisabled}
+							className="w-min ml-auto px-8 py-6"
+						>
 							{submitBtnTitle}
-						</Button>
+						</ActionBtn>
 					</div>
 					<Input
 						{...register("title")}

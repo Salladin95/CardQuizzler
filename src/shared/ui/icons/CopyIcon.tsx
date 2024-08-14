@@ -1,7 +1,7 @@
 import React from "react"
 import { cn } from "~/shared/lib"
 
-export function DuplicateIcon(props: React.SVGAttributes<SVGElement>) {
+export function CopyIcon(props: React.SVGAttributes<SVGElement>) {
 	const { className, ...rest } = props
 	return (
 		<svg
