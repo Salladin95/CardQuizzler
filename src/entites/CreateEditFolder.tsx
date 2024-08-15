@@ -90,6 +90,7 @@ export function CreateEditFolder(props: CreateFolderProps) {
 						error={Boolean(errors.title)}
 						className={"mb-4"}
 					/>
+					<p className={"mb-2"}>{t("Placeholders.access")}</p>
 					<div className={"flex gap-4 mb-8"}>
 						<Controller
 							name={"access"}
