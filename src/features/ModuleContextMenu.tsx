@@ -14,7 +14,6 @@ import {
 	CopyIcon,
 	generateLink,
 	homeDataKey,
-	Input,
 	moduleQueryKey,
 	modulesQueryKey,
 	MotionToggleButton,
@@ -26,10 +25,11 @@ import {
 	useStoredSwiperState,
 	useToast,
 } from "~/shared"
+import { AccessType } from "~/app/types"
 
 export function ModuleContextMenu(props: ModuleType) {
 	const t = useTranslations()
-	const { id, userID } = props
+	const { id, userID, access } = props
 	const [showPopover, setShowPopover] = React.useState(false)
 
 	const toast = useToast()
@@ -75,9 +75,8 @@ export function ModuleContextMenu(props: ModuleType) {
 		copyModule.mutate({ id, password: modulePassword })
 	}
 
-	const [showShareDialog, setShowShareDialog] = React.useState(false)
-
-	const link = generateLink(props, userID) || ""
+	const host = process.env.NEXT_PUBLIC_APP_URL
+	const link = host ? `${host}/${generateLink(props, userID)}` : ""
 
 	const [isCopied, setIsCopied] = React.useState(false)
 
@@ -105,44 +104,23 @@ export function ModuleContextMenu(props: ModuleType) {
 					<span>{t("Features.edit")}</span>
 				</Link>
 			</Button>
-			{profile?.id === userID && (
-				// <Dialog
-				// 	trigger={
-				// 		<Button className={"justify-start"} asChild>
-				// 			<span className={"mr-2"}>
-				// 				<ShareIcon />
-				// 			</span>
-				// 			<span>{t("Features.share")}</span>
-				// 		</Button>
-				// 	}
-				// 	open={showShareDialog}
-				// 	onOpenChange={setShowShareDialog}
-				// >
-				<Input
-					readOnly
-					value={link}
-					className={cn("text-primary", { "cursor-default": isCopied })}
-					suffix={
-						<Button
-							onClick={async () => {
-								await navigator.clipboard.writeText(link)
-								setIsCopied(true)
-							}}
-							className={cn("text-white p-0 w-[2rem] h-[2rem]", { "pointer-events-none opacity-70": isCopied })}
-						>
-							<CopyIcon className={""} />
-						</Button>
-					}
-				/>
-				// 	</Dialog>
-			)}
-
-			{profile?.id === userID && (
+			<Button
+				disabled={access === AccessType.ONLY_ME}
+				onClick={async () => {
+					await navigator.clipboard.writeText(link)
+					setIsCopied(true)
+				}}
+				className={cn("text-white justify-start", { "pointer-events-none opacity-70": isCopied })}
+			>
+				<CopyIcon className={"mr-2"} />
+				<span>{t("Generics.copyLink")}</span>
+			</Button>
+			{profile?.id !== userID && (
 				<ActionBtn className={"justify-start"} loading={copyModule.isPending} onClick={handleCopyModule}>
 					<span className={"mr-2"}>
 						<CopyIcon />
 					</span>
-					<span>{t("Features.copy")}</span>
+					<span>{t("Features.copyModule")}</span>
 				</ActionBtn>
 			)}
 			<ActionBtn

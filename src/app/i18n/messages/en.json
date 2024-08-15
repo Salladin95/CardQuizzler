@@ -61,6 +61,7 @@
   "Features": {
     "createModule": "Create module",
     "studyModule": "Study this module",
+    "copyModule": "Make a copy of the module",
     "copy": "Make a copy",
     "share": "Share",
     "createFolder": "Create folder",
@@ -157,6 +158,7 @@
     }
   },
   "Generics": {
+    "copyLink": "Copy link",
     "save": "Save",
     "add": "Add",
     "error": "Error",
