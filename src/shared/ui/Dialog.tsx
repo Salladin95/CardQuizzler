@@ -28,7 +28,7 @@ export type DialogProps = RadixDialog.DialogContentProps & {
 	open?: boolean
 	defaultOpen?: boolean
 	onOpenChange?: (open: boolean) => void
-	onOverlayClick?: () => void
+	onOverlayClick?: (e?: React.SyntheticEvent) => void
 }
 export const Dialog = (props: DialogProps) => {
 	const {

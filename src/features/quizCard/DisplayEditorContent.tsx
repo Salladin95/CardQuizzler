@@ -59,8 +59,14 @@ export function DisplayEditorContent(props: DisplayEditorContentProps) {
 			{hasOverflow && (
 				<Dialog
 					className={"bg-purple-gradient top-[54%] 640:top-[28rem] w-320 40:w-428 768:w-640 1024:w-768"}
+					onClick={(e) => e.stopPropagation()}
+					onOverlayClick={(e) => e?.stopPropagation()}
 					trigger={
-						<Button variant={"none"} className={"bottom-2 absolute-x-center w-min text-sub-primary"}>
+						<Button
+							onClick={(e) => e.stopPropagation()}
+							variant={"none"}
+							className={"bottom-2 absolute-x-center w-min text-primary font-bold"}
+						>
 							{t("Generics.more")}
 						</Button>
 					}
