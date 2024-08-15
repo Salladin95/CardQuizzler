@@ -34,6 +34,20 @@ The app offers a dynamic approach to studying by allowing, organize modules in f
 ### 5. Regain Access to Your Account
 Email Setup: Users can set their email to ensure they can regain access to their account if needed.<br>
 Password Recovery: If a user forgets their password, they can easily reset it via email, ensuring they always have access to their learning modules.
+
+## Getting Started
+* Sign Up/Login: Create an account or log in to start using CardQuizzler.
+* Create a Module: Go to the 'Create Module' section, name your module, and start adding cards.
+* Start Learning: Access your module, and swipe left or right to review your flashcards. Watch out for the difficult cards!
+* Organize Your Modules: Create folders and organize your modules to keep your learning path structured.
+* Control Access: Decide who can interact with your modules by setting access preferences.
+* Set Up Email for Security: Ensure your account is secure and recoverable by setting your email for password recovery.
+## Why CardQuizzler?
+* Customizable Learning: Tailor your study sessions to match your learning pace and preferences.
+* Efficient Study: Focus on difficult areas with the automatic tracking of challenging cards.
+* Community Sharing: Share your modules or learn from others in the CardQuizzler community.
+* Secure Account Access: Rest easy knowing you can recover your account if you forget your password.
+
 <br><br><br><br><br><br><br>
 ### CardQuizzler — это приложение для изучения языков, разработанное для того, чтобы сделать процесс изучения языков более интерактивным и эффективным.
 
@@ -60,15 +74,15 @@ Password Recovery: If a user forgets their password, they can easily reset it vi
 Настройка Электронной Почты: Пользователи могут указать свой адрес электронной почты для обеспечения возможности восстановления доступа к учетной записи.
 <br>
 Восстановление Пароля: Если пользователь забыл пароль, он может легко восстановить его через электронную почту, обеспечивая непрерывный доступ к своим учебным модулям.
-### Начало Работы
-Регистрация/Вход: Создайте учетную запись или войдите в систему, чтобы начать использовать CardQuizzler.
-Создание Модуля: Перейдите в раздел «Создать Модуль», назовите свой модуль и начните добавлять карточки.
-Начало Обучения: Откройте свой модуль и пролистывайте карточки влево или вправо для их изучения. Обратите внимание на сложные карточки!
-Организация Модулей: Создайте папки и организуйте свои модули для структурирования процесса обучения.
-Управление Доступом: Решите, кто может взаимодействовать с вашими модулями, установив предпочтения доступа.
-Настройка Электронной Почты для Безопасности: Убедитесь, что ваш аккаунт защищен и может быть восстановлен, указав свою электронную почту для восстановления пароля.
-### Почему CardQuizzler?
-Персонализированное Обучение: Настройте свои учебные сессии в соответствии с вашими потребностями и предпочтениями.
-Эффективное Обучение: Сосредоточьтесь на сложных аспектах с помощью автоматического отслеживания сложных карточек.
-Обмен в Сообществе: Делитесь своими модулями или учитесь на материалах других пользователей в сообществе CardQuizzler.
-Безопасный Доступ к Учетной Записи: Спокойствие в знании, что вы можете восстановить доступ к своему аккаунту в случае, если забудете пароль.
+## Начало Работы
+* Регистрация/Вход: Создайте учетную запись или войдите в систему, чтобы начать использовать CardQuizzler.
+* Создание Модуля: Перейдите в раздел «Создать Модуль», назовите свой модуль и начните добавлять карточки.
+* Начало Обучения: Откройте свой модуль и пролистывайте карточки влево или вправо для их изучения. Обратите внимание на сложные карточки!
+* Организация Модулей: Создайте папки и организуйте свои модули для структурирования процесса обучения.
+* Управление Доступом: Решите, кто может взаимодействовать с вашими модулями, установив предпочтения доступа.
+* Настройка Электронной Почты для Безопасности: Убедитесь, что ваш аккаунт защищен и может быть восстановлен, указав свою электронную почту для восстановления пароля.
+## Почему CardQuizzler?
+* Персонализированное Обучение: Настройте свои учебные сессии в соответствии с вашими потребностями и предпочтениями.
+* Эффективное Обучение: Сосредоточьтесь на сложных аспектах с помощью автоматического отслеживания сложных карточек.
+* Обмен в Сообществе: Делитесь своими модулями или учитесь на материалах других пользователей в сообществе CardQuizzler.
+* Безопасный Доступ к Учетной Записи: Спокойствие в знании, что вы можете восстановить доступ к своему аккаунту в случае, если забудете пароль.
