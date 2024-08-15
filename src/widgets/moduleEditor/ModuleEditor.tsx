@@ -118,6 +118,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 						className={"mb-8"}
 						error={!!errors.title}
 					/>
+					<p className={"mb-2"}>{t("Placeholders.access")}</p>
 					<div className={"flex gap-4 mb-8"}>
 						<Controller
 							name={"access"}
@@ -141,6 +142,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 							/>
 						)}
 					</div>
+
 					<TermList
 						items={formTerms}
 						onReorder={replaceTerms}

@@ -88,7 +88,7 @@ export function ModuleContextMenu(props: ModuleType) {
 			onOpenChange={setShowPopover}
 			className={"min-w-[20rem] flex-center flex-col gap-y-2"}
 		>
-			<Button className={"justify-start"} asChild>
+			<Button disabled={true} className={"justify-start"} asChild>
 				<Link href={`/module/${id}`}>
 					<span className={"mr-2"}>
 						<BookOpenIcon />
@@ -96,14 +96,16 @@ export function ModuleContextMenu(props: ModuleType) {
 					<span>{t("Features.studyModule")}</span>
 				</Link>
 			</Button>
-			<Button className={"justify-start"} asChild>
-				<Link href={`/module/edit/${id}`}>
-					<span className={"mr-2"}>
-						<AdjustIcon />
-					</span>
-					<span>{t("Features.edit")}</span>
-				</Link>
-			</Button>
+			{userID === profile?.id && (
+				<Button className={"justify-start"} asChild>
+					<Link href={`/module/edit/${id}`}>
+						<span className={"mr-2"}>
+							<AdjustIcon />
+						</span>
+						<span>{t("Features.edit")}</span>
+					</Link>
+				</Button>
+			)}
 			<Button
 				disabled={access === AccessType.ONLY_ME}
 				onClick={async () => {
@@ -116,7 +118,12 @@ export function ModuleContextMenu(props: ModuleType) {
 				<span>{t("Generics.copyLink")}</span>
 			</Button>
 			{profile?.id !== userID && (
-				<ActionBtn className={"justify-start"} loading={copyModule.isPending} onClick={handleCopyModule}>
+				<ActionBtn
+					disabled={copyModule.isSuccess}
+					className={"justify-start"}
+					loading={copyModule.isPending}
+					onClick={handleCopyModule}
+				>
 					<span className={"mr-2"}>
 						<CopyIcon />
 					</span>
@@ -124,7 +131,7 @@ export function ModuleContextMenu(props: ModuleType) {
 				</ActionBtn>
 			)}
 			<ActionBtn
-				disabled={deleteModule.isSuccess}
+				disabled={deleteModule.isSuccess || userID !== profile?.id || deleteModule.isPending}
 				loading={deleteModule.isPending}
 				onClick={handleDeleteModule}
 				variant={"danger"}
