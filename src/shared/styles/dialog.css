@@ -1,0 +1,23 @@
+@layer components {
+    .dialog {
+        &-overlay {
+            @apply fixed inset-0 bg-black opacity-30;
+
+            &[data-state="open"] {
+                @apply animate-overlay-open;
+            }
+
+            &[data-state="closed"] {
+                @apply animate-overlay-closed;
+            }
+        }
+
+        &-primary {
+            @apply fixed top-1/2 left-1/2 p-4 bg-white rounded-[1.25rem] outline-none;
+
+            &[data-state="closed"] {
+                @apply animate-framer-0.3;
+            }
+        }
+    }
+}

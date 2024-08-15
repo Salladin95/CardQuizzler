@@ -1,0 +1,26 @@
+@layer components {
+    .quiz-statistics-item {
+        @apply flex justify-between items-center text-[1.2rem] border-2 rounded-full py-1 px-4;
+
+        .quiz-value {
+            @apply w-8 h-8 rounded-full flex-center border-[1px]  text-body-1
+        }
+
+        &-success {
+            @apply text-green border-green;
+
+            .quiz-value {
+                @apply border-green
+            }
+        }
+
+
+        &-danger {
+            @apply text-[#BF3131]  border-[#BF3131];
+
+            .quiz-value {
+                @apply border-[#BF3131]
+            }
+        }
+    }
+}

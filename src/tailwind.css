@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+        @apply flex flex-col min-h-[100svh] text-16px;
+    }
+
+    body {
+        @apply flex-1 flex flex-col scroll-smooth text-black font-inter;
+    }
+
+    main {
+        @apply flex-1 flex flex-col;
+
+        & > div {
+            @apply flex-1;
+        }
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"] {
+        appearance: none;
+    }
+}
+
+@layer components {
+    .logo {
+        @apply h1 text-white font-y-touch text-[3rem] tracking-wide font-medium;
+    }
+
+    .separator {
+        @apply relative;
+
+        &::after {
+            @apply content-[''] absolute -bottom-[1rem] left-0 w-full h-1px bg-primary;
+        }
+    }
+
+    .page {
+        @apply pt-40
+    }
+
+    .container {
+        @apply mx-auto max-w-1280 p-4;
+    }
+
+    .card {
+        @apply w-[100%] h-[100%] bg-transparent rounded-12px flex-center transition-all;
+    }
+
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+
+    .preserve-3d {
+        transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+    }
+
+    .h1 {
+        @apply text-h1 font-noto;
+    }
+
+    .h2 {
+        @apply text-h2 font-noto;
+    }
+
+    .h3 {
+        @apply text-h3 font-noto;
+    }
+
+    .h4 {
+        @apply text-h4 font-noto;
+    }
+
+    .h5 {
+        @apply text-h5 font-noto;
+    }
+
+    .h6 {
+        @apply text-h6 font-noto;
+    }
+
+    .text-body-1,
+    .text-body-2,
+    .text-body-3,
+    .text-body-4 {
+        @apply font-inter;
+    }
+
+    p {
+        @apply text-body-1;
+    }
+
+    .text-superscript-1 {
+        @apply font-noto;
+    }
+
+    .text-superscript-2 {
+        @apply font-inter;
+    }
+
+    .panel-clip-polygon {
+        clip-path: polygon(0 0, 100% 0, 99% 100%, 1% 99%);
+    }
+
+    .panel {
+        @apply w-full h-full bg-gray-800 text-white cursor-pointer shadow-md ease-out
+        duration-300 transition-all relative rounded-lg hover:after:opacity-100;
+
+        &::after {
+            @apply absolute content-[""] w-full h-[0.3rem] left-0 bottom-0 bg-white opacity-0 panel-clip-polygon;
+        }
+    }
+}
+
+@layer utilities {
+    .radical-gradient-animation {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: scale(0);
+        transition: transform .2s ease-in;
+        mix-blend-mode: difference;
+        background: radial-gradient(
+                circle at center,
+                #fff 24%,
+                #000 25%,
+                #000 100%);
+    }
+
+    .bg-purple-gradient {
+        background: linear-gradient(90deg, rgba(29, 55, 145, 100%) 0%, rgba(0, 25, 52, 100%) 100%);
+    }
+
+    .scale-4 {
+        transform: scale(4);
+    }
+
+    .disabled {
+        @apply opacity-80 pointer-events-none;
+    }
+
+    .gray-border {
+        @apply border border-gray-200 focus-within:border-gray-300 hover:border-gray-300;
+    }
+
+    .click-scale {
+        @apply active:transition-[transform] active:scale-click;
+    }
+
+    .hover-scale {
+        @apply hover:transition-[transform] hover:scale-click;
+    }
+
+    .hide-scrollbar {
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .full-size {
+        @apply w-full h-full;
+    }
+
+    .absolute-size {
+        @apply absolute w-full h-full inset-0;
+    }
+
+    .fixed-size {
+        @apply fixed w-full h-full inset-0;
+    }
+
+    .fixed-center {
+        @apply fixed top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2;
+    }
+
+    .absolute-center {
+        @apply absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2;
+    }
+
+    .absolute-x-center {
+        @apply absolute left-1/2 transform -translate-x-1/2;
+    }
+
+    .absolute-y-center {
+        @apply absolute top-1/2 transform -translate-y-1/2;
+    }
+
+    .flex-center {
+        @apply flex items-center justify-center;
+    }
+
+    .flex-col-center {
+        @apply flex-center flex-col;
+    }
+
+    .flex-cb {
+        @apply flex items-center justify-between;
+    }
+
+    .splide-pagination {
+        .is-active {
+            @apply bg-primary;
+        }
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        @apply w-[.6rem] h-[.6rem];
+
+        /* w - applies only for vertical scroller */
+
+        /* h - applies only for horizontal scroller  */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: inherit;
+        margin-block: .5rem;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #7749F8;
+        border-radius: 1rem;
+        height: 30px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: hsl(120deg 100% 10% / 100%);
+    }
+}

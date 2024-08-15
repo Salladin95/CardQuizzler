@@ -1,0 +1,59 @@
+@layer components {
+    .btn {
+        @apply w-full flex-center
+        select-none outline-none
+        transition-colors;
+
+        &-primary {
+            @apply text-white bg-primary
+            hover:opacity-95
+            hover:ring-primary hover:ring-offset-primary
+            focus-within:ring-primary focus-within:ring-offset-primary
+            disabled:opacity-40;
+        }
+
+        &-secondary {
+            @apply text-primary bg-white gray-border
+            hover:ring-primary hover:ring-offset-primary
+            focus-within:ring-primary focus-within:ring-offset-primary
+            disabled:opacity-40;
+        }
+
+        &-danger {
+            @apply text-white bg-danger
+            hover:opacity-95
+            hover:ring-error hover:ring-offset-error
+            focus-within:ring-error focus-within:ring-offset-error
+            disabled:opacity-40;
+        }
+
+        &-gray {
+            @apply text-main bg-gray-100 gray-border
+            focus-within:ring-primary focus-within:ring-offset-primary
+            disabled:opacity-40;
+        }
+
+        &-inline {
+            @apply bg-transparent disabled:opacity-40;
+        }
+
+        &-nav {
+            @apply bg-white text-main
+            hover:text-primary focus-within:text-primary focus-within:ring-primary focus-within:ring-offset-primary
+            disabled:opacity-40;
+        }
+
+        &-size {
+            &-default {
+                @apply h-11 p-3 rounded-lg;
+            }
+
+            &-inline {
+            }
+
+            &-round-sm {
+                @apply flex-center w-min h-min min-w-10 min-h-10 rounded-full;
+            }
+        }
+    }
+}

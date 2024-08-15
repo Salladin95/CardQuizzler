@@ -1,0 +1,83 @@
+.radio-check {
+    @apply after:rounded-full after:w-[.875rem] after:h-[.875rem] after:transition-colors;
+}
+
+@layer components {
+    .radio {
+        @apply border border-transparent flex items-center text-body-1 cursor-pointer transition-colors outline-none select-none;
+
+        &-input {
+            @apply flex-center border border-transparent appearance-none outline-none transition-colors cursor-pointer;
+        }
+
+        &-primary {
+            .radio-input {
+                @apply gray-border radio-check focus:ring-primary focus:ring-offset-primary;
+
+                &-checked {
+                    @apply after:bg-primary;
+                }
+            }
+
+            &[data-error="true"] {
+                .radio-input {
+                    @apply ring-error ring-offset-error;
+                }
+            }
+        }
+
+        &-outlined {
+            @apply gray-border focus-within:ring-primary focus-within:ring-offset-primary;
+
+            &[data-error="true"] {
+                @apply ring-error ring-offset-error;
+            }
+
+            .radio-input {
+                @apply gray-border radio-check focus:ring-primary focus:ring-offset-primary;
+
+                &-checked {
+                    @apply after:bg-primary;
+                }
+            }
+        }
+
+        &-option {
+            @apply flex-center text-main bg-white gray-border hover:bg-gray-100;
+
+            &[data-error="true"] {
+                @apply ring-error ring-offset-error;
+            }
+
+            &:has(input:checked) {
+                @apply bg-primary text-white;
+            }
+        }
+
+        &-size {
+            &-default {
+                @apply rounded-lg;
+
+                &.radio-outlined {
+                    @apply py-2 px-4;
+                }
+
+                .radio-input {
+                    @apply h-6 w-6 rounded-full;
+                }
+
+                .radio-label {
+                    @apply ml-3;
+                }
+            }
+
+            &-option {
+                @apply min-w-[2.625rem] h-11 px-2 rounded grow 1280:grow-0;
+
+                .radio-input {
+                    @apply w-0 h-0 opacity-0;
+                }
+            }
+        }
+    }
+}

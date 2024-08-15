@@ -1,0 +1,40 @@
+@layer components {
+    .scroll-area {
+        @apply overflow-hidden;
+
+        &-viewport {
+            @apply w-full h-full border-inherit pr-3;
+        }
+
+        &-scrollbar {
+            @apply flex select-none touch-none transition-colors bg-gray-100 hover:bg-gray-200
+                   p-0.5 my-0.5 rounded-lg;
+
+            &[data-orientation='vertical'] {
+                @apply w-2;
+            }
+
+            &[data-orientation='horizontal'] {
+                @apply flex-col h-2;
+            }
+        }
+
+        &-thumb {
+            @apply relative flex-1 bg-gray-400 rounded-lg;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                height: 100%;
+                min-width: 2.75rem;
+                min-height: 2.75rem;
+            }
+        }
+
+        &-corner {}
+    }
+}

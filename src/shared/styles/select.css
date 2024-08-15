@@ -1,0 +1,115 @@
+@layer components {
+    .select {
+        &-trigger {
+            @apply border border-transparent outline-none p-0
+            flex flex-row items-center justify-between transition-colors cursor-pointer;
+
+            &-arrow {
+                @apply transition-transform duration-300;
+            }
+
+            &[data-state="open"] {
+                .select-trigger-arrow {
+                    @apply rotate-180;
+                }
+            }
+        }
+
+        &[data-error="true"] {
+            .select-trigger {
+                @apply ring-error ring-offset-error;
+            }
+        }
+
+        .select-trigger-value {
+            @apply cursor-pointer;
+        }
+
+        &[data-required="true"] {
+            .select-trigger-value {
+                @apply after:content-['*'] after:text-danger;
+            }
+        }
+
+        &-content {
+            @apply z-[1] transition-colors outline-none;
+
+            width: var(--radix-select-trigger-width);
+        }
+
+        &-item {
+            @apply flex items-center justify-between gap-x-3 outline-none cursor-pointer transition-colors;
+        }
+
+        &-primary {
+            .select-trigger {
+                @apply p-3 border border-gray-200 bg-white rounded-lg focus-within:ring-primary;
+
+                &-arrow {
+                    @apply text-main;
+                }
+
+                &:hover {
+                    .select-trigger-arrow {
+                        @apply text-primary;
+                    }
+                }
+            }
+
+            &[data-disabled="true"] {
+                .select-trigger {
+                    @apply opacity-70 pointer-events-none;
+                }
+
+                .select-trigger {
+                    &-arrow {
+                        @apply opacity-70;
+                    }
+
+                    &:hover {
+                        .select-trigger-arrow {
+                            @apply text-main;
+                        }
+                    }
+                }
+            }
+
+            .select-content {
+                @apply bg-white border border-gray-200 rounded-lg focus-within:ring-primary;
+            }
+
+            .select-item {
+                @apply hover:text-primary focus:text-primary;
+
+                &-indicator {
+                    @apply text-primary;
+                }
+            }
+        }
+
+        &-size {
+            &-default {
+                .select-trigger {
+                    @apply h-11 gap-x-2 w-full;
+                }
+
+                .select-content {
+                    @apply p-3 overflow-y-auto shadow-popover;
+                }
+
+                /* Don't use gap-y-3 here because ScrollArea doesn't count gap only height */
+                .select-item {
+                    @apply py-1.5;
+                }
+
+                .scroll-area {
+                    @apply h-[11rem] rounded-none; /* max-h-45 overflow-scroll */
+                }
+
+                div.input {
+                    @apply w-full;
+                }
+            }
+        }
+    }
+}
