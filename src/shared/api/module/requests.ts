@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios"
 import { SecureAccess } from "~/app/types"
 import { ModuleType, TermType } from "~/app/models"
 import { GetByTitlePayload, JsonResponse, SortOptions } from "~/shared"
+import { addUserInfo } from "~/shared/api/folder/lib"
 
 export type GetModulePayload = {
 	id: string
@@ -19,7 +20,7 @@ export async function getModule({ id, password = "" }: GetModulePayload): Promis
 
 export type GetModulesResponse = ModuleType[]
 
-export async function getModules(sortOptions?: SortOptions): Promise<GetModulesResponse> {
+export async function getUserModules(sortOptions?: SortOptions): Promise<GetModulesResponse> {
 	const parsedOptions = {
 		limit: sortOptions?.limit || modulesDefaultLimit,
 		page: sortOptions?.page || 1,
@@ -40,7 +41,8 @@ export async function getModulesByTitle(payload: GetByTitlePayload): Promise<Get
 	const res = await axios.get<JsonResponse<GetModulesResponse>>(
 		`modules-by-title/${payload.title}?page=${parsedOptions.page}&limit=${parsedOptions.limit}&sortBy=${parsedOptions.sortBy}`,
 	)
-	return res.data.data
+	// return res.data.data
+	return addUserInfo(res.data.data)
 }
 
 export type GetDifficultModulesResponse = ModuleType[]

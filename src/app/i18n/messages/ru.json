@@ -170,14 +170,19 @@
     "update": "Обновить",
     "continue": "Продолжить",
     "submit": "Отправить",
-    "more": "Ещё"
+    "more": "Ещё",
+    "title": "Название",
+    "owner": "Владелец",
+    "author": "Автор"
   },
   "Exceptions": {
     "ctxIsNotDefined": "Контекст - '{ctx}' не определен",
     "swiperCtxNotDefined": "Контекст Swiper не определен",
     "termCtxNotDefined": "Контекст редактора терминов не определен",
     "reqEmailVerificationCtxNotDefined": "Конеткс запроса верификации почты не определен",
-    "updateTermCtxNotDefined": "Контекст обновления термина не определен"
+    "updateTermCtxNotDefined": "Контекст обновления термина не определен",
+    "fetchUsers": "Не удалось загрузить пользователей",
+    "unknownError": "Что то пошло не так"
   },
   "Titles": {
     "protectedByPassword": "Для доступа нужен пароль"

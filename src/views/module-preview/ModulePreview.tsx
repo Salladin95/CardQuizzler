@@ -59,7 +59,7 @@ function ModulePreview(module: ModulePreviewProps) {
 								</div>
 							))}
 						</UpdateTermCtxProvider>
-						<Button>
+						<Button disabled={!module.terms.length}>
 							<Link href={`/module/${module.id}`}>{t("Features.studyModule")}</Link>
 						</Button>
 					</div>

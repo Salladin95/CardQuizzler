@@ -7,9 +7,9 @@ import {
 	getModule,
 	GetModulePayload,
 	GetModuleResponse,
-	getModules,
 	getModulesByTitle,
 	GetModulesResponse,
+	getUserModules,
 } from "./requests"
 
 export const modulesQueryKey = "modules-query-key"
@@ -19,12 +19,12 @@ export const modulesByTitleQueryKey = "modules-by-title-query-key"
 export const difficultModulesQueryKey = "difficult-modules-query-key"
 export const infiniteModulesQueryKey = "infinite-modules-by-title-query-key"
 
-export const useFetchModules = (
+export const useFetchUserModules = (
 	options?: Omit<UseQueryOptions<GetModulesResponse, AxiosError>, "queryFn" | "queryKey">,
 ) => {
 	return useQuery({
 		queryKey: [modulesQueryKey],
-		queryFn: () => getModules(),
+		queryFn: () => getUserModules(),
 		...options,
 	})
 }
@@ -85,7 +85,7 @@ export const useFetchDifficultModules = (
 export const useFetchLastActions = (options?: Omit<UseQueryOptions<GetModulesResponse, AxiosError>, "queryFn">) => {
 	return useQuery({
 		queryKey: [recentActionsQueryKey],
-		queryFn: () => getModules({ sortBy: "updated_at-" }),
+		queryFn: () => getUserModules({ sortBy: "updated_at-" }),
 		...options,
 	})
 }

@@ -2,7 +2,7 @@ import axios from "~/app/axios"
 import { SwiperCard } from "~/features"
 import { AxiosError, AxiosResponse } from "axios"
 import { HomePageData, TermType } from "~/app/models"
-import { DeleteModuleResponse, getDifficultModules, getFolders, getModules } from "~/shared"
+import { DeleteModuleResponse, getDifficultModules, getFolders, getUserModules } from "~/shared"
 import {
 	UseInfiniteQueryOptions,
 	useMutation,
@@ -32,9 +32,9 @@ export const homeDataKey = "home-page-date-key"
 
 export async function getHomePageData(): Promise<HomePageData> {
 	const folders = await getFolders()
-	const modules = await getModules()
+	const modules = await getUserModules()
 	const difficultModules = await getDifficultModules()
-	const lastActions = await getModules({ sortBy: "updated_at-" })
+	const lastActions = await getUserModules({ sortBy: "updated_at-" })
 	return Promise.resolve({ folders, modules, lastActions, difficultModules })
 }
 
@@ -64,7 +64,7 @@ export function useProcessQuizResult(
 
 export * from "./folder"
 export * from "./module"
-export * from "./profile"
+export * from "./user"
 export * from "./refresh"
 export * from "./updateEmail"
 export * from "./password"

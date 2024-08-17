@@ -2,6 +2,7 @@ import axios from "~/app/axios"
 import { AccessType } from "~/app/types"
 import { FolderType } from "~/app/models"
 import { GetByTitlePayload, JsonResponse, SortOptions } from "~/shared"
+import { addUserInfo } from "~/shared/api/folder/lib"
 
 const foldersDefaultLimit = 25
 
@@ -52,7 +53,8 @@ export async function getFoldersByTitle(payload: GetByTitlePayload): Promise<Get
 	const res = await axios.get<JsonResponse<GetFoldersResponse>>(
 		`folders-by-title/${payload.title}?page=${parsedOptions.page}&limit=${parsedOptions.limit}&sortBy=${parsedOptions.sortBy}`,
 	)
-	return res.data.data
+	// return res.data.data
+	return addUserInfo(res.data.data)
 }
 
 export type CreateFolderPayload = {

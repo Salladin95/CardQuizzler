@@ -80,7 +80,7 @@ export function CreateEditFolder(props: CreateFolderProps) {
 	}, [accessOption, resetField])
 
 	return (
-		<Dialog open={showDialog} trigger={trigger} className={"w-360 640:w-428 768:w-640 h-[20rem] py-12 px-8"}>
+		<Dialog open={showDialog} trigger={trigger} className={"w-[19.375rem] h-[22rem] 640:w-428 768:w-640  py-12 px-8"}>
 			<form onSubmit={handleFormSubmit(handleSubmit)}>
 				<div className={"relative w-full h-full"}>
 					<h1 className={"mb-6 h2 640:h1 text-center text-primary"}>{title}</h1>
@@ -90,21 +90,21 @@ export function CreateEditFolder(props: CreateFolderProps) {
 						error={Boolean(errors.title)}
 						className={"mb-4"}
 					/>
-					<p className={"mb-2"}>{t("Placeholders.access")}</p>
+					{/*<p className={"mb-2"}>{t("Placeholders.access")}</p>*/}
 					<div className={"flex gap-4 mb-8"}>
-						<Controller
-							name={"access"}
-							control={control}
-							render={({ field }) => (
-								<Select
-									{...field}
-									placeholder={t("Placeholders.access")}
-									options={getAccessTypeSelectOptions(t)}
-									className={"flex-1"}
-									error={Boolean(errors.access)}
-								/>
-							)}
-						/>
+						{/*<Controller*/}
+						{/*	name={"access"}*/}
+						{/*	control={control}*/}
+						{/*	render={({ field }) => (*/}
+						{/*		<Select*/}
+						{/*			{...field}*/}
+						{/*			placeholder={t("Placeholders.access")}*/}
+						{/*			options={getAccessTypeSelectOptions(t)}*/}
+						{/*			className={"flex-1"}*/}
+						{/*			error={Boolean(errors.access)}*/}
+						{/*		/>*/}
+						{/*	)}*/}
+						{/*/>*/}
 						{accessOption === AccessType.PASSWORD && (
 							<FormField error={translatedErrorMessages.get("password")}>
 								<PasswordInput

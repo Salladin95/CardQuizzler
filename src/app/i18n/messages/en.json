@@ -167,14 +167,19 @@
     "update": "Update",
     "continue": "Continue",
     "submit": "Submit",
-    "more": "More"
+    "more": "More",
+    "title": "Title",
+    "owner": "Owner",
+    "author": "Author"
   },
   "Exceptions": {
     "ctxIsNotDefined": "Context - '{ctx}' is not defined",
     "swiperCtxNotDefined": "Swiper context is not defined",
     "termCtxNotDefined": "Term editor context is not defined",
     "reqEmailVerificationCtxNotDefined": "Request email verification context is not defined",
-    "updateTermCtxNotDefined": "Update term context is not defined"
+    "updateTermCtxNotDefined": "Update term context is not defined",
+    "fetchUsers": "Failed to fetch users",
+    "unknownError": "Something went wrong"
   },
   "Titles": {
     "protectedByPassword": "Access requires password"

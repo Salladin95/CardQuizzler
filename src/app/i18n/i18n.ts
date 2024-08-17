@@ -6,6 +6,7 @@ export enum Locale {
 	EN = "en",
 }
 
+
 export const locales: Locale[] = [Locale.EN, Locale.RU]
 
 export default getRequestConfig(async ({ locale }) => {

@@ -16,13 +16,15 @@ export type TermType = {
 	description: string
 }
 
-type SharedValues = {
+export type SharedValues = {
 	id: string
 	title: string
 	access: AccessType
 	password?: string
 	authorID: string
 	userID: string
+	authorName?: string
+	ownerName?: string
 }
 
 export type FolderType = {

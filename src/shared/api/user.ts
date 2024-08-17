@@ -14,6 +14,24 @@ export function signOut(): Promise<void> {
 	return axios.get("/sign-out")
 }
 
+export const userByIdQueryKey = "user-by-id-query-key"
+
+export async function getUserByID(id: string): Promise<FetchProfileResponse> {
+	const res = await axios.get<JsonResponse<FetchProfileResponse>>(`/user/${id}`)
+	return res.data.data
+}
+
+export const useGetUserById = (
+	id: string,
+	options?: Omit<UseQueryOptions<FetchProfileResponse, AxiosError>, "queryFn" | "queryKey">,
+) => {
+	return useQuery({
+		queryKey: [userByIdQueryKey, id],
+		queryFn: ({ queryKey }) => getUserByID(queryKey[1] as string),
+		...options,
+	})
+}
+
 export async function getProfile(): Promise<FetchProfileResponse> {
 	const res = await axios.get<JsonResponse<Profile>>("/user/profile")
 	return res.data.data

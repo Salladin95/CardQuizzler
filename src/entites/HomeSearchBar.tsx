@@ -18,9 +18,14 @@ import {
 	useInfiniteFoldersByTitle,
 	useInfiniteModulesByTitle,
 	useProfile,
+	useToast,
 } from "~/shared"
+import { useTranslations } from "~/app/i18n"
 
-type Hint = FolderType | ModuleType
+type Hint = (FolderType | ModuleType) & {
+	ownerName?: string
+	authorName?: string
+}
 
 type RenderHintsProps = {
 	uid?: string
@@ -31,6 +36,8 @@ type RenderHintsProps = {
 function RenderHints(props: RenderHintsProps) {
 	const { uid, onLoadingChange, title } = props
 	const router = useRouter()
+	const t = useTranslations()
+	const toast = useToast()
 
 	const enabled = Boolean(title)
 
@@ -70,12 +77,12 @@ function RenderHints(props: RenderHintsProps) {
 	const folderHints: FolderType[] = Array.from(foldersHintsMap, ([_, value]) => value)
 	const moduleHints: ModuleType[] = Array.from(moduleHintsMap, ([_, value]) => value)
 
-	const hints = title ? [...moduleHints, ...folderHints] : []
-
 	function handleClick(hint: Hint) {
 		const link = generateLink<Hint>(hint, uid)
 		link && router.push(link)
 	}
+
+	const hints = [...moduleHints, ...folderHints]
 
 	React.useEffect(() => {
 		const isLoading =
@@ -101,7 +108,22 @@ function RenderHints(props: RenderHintsProps) {
 						tabIndex={0}
 					>
 						<div className={"flex justify-between items-center mb-2"}>
-							<span className={""}>{hint.title}</span>
+							<div className={"flex flex-col gap-2 1024:flex-row"}>
+								<div>
+									<span className={"font-bold"}>{t("Generics.title")}: </span>
+									<span className={""}>{hint.title}</span>
+								</div>
+								<Separator className={"hidden 1024:block"} variant={"vertical"} />
+								<div>
+									<span className={"font-bold"}>{t("Generics.owner")}: </span>
+									<span className={""}>{hint.ownerName}</span>
+								</div>
+								<Separator className={"hidden 1024:block"} variant={"vertical"} />
+								<div>
+									<span className={"font-bold"}>{t("Generics.author")}: </span>
+									<span className={""}>{hint.authorName}</span>
+								</div>
+							</div>
 							<span>
 								{isFolder(hint) ? <FolderIcon className={"text-white"} /> : <ClosedBookIcon className={"text-white"} />}
 							</span>

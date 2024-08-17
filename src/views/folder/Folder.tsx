@@ -6,7 +6,7 @@ import { hasFolderTheModule } from "./utils"
 import { useTranslations } from "~/app/i18n"
 import { FolderType } from "~/app/models"
 import { useQueryClient } from "@tanstack/react-query"
-import { FolderContextMenu, ModuleContextMenu } from "~/features"
+import { FolderContextMenu } from "~/features"
 import {
 	AddIcon,
 	Button,
@@ -18,9 +18,12 @@ import {
 	useAddModuleToFolderMutation,
 	useDeleteModuleFromFolderMutation,
 	useFetchFolder,
+	useFetchUserModules,
 	useProtectedModuleCtx,
 	XMarkIcon,
 } from "~/shared"
+import { Module } from "~/entites"
+import { useRouter } from "next/navigation"
 
 type FolderProps = {
 	folder?: FolderType
@@ -31,6 +34,8 @@ function Folder(props: FolderProps) {
 	const { folder } = props
 	const [showDialog, setShowDialog] = React.useState(false)
 	const queryClient = useQueryClient()
+
+	const { data: userModules } = useFetchUserModules()
 
 	const addModuleToFolder = useAddModuleToFolderMutation({
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: [folderQueryKey, folder?.id] }),
@@ -59,6 +64,8 @@ function Folder(props: FolderProps) {
 		)
 	}
 
+	const router = useRouter()
+
 	if (!folder) return null
 
 	return (
@@ -78,7 +85,7 @@ function Folder(props: FolderProps) {
 			</section>
 			<section className={"flex flex-col gap-y-4 mb-4"}>
 				{folder.modules.map((module) => (
-					<ModuleContextMenu {...module} key={module.id} />
+					<Module onClick={() => router.push(`/module-preview/${module.id}`)} {...module} key={module.id} />
 				))}
 			</section>
 			<Button onClick={() => setShowDialog(true)} variant={"primary"} className={"max-w-[20rem] h3 mx-auto"}>
@@ -101,7 +108,7 @@ function Folder(props: FolderProps) {
 				</Button>
 
 				<section className={"flex flex-col gap-y-2 px-6 py-8 "}>
-					{folder.modules?.map((module) => (
+					{userModules?.map((module) => (
 						<div
 							key={module.id}
 							className={"flex justify-between items-center px-4 py-3 rounded bg-gray-800 text-white"}
