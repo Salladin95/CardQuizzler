@@ -8,11 +8,10 @@ type FlippableContentProps = PropsWithClassName & {
 	frontSideContent: React.ReactNode
 	backSideContent: React.ReactNode
 	rotateByAxis: RotateByAxis
-	render?: () => React.ReactNode
 }
 
 export function FlippableContent(props: FlippableContentProps) {
-	const { frontSideContent, backSideContent, className, rotateByAxis, render } = props
+	const { frontSideContent, backSideContent, className, rotateByAxis } = props
 	const transform = rotateByAxis === RotateByAxis.X ? "rotateX(180deg)" : "rotateY(180deg)"
 	return (
 		<>

@@ -30,12 +30,13 @@ export const createOption = (value: string = "0", label = `Option ${value}`): Se
 
 export const createOptions = (length = 10) => createArray(length, (_, index) => createOption(index.toString()))
 
-export function createEmptyTerm(): TermType {
+export function createEmptyTerm(_: unknown, index: number): TermType {
 	return {
 		id: uuidv4(),
 		moduleID: uuidv4(),
 		title: "",
 		description: "",
+		index,
 	}
 }
 

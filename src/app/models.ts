@@ -14,6 +14,7 @@ export type TermType = {
 	title: string
 	moduleID: string
 	description: string
+	index: number
 }
 
 export type SharedValues = {

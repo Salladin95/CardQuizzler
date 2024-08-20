@@ -38,7 +38,7 @@ export function EditModulePage(props: WithId) {
 	module?.terms.forEach((term) => originalTermsIDS.add(term.id))
 
 	function handleUpdateModule(payload: CreateModulePayload) {
-		const originalTerms = payload.terms?.filter((term) => originalTermsIDS.has(term.id)) as TermType[]
+		const originalTerms = payload.terms?.filter((term) => originalTermsIDS.has(term.id)) as unknown as TermType[]
 		const newTerms = payload.terms?.filter((term) => !originalTermsIDS.has(term.id))
 		updateModule.mutate({ ...payload, id, updatedTerms: originalTerms, newTerms })
 	}

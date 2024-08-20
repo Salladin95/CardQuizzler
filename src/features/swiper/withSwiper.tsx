@@ -78,7 +78,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 						negativeSwipesCounter: Math.max(0, swiperData.negativeSwipesCounter - 1),
 						swipedCards: removeArrLastItem(swiperData.swipedCards),
 					})
-					// TODO SHOULD BE LIKE THAT
+					// TODO: SHOULD BE LIKE THAT
 					// setCurrentCards([previousCard, ...currentCards])
 					setCurrentCards([...currentCards, previousCard])
 					break
@@ -92,7 +92,7 @@ export function withSwiper<DataType>(Component: React.ComponentType<DataType>) {
 						positiveSwipesCounter: Math.max(0, swiperData.positiveSwipesCounter - 1),
 						swipedCards: removeArrLastItem(swiperData.swipedCards),
 					})
-					// TODO SHOULD BE LIKE THAT
+					// TODO: SHOULD BE LIKE THAT
 					// setCurrentCards([previousCard, ...currentCards])
 					setCurrentCards([...currentCards, previousCard])
 					break

@@ -8,6 +8,7 @@ export function mockTerm(): TermType {
 		title: fakerEN.word.noun(),
 		description: faker.word.words(),
 		moduleID: faker.string.uuid(),
+		index: faker.number.int(),
 	}
 }
 

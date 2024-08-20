@@ -25,13 +25,14 @@ type ModuleProps = ModuleType
 function Module(props: ModuleProps) {
 	const { terms, id } = props
 	const queryClient = useQueryClient()
-
+	// TODO: SOLVER REVERS PROBLEM FOR SWIPER
+	const reversedTerms = [...terms].reverse()
 	const processQuiz = useProcessQuizResult()
 
 	const [storedProgress, setStoredProgress, removeStoredProgress] = useStoredSwiperState(id)
 
 	const [swiperState, setSwiperState] = React.useState<SwiperData<TermType>>(
-		storedProgress || initializeSwiperData(terms),
+		storedProgress || initializeSwiperData(reversedTerms),
 	)
 
 	function handleUpdateSwiperState(updatedState: SwiperData<TermType>) {
@@ -43,7 +44,7 @@ function Module(props: ModuleProps) {
 	const positiveAnswers = getPositiveAnswers(swiperState.swipedCards)
 
 	function handleRestart() {
-		const state = initializeSwiperData([...terms])
+		const state = initializeSwiperData([...reversedTerms])
 		setSwiperState(state)
 		setStoredProgress(state)
 		processQuiz.reset()
@@ -51,8 +52,10 @@ function Module(props: ModuleProps) {
 
 	function handleContinue() {
 		const state = initializeSwiperData(cleanSwipedCards(negativeAnswers))
-		setSwiperState(state)
-		setStoredProgress(state)
+		// TODO: SOLVER REVERS PROBLEM FOR SWIPER
+		const reversedState = { ...state, startingTerms: [...state.startingTerms].reverse() }
+		setSwiperState(reversedState)
+		setStoredProgress(reversedState)
 		processQuiz.reset()
 	}
 

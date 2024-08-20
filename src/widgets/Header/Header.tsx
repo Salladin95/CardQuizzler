@@ -18,10 +18,10 @@ export function Header(props: HeaderProps) {
 	return (
 		<header
 			style={props?.style}
-			className={cn("flex items-center justify-between bg-transparent px-8 py-4", props?.className)}
+			className={cn("container flex items-center justify-between bg-transparent", props?.className)}
 		>
 			<Logo className={"text-primary inset-0 static"} />
-			<div className={"flex items-center gap-x-8"}>
+			<div className={"flex items-center gap-x-2 428:gap-x-8"}>
 				{profile ? (
 					<div className={"flex gap-x-4"}>
 						<Link href={"/profile"}>

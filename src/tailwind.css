@@ -32,7 +32,7 @@
 
 @layer components {
     .logo {
-        @apply h1 text-white font-y-touch text-[3rem] tracking-wide font-medium;
+        @apply h1 text-white font-y-touch text-[2rem] 640:text-[3rem] tracking-wide font-medium;
     }
 
     .separator {

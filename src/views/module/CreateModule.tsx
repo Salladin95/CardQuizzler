@@ -10,6 +10,7 @@ export function CreateModulePage(props: { terms: TermType[] }) {
 	const { terms } = props
 	const router = useRouter()
 	const queryClient = useQueryClient()
+
 	const createModule = useCreateModuleMutation({
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [modulesQueryKey, homeDataKey] })

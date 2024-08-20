@@ -1,6 +1,6 @@
 import React from "react"
 import { TermType } from "~/app/models"
-import { RotateByAxis, useFlippable } from "~/shared/"
+import { cn, RotateByAxis, useFlippable } from "~/shared/"
 import { FlippableContent } from "~/entites/"
 import { PropsWithClassName } from "~/app/types"
 import { DisplayEditorContent } from "./DisplayEditorContent"
@@ -28,12 +28,12 @@ export function QuizCard(props: QuizCardProps) {
 		setFlippableTarget(e.currentTarget.closest(".swipeable"))
 	}
 
-	const term: TermType = { title, description, id: props.id, moduleID: props.moduleID }
+	const term: TermType = { title, description, id: props.id, moduleID: props.moduleID, index: props.index }
 
 	return (
 		<FlippableContent
 			rotateByAxis={RotateByAxis.Y}
-			className={`${className} quiz-card`}
+			className={cn("quiz-card", className)}
 			frontSideContent={<DisplayEditorContent term={term} onClick={handleClick} content={title} />}
 			backSideContent={<DisplayEditorContent term={term} onClick={handleClick} content={description} />}
 		/>

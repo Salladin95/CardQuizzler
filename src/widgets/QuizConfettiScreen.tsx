@@ -33,7 +33,7 @@ export function QuizConfettiScreen(props: QuizConfettiScreenProps) {
 						...fade.bottom,
 						transition: { ...fade.bottom.transition, delay: 3.5 },
 					}}
-					className={"mb-4 mx-auto max-w-[20rem]"}
+					className={"mb-4 mx-auto max-w-[20rem] py-10"}
 					onClick={onContinue}
 				>
 					{t("Widgets.confettiScreen.continueLearning", { count: negativeAnswers })}

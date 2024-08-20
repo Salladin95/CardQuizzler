@@ -31,6 +31,7 @@ const getModuleEditorSchema = (isEditMode: boolean, currentAccess?: AccessType) 
 					moduleID: Yup.string().required(),
 					title: Yup.string().required(),
 					description: Yup.string().required(),
+					index: Yup.number().required(),
 				}),
 			)
 			.required(),
@@ -72,8 +73,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 	const accessOption = watch("access")
 
 	const {
-		remove: handleRemoveTerm,
-		insert: handleInsertTerm,
+		insert: insertTerm,
 		update: updateTerm,
 		replace: replaceTerms,
 	} = useFieldArray({
@@ -81,8 +81,27 @@ export function ModuleEditor(props: ModuleEditorProps) {
 		name: "terms",
 	})
 
+	const handleAddTerm = () => {
+		const newTerm = createEmptyTerm(null, formTerms.length)
+		insertTerm(formTerms.length, newTerm)
+	}
+
 	const handleUpdateTerm = (index: number, term: TermType) => {
-		updateTerm(index, term)
+		updateTerm(index, { ...term, index })
+		isFormSubmitted && trigger("terms")
+	}
+
+	const handleReorderTerms = (newTerms: TermType[]) => {
+		// Update the index of each term based on its new position
+		const updatedTerms = newTerms.map((term, index) => ({ ...term, index }))
+		replaceTerms(updatedTerms)
+		isFormSubmitted && trigger("terms")
+	}
+
+	const handleDeleteTerm = (index: number) => {
+		// Adjust the index of remaining terms
+		const updatedTerms = formTerms.filter((_, i) => i !== index).map((term, idx) => ({ ...term, index: idx }))
+		replaceTerms(updatedTerms)
 		isFormSubmitted && trigger("terms")
 	}
 
@@ -102,7 +121,7 @@ export function ModuleEditor(props: ModuleEditorProps) {
 			<form onSubmit={handleFormSubmit(onSubmit)}>
 				<section className={"overflow-hidden p-1"}>
 					<div className="flex justify-between mb-4">
-						<h1 className="h2 text-primary">{title}</h1>
+						<h1 className="h4 428:h3 640:h2 text-primary">{title}</h1>
 						<ActionBtn
 							type={"submit"}
 							loading={isSubmitting}
@@ -145,12 +164,12 @@ export function ModuleEditor(props: ModuleEditorProps) {
 
 					<TermList
 						items={formTerms}
-						onReorder={replaceTerms}
+						onReorder={handleReorderTerms}
 						onUpdate={handleUpdateTerm}
-						onDelete={handleRemoveTerm}
-						onAddTerm={(index: number) => handleInsertTerm(index, createEmptyTerm())}
+						onDelete={handleDeleteTerm}
+						onAddTerm={(index: number) => insertTerm(index, createEmptyTerm(null, index))}
 					/>
-					<Button className="w-min mx-auto mb-12" onClick={() => handleInsertTerm(formTerms.length, createEmptyTerm())}>
+					<Button className="w-min mx-auto mb-12" onClick={handleAddTerm}>
 						{t("Generics.add")}
 					</Button>
 					<ActionBtn
